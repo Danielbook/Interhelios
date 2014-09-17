@@ -1,4 +1,4 @@
-						TNM040-KOMA-Projekt
+﻿						TNM040-KOMA-Projekt
 –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 Spel som kodas i Java!
@@ -16,3 +16,5 @@ Spel-idéer:
 - Menyer med uppgraderingar (skills, items).
 
 –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Adam vill också vara med och leka!
