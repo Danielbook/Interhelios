@@ -3,6 +3,8 @@ TNM040-KOMA-Projekt
 
 Gudaappen
 
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 App-idéer:
 
 - Spel? Program? MT-inspirerat?
@@ -23,9 +25,7 @@ App-idéer:
 
 - Kulan?! Accelerometer osv…
 
--Med andra ord?
-
-
-–––––––––––––––––––––––
-
 - Kameraapp med horisontavkännare och gyllenesnittet!
+
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
