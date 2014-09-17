@@ -24,3 +24,8 @@ App-idéer:
 - Kulan?! Accelerometer osv…
 
 -Med andra ord?
+
+
+–––––––––––––––––––––––
+
+- Kameraapp med horisontavkännare och gyllenesnittet!
