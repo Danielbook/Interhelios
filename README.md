@@ -22,3 +22,5 @@ App-idéer:
 - Gitarrstämmare med metronom. Olika stämningar Gitarrackord? Lära sig ackord?
 
 - Kulan?! Accelerometer osv…
+
+-Med andra ord?
