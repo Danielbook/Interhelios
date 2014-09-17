@@ -15,4 +15,8 @@ Spel-idéer:
 
 - Kulan?! Accelerometer osv…
 
+- Kameraapp med horisontavkännare och gyllenesnittet!
+
+- Menyer med uppgraderingar (skills, items)
+
 –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
