@@ -1,7 +1,7 @@
-TNM040-KOMA-Projekt
-===================
+						TNM040-KOMA-Projekt
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-SPEL!
+Spel som kodas i Java!
 
 –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -9,18 +9,10 @@ Spel-idéer:
 
 - ”Idiotspel”, spel som aldrig tar slut?
 
-- Sidescroller? Typ Super Mario, som konstant springer, hoppa & ducka för objekt.
+- Flygplan som åker konstant uppåt & kan styra för att undvika objekt, kan skjuta ner andra plan.
 
-- Flygplan som åker konstant åt sidan & kan styra upp eller ner för att undvika objekt, kan skjuta ner andra plan.
+- Studsande boll?
 
-- Kulan?! Accelerometer osv…
-
-- Kameraapp med horisontavkännare och gyllenesnittet!
-
-- Menyer med uppgraderingar (skills, items)
-
-–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-Kodas i JAVA!
+- Menyer med uppgraderingar (skills, items).
 
 –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
