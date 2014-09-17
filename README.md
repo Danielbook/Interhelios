@@ -16,5 +16,3 @@ Spel-idéer:
 - Menyer med uppgraderingar (skills, items).
 
 –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-Adam vill också vara med och leka!
