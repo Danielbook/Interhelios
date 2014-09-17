@@ -27,5 +27,7 @@ App-idéer:
 
 - Kameraapp med horisontavkännare och gyllenesnittet!
 
+- Menyer med uppgraderingar (skills, items)
+
 –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
