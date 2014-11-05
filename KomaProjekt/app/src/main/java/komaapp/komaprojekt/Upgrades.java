@@ -1,41 +1,21 @@
 package komaapp.komaprojekt;
 
-import android.app.*;
-import android.content.*;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
-public class Huvudmeny extends Activity {
+public class Upgrades extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_huvudmeny);
+        setContentView(R.layout.activity_upgrades);
 
         ActionBar actionBar = getActionBar();
         actionBar.hide();
-
-        View.OnClickListener buttonListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId() == R.id.upgradeBtn){
-                    Intent i = new Intent("in.wptrafficanalyzer.Upgrades");
-                    startActivity(i);
-                }
-            }
-        };
-
-        Button startBtn = (Button)findViewById(R.id.startBtn);
-        Button upgradeBtn = (Button)findViewById(R.id.upgradeBtn);
-        Button settingsBtn = (Button)findViewById(R.id.settingsBtn);
-
-        startBtn.setOnClickListener(buttonListener);
-        upgradeBtn.setOnClickListener(buttonListener);
-        settingsBtn.setOnClickListener(buttonListener);
-
-
     }
 
 

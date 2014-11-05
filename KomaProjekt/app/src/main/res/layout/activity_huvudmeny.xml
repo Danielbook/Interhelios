@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
-        android:id="@+id/button"
+        android:id="@+id/startBtn"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="37dp" />
@@ -21,18 +21,17 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Uppgrades"
-        android:id="@+id/button2"
-        android:layout_below="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
+        android:text="Upgrades"
+        android:id="@+id/upgradeBtn"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
-        android:id="@+id/button3"
-        android:layout_centerVertical="true"
+        android:id="@+id/settingsBtn"
+        android:layout_above="@+id/howToBtn"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -40,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="How To"
-        android:id="@+id/button4"
+        android:id="@+id/howToBtn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

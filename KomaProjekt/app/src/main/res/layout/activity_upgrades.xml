@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guns"
+        android:id="@+id/gunsBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/shieldBtn"
+        android:layout_alignEnd="@+id/shieldBtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Engine"
+        android:id="@+id/engineBtn"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shield"
+        android:id="@+id/shieldBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/engineBtn"
+        android:layout_alignStart="@+id/engineBtn" />
+</RelativeLayout>
