@@ -82,13 +82,9 @@ public class Settings extends Activity {
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,progress, 0);
 
                         //console test
-                    //System.out.println("Progress: " + progress + "FromUser : " + fromUser);
+                    System.out.println("Progress: " + progress + "FromUser : " + fromUser);
                 }
             });
-
-
-
-
         }
         catch (Exception e)
         {
