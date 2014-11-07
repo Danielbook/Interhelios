@@ -33,7 +33,18 @@ public class Upgrades extends Activity {
                 if(v.getId() == R.id.gunsBtn)
                 {
                     Log.d("TextLog", "Guns");
-                    gunsRadio.setVisibility(View.VISIBLE);
+
+                    if(gunsRadio.getVisibility() == View.GONE)
+                    {
+                        gunsRadio.setVisibility(View.VISIBLE);
+                    }
+
+                    else if(gunsRadio.getVisibility() == View.VISIBLE)
+                    {
+                        gunsRadio.setVisibility(View.GONE);
+                    }
+
+
                 }
 
                 if(v.getId() == R.id.shieldBtn)
