@@ -20,9 +20,9 @@ public class Huvudmeny extends Activity {
         View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == R.id.upgradeBtn){
-                    Intent i = new Intent("in.wptrafficanalyzer.Upgrades");
-                    startActivity(i);
+                if(v.getId() == R.id.upgradeBtn)
+                {
+                    startActivity(new Intent (getApplicationContext(), Upgrades.class));
                 }
             }
         };
