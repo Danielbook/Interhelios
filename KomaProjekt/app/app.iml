@@ -79,6 +79,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 20 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="org_andengine_extension_physics_box2d" level="project" />
+    <orderEntry type="library" exported="" name="andengine" level="project" />
   </component>
 </module>
 

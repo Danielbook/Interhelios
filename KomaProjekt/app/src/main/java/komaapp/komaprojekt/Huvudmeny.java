@@ -28,7 +28,6 @@ public class Huvudmeny extends Activity {
                 else if (v.getId() == R.id.settingsBtn){
 
                    startActivity(new Intent (getApplicationContext(), Settings.class));
-
                 }
             }
         };
