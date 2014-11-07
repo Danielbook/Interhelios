@@ -21,8 +21,14 @@ public class Huvudmeny extends Activity {
             @Override
             public void onClick(View v) {
                 if(v.getId() == R.id.upgradeBtn){
-                    Intent i = new Intent("in.wptrafficanalyzer.Upgrades");
-                    startActivity(i);
+
+                    startActivity(new Intent (getApplicationContext(), Upgrades.class));
+
+                }
+                else if (v.getId() == R.id.settingsBtn){
+
+                   startActivity(new Intent (getApplicationContext(), Settings.class));
+
                 }
             }
         };
