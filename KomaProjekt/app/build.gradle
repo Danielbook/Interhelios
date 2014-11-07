@@ -21,4 +21,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':andengine')
+    compile project(':org_andengine_extension_physics_box2d')
 }
