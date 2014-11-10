@@ -1,2 +1,2 @@
 configurations.create("default")
-artifacts.add("default", file('andengine.jar'))
+artifacts.add("default", file('AndEngine.jar'))

@@ -29,6 +29,9 @@ public class Huvudmeny extends Activity {
 
                    startActivity(new Intent (getApplicationContext(), Settings.class));
                 }
+                else if (v.getId() == R.id.startBtn){
+                    startActivity(new Intent (getApplicationContext(), Game.class));
+                }
             }
         };
 
