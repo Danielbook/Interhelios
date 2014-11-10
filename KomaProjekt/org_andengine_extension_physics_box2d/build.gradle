@@ -1,2 +1,0 @@
-configurations.create("default")
-artifacts.add("default", file('org_andengine_extension_physics_box2d.jar'))

@@ -29,6 +29,13 @@
             android:name=".Settings"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name=".Game"
+            android:label="KomaProjekt" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            </activity>
     </application>
 
 </manifest>
