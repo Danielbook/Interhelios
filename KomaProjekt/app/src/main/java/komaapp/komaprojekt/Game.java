@@ -3,12 +3,14 @@ package komaapp.komaprojekt;
 import android.graphics.Typeface;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.text.Text;
+import org.andengine.entity.util.FPSCounter;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
@@ -42,14 +44,35 @@ public class Game extends SimpleBaseGameActivity {
     protected Scene onCreateScene()
     {
         final Scene scene = new Scene();
+
+        final FPSCounter fpsCounter = new FPSCounter();
+        this.mEngine.registerUpdateHandler(fpsCounter);
+
         scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
 
         final int text_x = 100;
         final int text_y = 160;
 
         final Text helloWorld = new Text(text_x, text_y, this.mFont, "Hello, world!", this.getVertexBufferObjectManager());
+        final Text fpsText = new Text(text_x, text_y+100, this.mFont, "FPS: ", "FPS: XXXXX".length(), this.getVertexBufferObjectManager());
 
         scene.attachChild(helloWorld);
+        scene.attachChild(fpsText);
+
+        scene.registerUpdateHandler(new IUpdateHandler() {
+            float currentTime = 0;
+
+            @Override
+            public void onUpdate(float v) {
+                currentTime += v;
+
+                fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
+                helloWorld.setPosition(text_x+(int)(60.0*Math.cos(currentTime)), text_y);
+            }
+
+            @Override
+            public void reset() {}
+        });
 
         return scene;
     }
