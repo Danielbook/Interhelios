@@ -9,7 +9,7 @@ import android.widget.*;
 
 public class Huvudmeny extends Activity {
 
-    private DBHandler dbSettings = new DBHandler();
+    private dataBaseSource dbSettings = new dataBaseSource(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
