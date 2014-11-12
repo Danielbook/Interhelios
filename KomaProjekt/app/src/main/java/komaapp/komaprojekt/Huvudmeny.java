@@ -9,10 +9,14 @@ import android.widget.*;
 
 public class Huvudmeny extends Activity {
 
+    private DBHandler dbSettings = new DBHandler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
+
+        dbSettings.open();
 
         ActionBar actionBar = getActionBar();
         actionBar.hide();
