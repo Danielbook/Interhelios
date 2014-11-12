@@ -8,6 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/AndEngine" />
+            <option value="$PROJECT_DIR$/AndEnginePhysicsBox2DExtension" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

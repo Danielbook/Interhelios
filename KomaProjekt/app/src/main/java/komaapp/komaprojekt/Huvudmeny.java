@@ -1,9 +1,10 @@
 package komaapp.komaprojekt;
 
-import android.app.Activity;
+import android.app.*;
+import android.content.*;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.*;
+import android.widget.*;
 
 
 public class Huvudmeny extends Activity {
@@ -12,6 +13,37 @@ public class Huvudmeny extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
+
+        View.OnClickListener buttonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getId() == R.id.upgradeBtn){
+
+                    startActivity(new Intent (getApplicationContext(), Upgrades.class));
+
+                }
+                else if (v.getId() == R.id.settingsBtn){
+
+                   startActivity(new Intent (getApplicationContext(), Settings.class));
+                }
+                else if (v.getId() == R.id.startBtn){
+                    startActivity(new Intent (getApplicationContext(), Game.class));
+                }
+            }
+        };
+
+        Button startBtn = (Button)findViewById(R.id.startBtn);
+        Button upgradeBtn = (Button)findViewById(R.id.upgradeBtn);
+        Button settingsBtn = (Button)findViewById(R.id.settingsBtn);
+
+        startBtn.setOnClickListener(buttonListener);
+        upgradeBtn.setOnClickListener(buttonListener);
+        settingsBtn.setOnClickListener(buttonListener);
+
+
     }
 
 
