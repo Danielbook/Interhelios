@@ -3,6 +3,8 @@ package komaapp.komaprojekt;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.badlogic.gdx.math.Vector2;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -17,12 +19,13 @@ import org.andengine.entity.util.FPSCounter;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+
+import org.andengine.extension.physics.box2d.PhysicsWorld;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
 
@@ -56,7 +59,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         //GRAPHICS
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        texAtlas = new BitmapTextureAtlas(getTextureManager(), 473, 513, TextureOptions.DEFAULT);
+        texAtlas = new BitmapTextureAtlas(getTextureManager(), 200, 217, TextureOptions.DEFAULT);
         xWing_tex = BitmapTextureAtlasTextureRegionFactory.createFromAsset(texAtlas, this, "xwing_sprite.png", 0, 0);
         texAtlas.load();
 
@@ -90,9 +93,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
 
-
         scene.attachChild(player);
-        scene.registerTouchArea(player);
 
         scene.registerUpdateHandler(new IUpdateHandler() {
             float currentTime = 0;
@@ -115,14 +116,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
         if (touchEvent.isActionDown())
         {
-            //Execute touch event
-            float newX, newY;
-            newX = touchEvent.getX() - player.getWidth()/2;
-            newY = touchEvent.getY() - player.getHeight()/2;
-
-            player.setPosition(newX, newY);
             Log.d("TextLog", "Screen touched at X=" + touchEvent.getX() + ", Y=" + touchEvent.getY());
-
+            //Execute touch event
+            player.setPosition(touchEvent.getX() - player.getWidth()/2, touchEvent.getY() - player.getHeight()/2);
         }
 
         return false;
