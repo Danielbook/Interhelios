@@ -1,16 +1,11 @@
 package komaapp.komaprojekt;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.app.*;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-
+import android.view.*;
+import android.widget.*;
 
 public class Upgrades extends Activity {
 
@@ -43,8 +38,6 @@ public class Upgrades extends Activity {
                     {
                         gunsRadio.setVisibility(View.GONE);
                     }
-
-
                 }
 
                 if(v.getId() == R.id.shieldBtn)

@@ -1,4 +1,4 @@
-package komaapp.komaprojekt;
+package komaapp.komaprojekt.SQLite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,17 +8,17 @@ import android.util.Log;
 public class dataBaseHelper extends SQLiteOpenHelper {
 
   private static final int DATABASE_VERSION = 1;
-  private static final String DATABASE_NAME = "settings.db";
+  private static final String DATABASE_NAME = "appDatabase.db";
 
-  public static final String TABLE_SETTINGS = "settings";
-  public static final String COLUMN_ID = "_id";
-  public static final String COLUMN_TODO = "todo";
+  public static final String TABLE_SETTINGS = "settings",
+    KEY_ID = "id",
+    KEY_MUSIC = "music",
+    KEY_SOUND = "sound";
+
 
   // Database creation sql statement
   private static final String DATABASE_CREATE = "create table "
-      + TABLE_SETTINGS + "(" + COLUMN_ID
-      + " integer primary key autoincrement, " + COLUMN_TODO
-      + " text not null);";
+      + TABLE_SETTINGS + "(" + KEY_ID + " INTEGER PRIMARY KEY, "  + KEY_MUSIC + " INTEGER" + KEY_SOUND + " INTEGER)";
 
   public dataBaseHelper(Context context)
   {

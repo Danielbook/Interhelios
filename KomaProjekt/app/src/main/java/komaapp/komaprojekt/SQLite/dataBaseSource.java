@@ -1,4 +1,4 @@
-package komaapp.komaprojekt;
+package komaapp.komaprojekt.SQLite;
 
 import android.content.Context;
 import android.database.SQLException;
