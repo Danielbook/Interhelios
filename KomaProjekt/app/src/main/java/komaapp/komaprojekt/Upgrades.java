@@ -7,14 +7,63 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
 public class Upgrades extends Activity
 {
+
+    protected Vector<Database> db = new Vector<Database>();
+
+    // Read setting file and storing the
+    // database settings in a vector
+    public void readFile() throws IOException
+    {
+        String line;
+        StringTokenizer tokens;
+
+        InputStream is = getAssets().open("settings.txt");
+
+        BufferedReader infile = new BufferedReader(new InputStreamReader(is));
+
+        while( ( line = infile.readLine() ) != null)
+        {
+            tokens = new StringTokenizer(line, " ");
+
+            String setting = tokens.nextToken();
+
+            int val = Integer.parseInt(tokens.nextToken());
+
+            //Log.d("TextLog","Setting: " + setting  + ", Value: " + val);
+
+            db.add(new Database(setting, val));
+        }
+
+        infile.close();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrades);
+
+        Log.d("TextLog", "Upgrade start\n");
+
+        try
+        {
+            readFile();
+            Log.d("TextLog", "Databasefile read!");
+        }
+
+        catch (IOException e)
+        {
+            Log.d("TextLog", "Could not read file!");
+        }
 
         final LinearLayout gunsRadio = (LinearLayout)findViewById(R.id.gunsRadio);
         gunsRadio.setVisibility(View.GONE);
