@@ -67,9 +67,6 @@ public class Upgrades extends Activity
             Log.d("TextLog", "Could not read file!");
         }
 
-        final LinearLayout gunsRadio = (LinearLayout)findViewById(R.id.gunsRadio);
-        gunsRadio.setVisibility(View.GONE);
-
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
@@ -83,7 +80,7 @@ public class Upgrades extends Activity
                 {
                     Log.d("TextLog", "Guns");
 
-                    if(gunsRadio.getVisibility() == View.GONE)
+                    /*if(gunsRadio.getVisibility() == View.GONE)
                     {
                         gunsRadio.setVisibility(View.VISIBLE);
                     }
@@ -91,7 +88,7 @@ public class Upgrades extends Activity
                     else if(gunsRadio.getVisibility() == View.VISIBLE)
                     {
                         gunsRadio.setVisibility(View.GONE);
-                    }
+                    }*/
                 }
 
                 if(v.getId() == R.id.shieldBtn)
@@ -120,12 +117,12 @@ public class Upgrades extends Activity
 
         for(int i = 0; i < db.size(); i++)
         {
+            Log.d("TextLog", " " + i);
             if(db.elementAt(i).getSetting().equalsIgnoreCase("cash"))
             {
                 cashTxt.setText(String.valueOf( db.elementAt(i).getVal() ));
             }
         }
-
 
         gunsBtn.setOnClickListener(buttonListener);
         shieldBtn.setOnClickListener(buttonListener);

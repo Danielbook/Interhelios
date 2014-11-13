@@ -1,6 +1,6 @@
 Guns 1
 Engine 1
 Shield 1
-Cash 1000
+Cash 0
 Music 50
 Sound 50
