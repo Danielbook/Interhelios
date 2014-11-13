@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:id="@+id/imageView"
             android:background="@drawable/space_ship"
-            android:layout_weight="4" />
+            android:layout_weight="3" />
 
         <LinearLayout
             android:orientation="vertical"
