@@ -17,10 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+
+
+    packagingOptions {
+        exclude 'bin/AndroidManifest.xml'
+        exclude 'jni/Android.mk'
+        exclude 'jni/Application.mk'
+        exclude 'jni/build.sh'
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':AndEngine')
-    //compile project(':AndEnginePhysicsBox2DExtension')
+    compile project(':AndEnginePhysicsBox2DExtension')
 }
