@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 
+import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -13,7 +14,6 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSCounter;
 import org.andengine.input.touch.TouchEvent;
@@ -45,7 +45,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-        return engineOptions;
+        LimitedFPSEngine engine = new LimitedFPSEngine(engineOptions, 60);
+        return engine.getEngineOptions();
     }
 
     @Override
@@ -78,7 +79,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(fpsText);
 
         //Instantiate the player object
-        player = new Player(300, 200, xWing_tex, this.getVertexBufferObjectManager())
+        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager())
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X, float Y)
@@ -119,15 +120,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         {
             Log.d("TextLog", "Screen touched at X=" + touchEvent.getX() + ", Y=" + touchEvent.getY());
             //Execute touch event
-
-            float dirX = touchEvent.getX() - player.getCenterX();
-            float dirY = touchEvent.getY() - player.getCenterY();
-            Vector2 dir = new Vector2(dirX, dirY);
-            player.setVelocityDirection(dir);
+            player.setTargetPosition(new Vector2(touchEvent.getX(), touchEvent.getY()));
+            player.setIsMoving(true);
 
             //player.setCenterPosition(touchEvent.getX(),touchEvent.getY());
         } else if (touchEvent.isActionUp() || touchEvent.isActionOutside())
-            player.setVelocityDirection(new Vector2(0, 0));
+        {
+            player.setIsMoving(false);
+        }
 
         return false;
     }
