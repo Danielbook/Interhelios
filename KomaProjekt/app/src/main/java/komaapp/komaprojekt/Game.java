@@ -25,8 +25,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-import org.andengine.extension.physics.box2d.PhysicsWorld;
-
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
 
     private Camera camera;
@@ -39,7 +37,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private BitmapTextureAtlas texAtlas;
     private ITextureRegion xWing_tex;
 
-    private Sprite player;
+    private Player player;
 
     @Override
     public EngineOptions onCreateEngineOptions()
@@ -68,19 +66,19 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     @Override
     protected Scene onCreateScene()
     {
+        //Create the scene
         final Scene scene = new Scene();
-
+        scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
         scene.setOnSceneTouchListener(this);
 
+        //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
         this.mEngine.registerUpdateHandler(fpsCounter);
-
-        scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
-
         final Text fpsText = new Text(10, 10, this.mFont, "FPS: ", "FPS: XXXXX".length(), this.getVertexBufferObjectManager());
         scene.attachChild(fpsText);
 
-        player = new Sprite(300, 200, xWing_tex, this.getVertexBufferObjectManager())
+        //Instantiate the player object
+        player = new Player(300, 200, xWing_tex, this.getVertexBufferObjectManager())
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X, float Y)
@@ -103,6 +101,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 currentTime += v;
 
                 fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
+
+                player.update(v);
             }
 
             @Override
@@ -114,12 +114,20 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     @Override
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
-        if (touchEvent.isActionDown())
+        //if (!touch in HUD)
+        if (touchEvent.isActionDown() || touchEvent.isActionMove())
         {
             Log.d("TextLog", "Screen touched at X=" + touchEvent.getX() + ", Y=" + touchEvent.getY());
             //Execute touch event
-            player.setPosition(touchEvent.getX() - player.getWidth()/2, touchEvent.getY() - player.getHeight()/2);
-        }
+
+            float dirX = touchEvent.getX() - player.getCenterX();
+            float dirY = touchEvent.getY() - player.getCenterY();
+            Vector2 dir = new Vector2(dirX, dirY);
+            player.setVelocityDirection(dir);
+
+            //player.setCenterPosition(touchEvent.getX(),touchEvent.getY());
+        } else if (touchEvent.isActionUp() || touchEvent.isActionOutside())
+            player.setVelocityDirection(new Vector2(0, 0));
 
         return false;
     }
