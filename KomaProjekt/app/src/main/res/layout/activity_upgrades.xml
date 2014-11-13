@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Cash"
-        android:id="@+id/cash"
+        android:id="@+id/cashTxt"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

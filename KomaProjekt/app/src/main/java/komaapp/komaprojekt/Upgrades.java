@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,6 +115,17 @@ public class Upgrades extends Activity
         Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
         Button engineBtn = (Button)findViewById(R.id.engineBtn);
         Button backBtn = (Button)findViewById(R.id.backBtn);
+
+        TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
+
+        for(int i = 0; i < db.size(); i++)
+        {
+            if(db.elementAt(i).getSetting().equalsIgnoreCase("cash"))
+            {
+                cashTxt.setText(String.valueOf( db.elementAt(i).getVal() ));
+            }
+        }
+
 
         gunsBtn.setOnClickListener(buttonListener);
         shieldBtn.setOnClickListener(buttonListener);

@@ -40,8 +40,12 @@ public class Huvudmeny extends Activity {
 
             db.add(new Database(setting, val));
         }
-
         infile.close();
+    }
+
+    public void saveFile() throws IOException
+    {
+
     }
 
     @Override
