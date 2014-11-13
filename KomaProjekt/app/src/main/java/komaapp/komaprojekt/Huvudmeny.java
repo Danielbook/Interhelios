@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,15 +15,16 @@ import java.util.Vector;
 
 public class Huvudmeny extends Activity {
 
-    protected Vector<database> db;
+    protected Vector<Database> db = new Vector<Database>();
 
-    public void readFile() throws IOException {
+    // Read setting file and storing the
+    // database settings in a vector
+    public void readFile() throws IOException
+    {
         String line;
         StringTokenizer tokens;
 
         InputStream is = getAssets().open("settings.txt");
-
-       // BufferedReader infile = new BufferedReader(new FileReader(fil));
 
         BufferedReader infile = new BufferedReader(new InputStreamReader(is));
 
@@ -36,7 +36,9 @@ public class Huvudmeny extends Activity {
 
             int val = Integer.parseInt(tokens.nextToken());
 
-            db.add(new database(setting, val));
+           //Log.d("TextLog","Setting: " + setting  + ", Value: " + val);
+
+            db.add(new Database(setting, val));
         }
 
         infile.close();
@@ -48,9 +50,24 @@ public class Huvudmeny extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
 
+        Log.d("TextLog", "App start\n");
+
+        try
+        {
+            readFile();
+            Log.d("TextLog", "Databasefile read!");
+        }
+
+        catch (IOException e)
+        {
+            Log.d("TextLog", "Could not read file!");
+        }
+
+        // Hides the ugly statusbar
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
+        // Takes care of the button clicks
         View.OnClickListener buttonListener = new View.OnClickListener()
         {
             @Override
@@ -76,16 +93,7 @@ public class Huvudmeny extends Activity {
 
                 else if(v.getId() == R.id.howToBtn)
                 {
-                    try
-                    {
-                        readFile();
-                        Log.d("TextLog", "Databasefile read!");
-                    }
 
-                    catch (IOException e)
-                    {
-                        Log.d("TextLog", "Could not read file!");
-                    }
                 }
             }
         };
@@ -109,10 +117,6 @@ public class Huvudmeny extends Activity {
         return true;
     }
 
-    public void onDestroy()
-    {
-
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
