@@ -1,11 +1,11 @@
 package komaapp.komaprojekt;
 
-public class database
+public class dbSettings
 {
     private String setting;
     private int val;
 
-    public database(String setting, int val)
+    public dbSettings(String setting, int val)
     {
         this.setting = setting;
         this.val = val;

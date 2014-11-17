@@ -7,15 +7,20 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 public class Huvudmeny extends Activity {
 
-    protected Vector<database> db = new Vector<database>();
+    protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
+    protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
+
+    String settingFile = "settings.txt";
+    String upgradesFile = "upgrades.txt";
 
     // Read setting file and storing the
     // database settings in a vector
@@ -24,29 +29,54 @@ public class Huvudmeny extends Activity {
         String line;
         StringTokenizer tokens;
 
-        InputStream is = getAssets().open("settings.txt");
-
-        BufferedReader infile = new BufferedReader(new InputStreamReader(is));
+        FileInputStream rs = openFileInput(settingFile);
+        BufferedReader infile = new BufferedReader(new InputStreamReader(rs));
 
         while( ( line = infile.readLine() ) != null)
         {
             tokens = new StringTokenizer(line, " ");
-
             String setting = tokens.nextToken();
-
             int val = Integer.parseInt(tokens.nextToken());
 
-           //Log.d("TextLog","Setting: " + setting  + ", Value: " + val);
+            dbSettings.add(new dbSettings(setting, val));
+        }
 
-            db.add(new database(setting, val));
+        infile.close();
+
+        rs = openFileInput(upgradesFile);
+        infile = new BufferedReader(new InputStreamReader(rs));
+
+        while( ( line = infile.readLine() ) != null)
+        {
+            tokens = new StringTokenizer(line, " ");
+            String setting = tokens.nextToken();
+            int val = Integer.parseInt(tokens.nextToken());
+            int price = Integer.parseInt(tokens.nextToken());
+
+            dbUpgrades.add(new dbUpgrades(setting, val, price));
         }
         infile.close();
     }
 
-    public void saveFile() throws IOException
+    public void writeFile() throws IOException
     {
+        //Write to settings.txt
+        FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
 
+
+        for (int i = 0; i < dbSettings.size(); i++) {
+            outFile.write((dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes());
+        }
+
+        //Write to upgrades.txt
+        outFile = openFileOutput(upgradesFile, MODE_PRIVATE);
+
+        for (int i = 0; i < dbUpgrades.size(); i++) {
+            outFile.write((dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes());
+        }
+        outFile.close();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -79,14 +109,11 @@ public class Huvudmeny extends Activity {
             {
                 if(v.getId() == R.id.upgradeBtn)
                 {
-
                     startActivity(new Intent (getApplicationContext(), Upgrades.class));
-
                 }
 
                 else if (v.getId() == R.id.settingsBtn)
                 {
-
                    startActivity(new Intent (getApplicationContext(), Settings.class));
                 }
 

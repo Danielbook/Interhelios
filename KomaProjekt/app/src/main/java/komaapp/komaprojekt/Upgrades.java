@@ -6,20 +6,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 public class Upgrades extends Activity
 {
+    protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
+    protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
 
-    protected Vector<database> db = new Vector<database>();
+    String settingFile = "settings.txt";
+    String upgradesFile = "upgrades.txt";
 
     // Read setting file and storing the
     // database settings in a vector
@@ -28,24 +29,130 @@ public class Upgrades extends Activity
         String line;
         StringTokenizer tokens;
 
-        InputStream is = getAssets().open("settings.txt");
-
-        BufferedReader infile = new BufferedReader(new InputStreamReader(is));
+        FileInputStream rs = openFileInput(settingFile);
+        BufferedReader infile = new BufferedReader(new InputStreamReader(rs));
 
         while( ( line = infile.readLine() ) != null)
         {
             tokens = new StringTokenizer(line, " ");
-
             String setting = tokens.nextToken();
-
             int val = Integer.parseInt(tokens.nextToken());
 
-            //Log.d("TextLog","Setting: " + setting  + ", Value: " + val);
-
-            db.add(new database(setting, val));
+            dbSettings.add(new dbSettings(setting, val));
         }
 
         infile.close();
+
+        rs = openFileInput(upgradesFile);
+        infile = new BufferedReader(new InputStreamReader(rs));
+
+        while( ( line = infile.readLine() ) != null)
+        {
+            tokens = new StringTokenizer(line, " ");
+            String setting = tokens.nextToken();
+            int val = Integer.parseInt(tokens.nextToken());
+            int price = Integer.parseInt(tokens.nextToken());
+
+            dbUpgrades.add(new dbUpgrades(setting, val, price));
+        }
+        infile.close();
+    }
+
+    public void writeFile() throws IOException
+    {
+        //Write to settings.txt
+        FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
+
+
+        for (int i = 0; i < dbSettings.size(); i++) {
+            outFile.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
+        }
+
+        //Write to upgrades.txt
+        outFile = openFileOutput(upgradesFile, MODE_PRIVATE);
+
+        for (int i = 0; i < dbUpgrades.size(); i++) {
+            outFile.write( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes() );
+        }
+        outFile.close();
+    }
+
+    public int getCash()
+    {
+        for (int i = 0; i < dbSettings.size(); i++)
+        {
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("cash"))
+            {
+                return dbSettings.elementAt(i).getVal();
+            }
+        }
+        return 0;
+    }
+
+    public void removeCash(int cash)
+    {
+        int currentCash = getCash();
+
+        for (int i = 0; i < dbSettings.size(); i++)
+        {
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("cash"))
+            {
+                dbSettings.elementAt(i).setVal(currentCash - cash);
+                return;
+            }
+        }
+    }
+
+    public void addCash(int cash)
+    {
+        int currentCash = getCash();
+
+        for (int i = 0; i < dbSettings.size(); i++)
+        {
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("cash"))
+            {
+                dbSettings.elementAt(i).setVal(currentCash + cash);
+                return;
+            }
+        }
+    }
+
+    public boolean enoughCash(String upgrade)
+    {
+        int cash = getCash();
+
+        for(int i = 0; i < dbUpgrades.size(); i++)
+        {
+            if(dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade) && (dbUpgrades.elementAt(i).getPrice() <= cash))
+            {
+                return true;
+            }
+        }
+        Log.d("TextLog", "Not enough cash bro!");
+        return false;
+    }
+
+    public void buyUpgrade(String upgrade)
+    {
+        Log.d("TextLog", "Buying your shit");
+        if(enoughCash(upgrade))
+        {
+            for (int i = 0; i < dbUpgrades.size(); i++)
+            {
+                if(dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
+                {
+                    removeCash(dbUpgrades.elementAt(i).getPrice());
+                    dbUpgrades.elementAt(i).addLevel();
+                    Log.d("TextLog", "Upgrade for " + upgrade + " succesfully bought");
+                    return;
+                }
+            }
+        }
+        else
+        {
+            Log.d("TextLog", "Couldn't buy your shit");
+            return;
+        }
     }
 
     @Override
@@ -56,16 +163,10 @@ public class Upgrades extends Activity
 
         Log.d("TextLog", "Upgrade start\n");
 
-        try
-        {
-            readFile();
-            Log.d("TextLog", "Databasefile read!");
-        }
+        Log.d("TextLog", "Filer sparas här: " + getFilesDir());
 
-        catch (IOException e)
-        {
-            Log.d("TextLog", "Could not read file!");
-        }
+        try{ readFile(); Log.d("TextLog", "Databasefile read!"); }
+        catch (IOException e){ Log.d("TextLog", "Could not read file!"); }
 
         ActionBar actionBar = getActionBar();
         actionBar.hide();
@@ -79,26 +180,36 @@ public class Upgrades extends Activity
                 if(v.getId() == R.id.gunsBtn)
                 {
                     Log.d("TextLog", "Guns");
+                    buyUpgrade("Guns");
 
-                    /*if(gunsRadio.getVisibility() == View.GONE)
-                    {
-                        gunsRadio.setVisibility(View.VISIBLE);
-                    }
-
-                    else if(gunsRadio.getVisibility() == View.VISIBLE)
-                    {
-                        gunsRadio.setVisibility(View.GONE);
-                    }*/
+                    try { writeFile(); }
+                    catch (IOException e) { e.printStackTrace(); }
+                    try { readFile(); }
+                    catch (IOException e) { e.printStackTrace(); }
                 }
 
                 if(v.getId() == R.id.shieldBtn)
                 {
                     Log.d("TextLog", "Shield");
+
+                    buyUpgrade("Shield");
+
+                    try { writeFile(); }
+                    catch (IOException e) { e.printStackTrace(); }
+                    try { readFile(); }
+                    catch (IOException e) { e.printStackTrace(); }
                 }
 
                 if(v.getId() == R.id.engineBtn)
                 {
                     Log.d("TextLog", "Engine");
+
+                    buyUpgrade("Engine");
+
+                    try { writeFile(); }
+                    catch (IOException e) { e.printStackTrace(); }
+                    try { readFile(); }
+                    catch (IOException e) { e.printStackTrace(); }
                 }
 
                 if(v.getId() == R.id.backBtn)
@@ -115,12 +226,12 @@ public class Upgrades extends Activity
 
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
 
-        for(int i = 0; i < db.size(); i++)
+        for(int i = 0; i < dbSettings.size(); i++)
         {
             Log.d("TextLog", " " + i);
-            if(db.elementAt(i).getSetting().equalsIgnoreCase("cash"))
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("cash"))
             {
-                cashTxt.setText(String.valueOf( db.elementAt(i).getVal() ));
+                cashTxt.setText(String.valueOf( dbSettings.elementAt(i).getVal() ));
             }
         }
 
