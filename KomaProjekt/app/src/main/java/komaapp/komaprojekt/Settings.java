@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +56,7 @@ public class Settings extends Activity {
         {
             tokens = new StringTokenizer(line, " ");
             String setting = tokens.nextToken();
+
             int val = Integer.parseInt(tokens.nextToken());
 
             dbSettings.add(new dbSettings(setting, val));

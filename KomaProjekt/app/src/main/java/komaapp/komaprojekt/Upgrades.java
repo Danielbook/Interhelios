@@ -29,10 +29,10 @@ public class Upgrades extends Activity
         String line;
         StringTokenizer tokens;
 
-        FileInputStream rs = openFileInput(settingFile);
-        BufferedReader infile = new BufferedReader(new InputStreamReader(rs));
+        FileInputStream streamSettings = openFileInput(settingFile);
+        BufferedReader infileSettings = new BufferedReader(new InputStreamReader(streamSettings));
 
-        while( ( line = infile.readLine() ) != null)
+        while( ( line = infileSettings.readLine() ) != null)
         {
             tokens = new StringTokenizer(line, " ");
             String setting = tokens.nextToken();
@@ -41,28 +41,27 @@ public class Upgrades extends Activity
             dbSettings.add(new dbSettings(setting, val));
         }
 
-        infile.close();
+        infileSettings.close();
 
-        rs = openFileInput(upgradesFile);
-        infile = new BufferedReader(new InputStreamReader(rs));
+        FileInputStream streamUpgrades = openFileInput(upgradesFile);
+        BufferedReader infileUpgrades = new BufferedReader(new InputStreamReader(streamUpgrades));
 
-        while( ( line = infile.readLine() ) != null)
+        while( ( line = infileUpgrades.readLine() ) != null)
         {
             tokens = new StringTokenizer(line, " ");
-            String setting = tokens.nextToken();
-            int val = Integer.parseInt(tokens.nextToken());
+            String upgrade = tokens.nextToken();
+            int level = Integer.parseInt(tokens.nextToken());
             int price = Integer.parseInt(tokens.nextToken());
 
-            dbUpgrades.add(new dbUpgrades(setting, val, price));
+            dbUpgrades.add(new dbUpgrades(upgrade, level, price));
         }
-        infile.close();
+        infileUpgrades.close();
     }
 
     public void writeFile() throws IOException
     {
         //Write to settings.txt
         FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
-
 
         for (int i = 0; i < dbSettings.size(); i++) {
             outFile.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
