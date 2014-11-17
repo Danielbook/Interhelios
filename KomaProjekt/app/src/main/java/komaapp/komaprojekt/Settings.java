@@ -13,12 +13,19 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 
 public class Settings extends Activity {
 
 
-         //Declaring variables TextViews, SeekBars and AudioManager
+    //Declaring variables TextViews, SeekBars and AudioManager
     private AudioManager audioManager = null;
 
     private SeekBar musicSeekBar = null;
@@ -27,14 +34,78 @@ public class Settings extends Activity {
     private TextView musicText = null;
     private TextView soundText = null;
 
-    @Override
 
+    protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
+    protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
+
+    String settingFile = "settings.txt";
+    String upgradesFile = "upgrades.txt";
+
+    // Read setting file and storing the
+    // database settings in a vector
+    public void readFile() throws IOException
+    {
+        String line;
+        StringTokenizer tokens;
+
+        FileInputStream rs = openFileInput(settingFile);
+        BufferedReader infile = new BufferedReader(new InputStreamReader(rs));
+
+        while( ( line = infile.readLine() ) != null)
+        {
+            tokens = new StringTokenizer(line, " ");
+            String setting = tokens.nextToken();
+            int val = Integer.parseInt(tokens.nextToken());
+
+            dbSettings.add(new dbSettings(setting, val));
+        }
+
+        infile.close();
+
+        rs = openFileInput(upgradesFile);
+        infile = new BufferedReader(new InputStreamReader(rs));
+
+        while( ( line = infile.readLine() ) != null)
+        {
+            tokens = new StringTokenizer(line, " ");
+            String setting = tokens.nextToken();
+            int val = Integer.parseInt(tokens.nextToken());
+            int price = Integer.parseInt(tokens.nextToken());
+
+            dbUpgrades.add(new dbUpgrades(setting, val, price));
+        }
+        infile.close();
+    }
+
+    public void writeFile() throws IOException
+    {
+        //Write to settings.txt
+        FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
+
+
+        for (int i = 0; i < dbSettings.size(); i++) {
+            outFile.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
+        }
+
+        //Write to upgrades.txt
+        outFile = openFileOutput(upgradesFile, MODE_PRIVATE);
+
+        for (int i = 0; i < dbUpgrades.size(); i++) {
+            outFile.write( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes() );
+        }
+        outFile.close();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-            //changes activity and checks for previous instance state
+        //Read settings file
+        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+        //changes activity and checks for previous instance state
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
