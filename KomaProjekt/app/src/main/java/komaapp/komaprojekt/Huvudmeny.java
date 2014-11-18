@@ -14,11 +14,24 @@ public class Huvudmeny extends Activity {
     protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
     protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
 
-    String settingFile = "settings.txt";
-    String upgradesFile = "upgrades.txt";
+    protected final String settingFile = "settings.txt";
+    protected final String upgradesFile = "upgrades.txt";
 
-    // Read setting file and storing the
-    // database settings in a vector
+    //Called when the textfiles are no where to be found on that fucking
+    //piece of shit android device...
+    //Creates a "new" player from the shitty files in the assets folder
+    public void newPlayer() throws IOException
+    {
+        //Läs in ifrån assetsmappen
+
+        //Spara i databaserna dbSettings och dbUpgrades
+
+        //Spara i databastextfilen
+        writeFile();
+    }
+
+    //Read setting file and storing the
+    //database settings in a vector
     public void readFile() throws IOException
     {
         String line;
@@ -58,7 +71,6 @@ public class Huvudmeny extends Activity {
         //Write to settings.txt
         FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
 
-
         for (int i = 0; i < dbSettings.size(); i++) {
             outFile.write((dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes());
         }
@@ -81,22 +93,21 @@ public class Huvudmeny extends Activity {
 
         Log.d("TextLog", "App start\n");
 
-        try
-        {
-            readFile();
-            Log.d("TextLog", "Databasefile read!");
-        }
+        try{ readFile(); Log.d("TextLog", "Databasefile read!"); }
+        catch (FileNotFoundException e){
+            try {
+                newPlayer();
+                Log.d("TextLog", "New Player");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } catch (IOException e) { e.printStackTrace(); }
 
-        catch (IOException e)
-        {
-            Log.d("TextLog", "Could not read file!");
-        }
-
-        // Hides the ugly statusbar
+        //Hides the ugly statusbar
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        // Takes care of the button clicks
+        //Takes care of the button clicks
         View.OnClickListener buttonListener = new View.OnClickListener()
         {
             @Override
@@ -119,7 +130,7 @@ public class Huvudmeny extends Activity {
 
                 else if(v.getId() == R.id.howToBtn)
                 {
-
+                    Log.d("TextLog", "Inte implementerad än");
                 }
             }
         };

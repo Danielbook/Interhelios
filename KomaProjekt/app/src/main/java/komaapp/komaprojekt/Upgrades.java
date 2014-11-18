@@ -14,19 +14,21 @@ public class Upgrades extends Activity
     protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
     protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
 
-    String settingFile = "settings.txt";
-    String upgradesFile = "upgrades.txt";
+    final String settingFile = "settings.txt";
+    final String upgradesFile = "upgrades.txt";
 
-    // Read setting file and storing the
-    // database settings in a vector
+    //Read setting files and storing the
+    //database settings in vectors
     public void readFile() throws IOException
     {
         String line;
         StringTokenizer tokens;
 
         FileInputStream streamSettings = openFileInput(settingFile);
-
         BufferedReader infileSettings = new BufferedReader(new InputStreamReader(streamSettings));
+
+        FileInputStream streamUpgrades = openFileInput(upgradesFile);
+        BufferedReader infileUpgrades = new BufferedReader(new InputStreamReader(streamUpgrades));
 
         while( ( line = infileSettings.readLine() ) != null)
         {
@@ -38,9 +40,6 @@ public class Upgrades extends Activity
         }
 
         infileSettings.close();
-
-        FileInputStream streamUpgrades = openFileInput(upgradesFile);
-        BufferedReader infileUpgrades = new BufferedReader(new InputStreamReader(streamUpgrades));
 
         while( ( line = infileUpgrades.readLine() ) != null)
         {
@@ -60,7 +59,8 @@ public class Upgrades extends Activity
         //Write to settings.txt
         FileOutputStream outFileSettings = openFileOutput(settingFile, MODE_PRIVATE);
 
-        for (int i = 0; i < dbSettings.size(); i++) {
+        for (int i = 0; i < dbSettings.size(); i++)
+        {
             outFileSettings.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
         }
 
@@ -69,7 +69,8 @@ public class Upgrades extends Activity
         //Write to upgrades.txt
         FileOutputStream outFileUpgrades = openFileOutput(upgradesFile, MODE_PRIVATE);
 
-        for (int i = 0; i < dbUpgrades.size(); i++) {
+        for (int i = 0; i < dbUpgrades.size(); i++)
+        {
             outFileUpgrades.write( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes() );
         }
         outFileUpgrades.close();
@@ -116,7 +117,7 @@ public class Upgrades extends Activity
         }
     }
 
-    //Used when player should get more cash
+    //Used when player want to get more cash
     public void addCash(int cash)
     {
         int currentCash = getCash();
@@ -152,6 +153,7 @@ public class Upgrades extends Activity
         return false;
     }
 
+    //Called when player chose to buy an upgrade
     public boolean buyUpgrade(String upgrade)
     {
         Log.d("TextLog", "Buying your shit");
@@ -173,6 +175,7 @@ public class Upgrades extends Activity
         return false;
     }
 
+    //Updates the txt in the tables
     public void updateTable()
     {
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
@@ -196,82 +199,22 @@ public class Upgrades extends Activity
 
         Log.d("TextLog", "Upgrade start\n");
 
-        Log.d("TextLog", "Filer sparas här: " + getFilesDir());
+        //Log.d("TextLog", "Filer sparas här: " + getFilesDir());
 
-        try{ readFile(); Log.d("TextLog", "Databasefile read!"); }
-        catch (IOException e){ Log.d("TextLog", "Could not read file!"); }
+        try { readFile(); Log.d("TextLog", "Databasefile read!"); }
+        catch (IOException e) { e.printStackTrace(); }
 
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        View.OnClickListener buttonListener = new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                if(v.getId() == R.id.gunsBtn)
-                {
-                    Log.d("TextLog", "Guns");
-                    if( buyUpgrade("Guns") )
-                    {
-                        try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
-                        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
-
-                        updateTable();
-                    }
-                }
-
-                if(v.getId() == R.id.shieldBtn)
-                {
-                    Log.d("TextLog", "Shield");
-
-                    if(buyUpgrade("Shield"))
-                    {
-                        try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
-                        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
-
-                        updateTable();
-                    }
-                }
-
-                if(v.getId() == R.id.engineBtn)
-                {
-                    Log.d("TextLog", "Engine");
-
-                    if( buyUpgrade("Engine") )
-                    {
-                        try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
-                        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
-
-                        updateTable();
-                    }
-                }
-
-                if(v.getId() == R.id.cashBtn)
-                {
-                    addCash(500);
-
-                    try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
-                    try { readFile(); } catch (IOException e) { e.printStackTrace(); }
-
-                    updateTable();
-
-                }
-
-                if(v.getId() == R.id.backBtn)
-                {
-                    startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
-                }
-            }
-        };
-
+        //Initiate buttons
         Button gunsBtn = (Button)findViewById(R.id.gunsBtn);
         Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
         Button engineBtn = (Button)findViewById(R.id.engineBtn);
         Button backBtn = (Button)findViewById(R.id.backBtn);
         Button cashBtn = (Button)findViewById(R.id.cashBtn);
 
+        //Add values from the database
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
         cashTxt.setText("" + getCash());
 
@@ -284,6 +227,7 @@ public class Upgrades extends Activity
         TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
         shieldLvl.setText("" + getLvl("shield"));
 
+        //Add listeners to all the buttons
         gunsBtn.setOnClickListener(buttonListener);
         shieldBtn.setOnClickListener(buttonListener);
         engineBtn.setOnClickListener(buttonListener);
@@ -291,6 +235,69 @@ public class Upgrades extends Activity
         cashBtn.setOnClickListener(buttonListener);
 
     }
+
+    public View.OnClickListener buttonListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+
+            if(v.getId() == R.id.gunsBtn)
+            {
+                Log.d("TextLog", "Guns");
+                if( buyUpgrade("Guns") )
+                {
+                    try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                    try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                    updateTable();
+                }
+            }
+
+            if(v.getId() == R.id.shieldBtn)
+            {
+                Log.d("TextLog", "Shield");
+
+                if(buyUpgrade("Shield"))
+                {
+                    try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                    try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                    updateTable();
+                }
+            }
+
+            if(v.getId() == R.id.engineBtn)
+            {
+                Log.d("TextLog", "Engine");
+
+                if( buyUpgrade("Engine") )
+                {
+                    try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                    try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                    updateTable();
+                }
+            }
+
+            if(v.getId() == R.id.cashBtn)
+            {
+                addCash(500);
+
+                try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                updateTable();
+
+            }
+
+            if(v.getId() == R.id.backBtn)
+            {
+                startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
+            }
+        }
+    };
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {

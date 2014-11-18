@@ -2,8 +2,15 @@
 <resources>
 
     <string name="app_name">KomaProjekt</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="upgrade_level">Level: </string>
+    <string name="upgrade_cash">Cash</string>
+    <string name="upgrade_guns">Guns</string>
+    <string name="upgrade_shield">Shield</string>
+    <string name="upgrade_engine">Engine</string>
+    <string name="upgrade_back">Back</string>
+    <string name="settings_music">Music</string>
+    <string name="settings_sound">Sound</string>
 
 </resources>

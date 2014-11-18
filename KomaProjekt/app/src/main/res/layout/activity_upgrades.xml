@@ -27,12 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/linearLayout2"
-            android:layout_below="@+id/cashTxt"
             android:weightSum="1"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentRight="false"
             android:layout_weight="1">
 
             <LinearLayout
@@ -44,10 +39,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Cash"
+                    android:text="@string/upgrade_cash"
                     android:id="@+id/cash"
                     android:textColor="#ffffffff"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:layout_gravity="center_vertical" />
 
                 <TextView
@@ -62,10 +57,9 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Guns"
+                android:text="@string/upgrade_guns"
                 android:id="@+id/gunsBtn"
-                style="@style/AppTheme"
-                android:layout_alignTop="@+id/engineBtn"/>
+                style="@style/AppTheme" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -77,10 +71,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Level: "
                     android:id="@+id/gunsLvlTxt"
                     android:textColor="#ffffffff"
-                    android:textSize="30dp" />
+                    android:textSize="30sp"
+                    android:text="@string/upgrade_level" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,7 +87,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Engine"
+                android:text="@string/upgrade_engine"
                 android:id="@+id/engineBtn"/>
 
             <LinearLayout
@@ -106,10 +100,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Level: "
+                    android:text="@string/upgrade_level"
                     android:id="@+id/engineLvlTxt"
                     android:textColor="#ffffffff"
-                    android:textSize="30dp" />
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,7 +116,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Shield"
+                android:text="@string/upgrade_shield"
                 android:id="@+id/shieldBtn" />
 
             <LinearLayout
@@ -135,10 +129,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Level: "
+                    android:text="@string/upgrade_level"
                     android:id="@+id/shieldLvlTxt"
                     android:textColor="#ffffffff"
-                    android:textSize="30dp" />
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -153,16 +147,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="NEEED CASH"
-                android:id="@+id/cashBtn"
-                android:layout_above="@+id/gunsBtn" />
+                android:id="@+id/cashBtn" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Back"
-                android:id="@+id/backBtn"
-                android:layout_above="@+id/gunsBtn" />
+                android:text="@string/upgrade_back"
+                android:id="@+id/backBtn" />
 
         </LinearLayout>
     </LinearLayout>

@@ -35,7 +35,6 @@ public class Settings extends Activity {
     private TextView musicText = null;
     private TextView soundText = null;
 
-
     protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
     protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
 
@@ -84,7 +83,6 @@ public class Settings extends Activity {
         //Write to settings.txt
         FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
 
-
         for (int i = 0; i < dbSettings.size(); i++) {
             outFile.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
         }
@@ -98,6 +96,28 @@ public class Settings extends Activity {
         outFile.close();
     }
 
+    public void changeSound(int progress)
+    {
+        for(int i = 0; i < dbSettings.size(); i++)
+        {
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("sound")){
+                dbSettings.elementAt(i).setVal(progress);
+                return;
+            }
+        }
+    }
+
+    public void changeMusic(int progress)
+    {
+        for(int i = 0; i < dbSettings.size(); i++)
+        {
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("music")){
+                dbSettings.elementAt(i).setVal(progress);
+                return;
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -105,7 +125,8 @@ public class Settings extends Activity {
         actionBar.hide();
 
         //Read settings file
-        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+        try { readFile(); Log.d("TextLog", "Databasefile read!"); }
+        catch (IOException e) { e.printStackTrace(); }
 
         //changes activity and checks for previous instance state
         super.onCreate(savedInstanceState);
@@ -141,6 +162,8 @@ public class Settings extends Activity {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar)
                 {
+                    //Writes to file when you let the fucking bar go
+                    try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
                 }
 
                 @Override
@@ -154,8 +177,10 @@ public class Settings extends Activity {
                         //progress value is given to the AudioManager
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,progress, 0);
 
+                    changeSound(progress);
+
                         //console test
-                    System.out.println("Progress: " + progress + "FromUser : " + fromUser);
+                    Log.d("TextLog", "Progress: " + progress + " FromUser : " + fromUser);
                 }
             });
         }
