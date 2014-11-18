@@ -6,13 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
 
 public class Upgrades extends Activity
 {
@@ -151,7 +146,7 @@ public class Upgrades extends Activity
         return false;
     }
 
-    public void buyUpgrade(String upgrade)
+    public boolean buyUpgrade(String upgrade)
     {
         Log.d("TextLog", "Buying your shit");
         if(enoughCash(upgrade))
@@ -163,15 +158,13 @@ public class Upgrades extends Activity
                     removeCash(dbUpgrades.elementAt(i).getPrice());
                     dbUpgrades.elementAt(i).addLevel();
                     Log.d("TextLog", "Upgrade for " + upgrade + " succesfully bought");
-                    return;
+                    return true;
                 }
             }
         }
-        else
-        {
-            Log.d("TextLog", "Couldn't buy your shit");
-            return;
-        }
+
+        Log.d("TextLog", "Couldn't buy your shit");
+        return false;
     }
 
     @Override
@@ -199,36 +192,33 @@ public class Upgrades extends Activity
                 if(v.getId() == R.id.gunsBtn)
                 {
                     Log.d("TextLog", "Guns");
-                    buyUpgrade("Guns");
-
-                    try { writeFile(); }
-                    catch (IOException e) { e.printStackTrace(); }
-                    try { readFile(); }
-                    catch (IOException e) { e.printStackTrace(); }
+                    if( buyUpgrade("Guns") )
+                    {
+                        try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+                    }
                 }
 
                 if(v.getId() == R.id.shieldBtn)
                 {
                     Log.d("TextLog", "Shield");
 
-                    buyUpgrade("Shield");
-
-                    try { writeFile(); }
-                    catch (IOException e) { e.printStackTrace(); }
-                    try { readFile(); }
-                    catch (IOException e) { e.printStackTrace(); }
+                    if(buyUpgrade("Shield"))
+                    {
+                        try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+                    }
                 }
 
                 if(v.getId() == R.id.engineBtn)
                 {
                     Log.d("TextLog", "Engine");
 
-                    buyUpgrade("Engine");
-
-                    try { writeFile(); }
-                    catch (IOException e) { e.printStackTrace(); }
-                    try { readFile(); }
-                    catch (IOException e) { e.printStackTrace(); }
+                    if( buyUpgrade("Engine") )
+                    {
+                        try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                        try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+                    }
                 }
 
                 if(v.getId() == R.id.backBtn)
