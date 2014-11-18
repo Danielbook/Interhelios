@@ -152,6 +152,14 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="NEEED CASH"
+                android:id="@+id/cashBtn"
+                android:layout_above="@+id/gunsBtn" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Back"
                 android:id="@+id/backBtn"
                 android:layout_above="@+id/gunsBtn" />

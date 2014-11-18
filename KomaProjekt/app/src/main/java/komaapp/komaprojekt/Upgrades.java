@@ -25,6 +25,7 @@ public class Upgrades extends Activity
         StringTokenizer tokens;
 
         FileInputStream streamSettings = openFileInput(settingFile);
+
         BufferedReader infileSettings = new BufferedReader(new InputStreamReader(streamSettings));
 
         while( ( line = infileSettings.readLine() ) != null)
@@ -119,12 +120,17 @@ public class Upgrades extends Activity
     public void addCash(int cash)
     {
         int currentCash = getCash();
+        Log.d("TextLog", "Current cash: " + currentCash);
+
+        currentCash += cash;
+
+        Log.d("TextLog", "After add: " + currentCash);
 
         for (int i = 0; i < dbSettings.size(); i++)
         {
             if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("cash"))
             {
-                dbSettings.elementAt(i).setVal(currentCash + cash);
+                dbSettings.elementAt(i).setVal(currentCash);
                 return;
             }
         }
@@ -157,7 +163,7 @@ public class Upgrades extends Activity
                 {
                     removeCash(dbUpgrades.elementAt(i).getPrice());
                     dbUpgrades.elementAt(i).addLevel();
-                    Log.d("TextLog", "Upgrade for " + upgrade + " succesfully bought");
+                    Log.d("TextLog", "Upgrade for " + upgrade + " succesfully bought, now your at lvl " + dbUpgrades.elementAt(i).getLevel());
                     return true;
                 }
             }
@@ -165,6 +171,21 @@ public class Upgrades extends Activity
 
         Log.d("TextLog", "Couldn't buy your shit");
         return false;
+    }
+
+    public void updateTable()
+    {
+        TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
+        cashTxt.setText("" + getCash());
+
+        TextView gunsLvl = (TextView)findViewById(R.id.gunsLvlVal);
+        gunsLvl.setText("" + getLvl("guns"));
+
+        TextView engineLvl = (TextView)findViewById(R.id.engineLvlVal);
+        engineLvl.setText("" + getLvl("engine"));
+
+        TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
+        shieldLvl.setText("" + getLvl("shield"));
     }
 
     @Override
@@ -196,6 +217,8 @@ public class Upgrades extends Activity
                     {
                         try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
                         try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                        updateTable();
                     }
                 }
 
@@ -207,6 +230,8 @@ public class Upgrades extends Activity
                     {
                         try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
                         try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                        updateTable();
                     }
                 }
 
@@ -218,7 +243,20 @@ public class Upgrades extends Activity
                     {
                         try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
                         try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                        updateTable();
                     }
+                }
+
+                if(v.getId() == R.id.cashBtn)
+                {
+                    addCash(500);
+
+                    try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+                    try { readFile(); } catch (IOException e) { e.printStackTrace(); }
+
+                    updateTable();
+
                 }
 
                 if(v.getId() == R.id.backBtn)
@@ -232,6 +270,7 @@ public class Upgrades extends Activity
         Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
         Button engineBtn = (Button)findViewById(R.id.engineBtn);
         Button backBtn = (Button)findViewById(R.id.backBtn);
+        Button cashBtn = (Button)findViewById(R.id.cashBtn);
 
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
         cashTxt.setText("" + getCash());
@@ -249,6 +288,7 @@ public class Upgrades extends Activity
         shieldBtn.setOnClickListener(buttonListener);
         engineBtn.setOnClickListener(buttonListener);
         backBtn.setOnClickListener(buttonListener);
+        cashBtn.setOnClickListener(buttonListener);
 
     }
     @Override
