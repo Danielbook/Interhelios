@@ -58,24 +58,28 @@ public class Upgrades extends Activity
         infileUpgrades.close();
     }
 
+    //Write to database files
     public void writeFile() throws IOException
     {
         //Write to settings.txt
-        FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
+        FileOutputStream outFileSettings = openFileOutput(settingFile, MODE_PRIVATE);
 
         for (int i = 0; i < dbSettings.size(); i++) {
-            outFile.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
+            outFileSettings.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
         }
+
+        outFileSettings.close();
 
         //Write to upgrades.txt
-        outFile = openFileOutput(upgradesFile, MODE_PRIVATE);
+        FileOutputStream outFileUpgrades = openFileOutput(upgradesFile, MODE_PRIVATE);
 
         for (int i = 0; i < dbUpgrades.size(); i++) {
-            outFile.write( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes() );
+            outFileUpgrades.write( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes() );
         }
-        outFile.close();
+        outFileUpgrades.close();
     }
 
+    //Returns the players cash
     public int getCash()
     {
         for (int i = 0; i < dbSettings.size(); i++)
@@ -88,6 +92,20 @@ public class Upgrades extends Activity
         return 0;
     }
 
+    //Returns the level of the input upgrade
+    public int getLvl(String upgrade)
+    {
+        for(int i = 0; i < dbUpgrades.size(); i++)
+        {
+            if(dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
+            {
+                return dbUpgrades.elementAt(i).getLevel();
+            }
+        }
+        return 0;
+    }
+
+    //Used when buying stuff
     public void removeCash(int cash)
     {
         int currentCash = getCash();
@@ -102,6 +120,7 @@ public class Upgrades extends Activity
         }
     }
 
+    //Used when player should get more cash
     public void addCash(int cash)
     {
         int currentCash = getCash();
@@ -116,6 +135,7 @@ public class Upgrades extends Activity
         }
     }
 
+    //Used when the players chose to buy something, checks if there are enough money for the upgrade
     public boolean enoughCash(String upgrade)
     {
         int cash = getCash();
@@ -224,15 +244,16 @@ public class Upgrades extends Activity
         Button backBtn = (Button)findViewById(R.id.backBtn);
 
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
+        cashTxt.setText("" + getCash());
 
-        for(int i = 0; i < dbSettings.size(); i++)
-        {
-            Log.d("TextLog", " " + i);
-            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("cash"))
-            {
-                cashTxt.setText(String.valueOf( dbSettings.elementAt(i).getVal() ));
-            }
-        }
+        TextView gunsLvl = (TextView)findViewById(R.id.gunsLvlVal);
+        gunsLvl.setText("" + getLvl("guns"));
+
+        TextView engineLvl = (TextView)findViewById(R.id.engineLvlVal);
+        engineLvl.setText("" + getLvl("engine"));
+
+        TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
+        shieldLvl.setText("" + getLvl("shield"));
 
         gunsBtn.setOnClickListener(buttonListener);
         shieldBtn.setOnClickListener(buttonListener);
