@@ -14,6 +14,8 @@ public class Upgrades extends Activity
     protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
     protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
 
+    final int MAX_LEVEL = 5;
+
     final String settingFile = "settings.txt";
     final String upgradesFile = "upgrades.txt";
 
@@ -58,21 +60,25 @@ public class Upgrades extends Activity
     {
         //Write to settings.txt
         FileOutputStream outFileSettings = openFileOutput(settingFile, MODE_PRIVATE);
+        PrintWriter printSettings = new PrintWriter(outFileSettings);
 
         for (int i = 0; i < dbSettings.size(); i++)
         {
-            outFileSettings.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
+            Log.d("TextLog", "Setting: " + dbSettings.elementAt(i));
+            printSettings.print((dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n"));
         }
-
+        outFileSettings.flush();
         outFileSettings.close();
 
         //Write to upgrades.txt
         FileOutputStream outFileUpgrades = openFileOutput(upgradesFile, MODE_PRIVATE);
+        PrintWriter printUpgrades = new PrintWriter(outFileUpgrades);
 
         for (int i = 0; i < dbUpgrades.size(); i++)
         {
-            outFileUpgrades.write( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes() );
+            printUpgrades.print( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n"));
         }
+        outFileSettings.flush();
         outFileUpgrades.close();
     }
 
@@ -157,20 +163,26 @@ public class Upgrades extends Activity
     public boolean buyUpgrade(String upgrade)
     {
         Log.d("TextLog", "Buying your shit");
-        if(enoughCash(upgrade))
-        {
-            for (int i = 0; i < dbUpgrades.size(); i++)
-            {
-                if(dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
+        if (enoughCash(upgrade)) {
+            for (int i = 0; i < dbUpgrades.size(); i++) {
+                if (dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
                 {
-                    removeCash(dbUpgrades.elementAt(i).getPrice());
-                    dbUpgrades.elementAt(i).addLevel();
-                    Log.d("TextLog", "Upgrade for " + upgrade + " succesfully bought, now your at lvl " + dbUpgrades.elementAt(i).getLevel());
-                    return true;
+                    if(dbUpgrades.elementAt(i).getLevel() >= MAX_LEVEL)
+                    {
+                        Log.d("TextLog","You are already at max level bro");
+                        return false;
+                    }
+
+                    else
+                    {
+                        removeCash(dbUpgrades.elementAt(i).getPrice());
+                        dbUpgrades.elementAt(i).addLevel();
+                        Log.d("TextLog", "Upgrade for " + upgrade + " succesfully bought, now your at lvl " + dbUpgrades.elementAt(i).getLevel());
+                        return true;
+                    }
                 }
             }
         }
-
         Log.d("TextLog", "Couldn't buy your shit");
         return false;
     }
