@@ -22,9 +22,39 @@ public class Huvudmeny extends Activity {
     //Creates a "new" player from the shitty files in the assets folder
     public void newPlayer() throws IOException
     {
+        String line;
+        StringTokenizer tokens;
+
         //Läs in ifrån assetsmappen
+        InputStream settingStream = getResources().getAssets().open(settingFile);
+        BufferedReader settingsReader = new BufferedReader(new InputStreamReader(settingStream));
+
+        InputStream upgradeStream = getResources().getAssets().open(upgradesFile);
+        BufferedReader upgradesReader = new BufferedReader(new InputStreamReader(upgradeStream));
 
         //Spara i databaserna dbSettings och dbUpgrades
+        while( ( line = settingsReader.readLine() ) != null)
+        {
+            tokens = new StringTokenizer(line, " ");
+            String setting = tokens.nextToken();
+            int val = Integer.parseInt(tokens.nextToken());
+
+            dbSettings.add(new dbSettings(setting, val));
+        }
+
+        settingStream.close();
+
+        while( ( line = upgradesReader.readLine() ) != null)
+        {
+            tokens = new StringTokenizer(line, " ");
+            String setting = tokens.nextToken();
+            int val = Integer.parseInt(tokens.nextToken());
+            int price = Integer.parseInt(tokens.nextToken());
+
+            dbUpgrades.add(new dbUpgrades(setting, val, price));
+        }
+        
+        upgradeStream.close();
 
         //Spara i databastextfilen
         writeFile();
