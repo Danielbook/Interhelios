@@ -25,14 +25,14 @@ public class Huvudmeny extends Activity {
         String line;
         StringTokenizer tokens;
 
-        //Läs in ifrån assetsmappen
+        //Read from the fucking assets folder
         InputStream settingStream = getResources().getAssets().open(settingFile);
         BufferedReader settingsReader = new BufferedReader(new InputStreamReader(settingStream));
 
         InputStream upgradeStream = getResources().getAssets().open(upgradesFile);
         BufferedReader upgradesReader = new BufferedReader(new InputStreamReader(upgradeStream));
 
-        //Spara i databaserna dbSettings och dbUpgrades
+        //Save in the half assed databases
         while( ( line = settingsReader.readLine() ) != null)
         {
             tokens = new StringTokenizer(line, " ");
@@ -53,10 +53,10 @@ public class Huvudmeny extends Activity {
 
             dbUpgrades.add(new dbUpgrades(setting, val, price));
         }
-        
+
         upgradeStream.close();
 
-        //Spara i databastextfilen
+        //Write to the shittty devices internal fucking memory
         writeFile();
     }
 
