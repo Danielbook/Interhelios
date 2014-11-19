@@ -1,4 +1,4 @@
-package komaapp.komaprojekt;
+package komaapp.komaprojekt.scene;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -11,8 +11,35 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import komaapp.komaprojekt.R;
 
-public class Upgrades extends Activity {
+
+public class UpgradesScene extends Activity { //extends BaseScene
+
+    /*
+
+    @Override
+    public void createScene() {
+
+    }
+
+    @Override
+    public void onBackKeyPressed() {
+
+        SceneManager.getInstance().loadMenuScene(engine);
+        //SceneManager.getInstance().createMenuScene(); // Kör detta ist?
+    }
+
+    @Override
+    public SceneManager.SceneType getSceneType() {
+        return SceneManager.SceneType.SCENE_UPGRADES;
+    }
+
+    @Override
+    public void disposeScene() {
+
+    }
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +86,7 @@ public class Upgrades extends Activity {
 
                 if(v.getId() == R.id.backBtn)
                 {
-                    startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
+                    startActivity(new Intent(getApplicationContext(), MainMenuScene.class));
                 }
             }
         };

@@ -1,4 +1,5 @@
-package komaapp.komaprojekt;
+package komaapp.komaprojekt.scene;
+
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -13,12 +14,39 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import komaapp.komaprojekt.R;
+
+import komaapp.komaprojekt.base.BaseScene;
+import komaapp.komaprojekt.manager.SceneManager;
 
 
-public class Settings extends Activity {
+public class SettingsScene extends Activity { //extends BaseScene
 
+/*
+    @Override
+    public void createScene()
+    {
 
-         //Declaring variables TextViews, SeekBars and AudioManager
+    }
+
+    @Override
+    public void onBackKeyPressed() {
+        SceneManager.getInstance().loadMenuScene(engine);
+        //SceneManager.getInstance().createMenuScene(); // Kör detta ist?
+    }
+
+    @Override
+    public SceneManager.SceneType getSceneType() {
+        return SceneManager.SceneType.SCENE_SETTINGS;
+    }
+
+    @Override
+    public void disposeScene() {
+
+    }
+    */
+
+    //Declaring variables TextViews, SeekBars and AudioManager
     private AudioManager audioManager = null;
 
     private SeekBar musicSeekBar = null;
@@ -28,17 +56,16 @@ public class Settings extends Activity {
     private TextView soundText = null;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState)
     {
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-            //changes activity and checks for previous instance state
+        //changes activity and checks for previous instance state
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-            //Initializing all variables
+        //Initializing all variables
         musicText = (TextView)findViewById(R.id.textView);
         soundText = (TextView)findViewById(R.id.textView2);
 
@@ -47,9 +74,10 @@ public class Settings extends Activity {
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-            //call function
+        //call function
         initControls();
     }
+
 
     private void initControls()
     {       //needs a try/catch
@@ -62,7 +90,7 @@ public class Settings extends Activity {
 
             musicSeekBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
 
-                //the seekbar listener - must have all 3 functions that are inside
+            //the seekbar listener - must have all 3 functions that are inside
             musicSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
             {
                 @Override
@@ -78,10 +106,10 @@ public class Settings extends Activity {
                 @Override //progress is the current value where the seekbar is
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
                 {
-                        //progress value is given to the AudioManager
+                    //progress value is given to the AudioManager
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,progress, 0);
 
-                        //console test
+                    //console test
                     System.out.println("Progress: " + progress + "FromUser : " + fromUser);
                 }
             });
@@ -112,6 +140,7 @@ public class Settings extends Activity {
         return super.onOptionsItemSelected(item);
     }
 }
+
 
 
 
