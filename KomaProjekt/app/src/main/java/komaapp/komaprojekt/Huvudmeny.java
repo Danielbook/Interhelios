@@ -2,10 +2,14 @@ package komaapp.komaprojekt;
 
 import android.app.*;
 import android.content.*;
+import android.gesture.Gesture;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+
+import org.andengine.entity.scene.background.Background;
+
 import java.io.*;
 import java.util.*;
 
@@ -137,34 +141,6 @@ public class Huvudmeny extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        //Takes care of the button clicks
-        View.OnClickListener buttonListener = new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(v.getId() == R.id.upgradeBtn)
-                {
-                    startActivity(new Intent (getApplicationContext(), Upgrades.class));
-                }
-
-                else if (v.getId() == R.id.settingsBtn)
-                {
-                   startActivity(new Intent (getApplicationContext(), Settings.class));
-                }
-
-                else if (v.getId() == R.id.startBtn)
-                {
-                    startActivity(new Intent (getApplicationContext(), Game.class));
-                }
-
-                else if(v.getId() == R.id.howToBtn)
-                {
-                    Log.d("TextLog", "Inte implementerad än");
-                }
-            }
-        };
-
         Button startBtn = (Button)findViewById(R.id.startBtn);
         Button upgradeBtn = (Button)findViewById(R.id.upgradeBtn);
         Button settingsBtn = (Button)findViewById(R.id.settingsBtn);
@@ -198,4 +174,33 @@ public class Huvudmeny extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    //Takes care of the button clicks
+    public View.OnClickListener buttonListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            if(v.getId() == R.id.upgradeBtn)
+            {
+                startActivity(new Intent (getApplicationContext(), Upgrades.class));
+            }
+
+            else if (v.getId() == R.id.settingsBtn)
+            {
+                startActivity(new Intent (getApplicationContext(), Settings.class));
+            }
+
+            else if (v.getId() == R.id.startBtn)
+            {
+                startActivity(new Intent (getApplicationContext(), Game.class));
+            }
+
+            else if(v.getId() == R.id.howToBtn)
+            {
+                Log.d("TextLog", "Inte implementerad än");
+            }
+        }
+    };
 }

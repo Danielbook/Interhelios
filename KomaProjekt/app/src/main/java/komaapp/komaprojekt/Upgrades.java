@@ -64,7 +64,6 @@ public class Upgrades extends Activity
 
         for (int i = 0; i < dbSettings.size(); i++)
         {
-            Log.d("TextLog", "Setting: " + dbSettings.elementAt(i));
             printSettings.print((dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n"));
         }
         outFileSettings.flush();

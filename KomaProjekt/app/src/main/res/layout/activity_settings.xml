@@ -2,64 +2,70 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ff000000">
 
 
-    <SeekBar
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar2"
+        android:id="@+id/imageView4"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="126dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:max="100"
-        android:progress="0"
-                                                />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/settingsbtnnew" />
 
-    <SeekBar
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar3"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/seekBar2"
-        android:layout_alignEnd="@+id/seekBar2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:max="100"
-        android:progress="0"
-                                                 />
+        android:layout_alignLeft="@+id/imageView4"
+        android:layout_alignRight="@+id/imageView4"
+        android:layout_alignEnd="@+id/imageView4"
+        android:layout_below="@+id/imageView4"
+        android:layout_alignParentBottom="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/settings_music"
-        android:id="@+id/textView"
-        android:layout_alignBottom="@+id/seekBar2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="36dp"
-        android:textSize="20sp"
-        android:textColor="#33B5E5"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/settings_music"
+            android:id="@+id/musicText"
+            android:textSize="30sp"
+            android:textColor="#33B5E5"
 
 
-        />
+            android:layout_gravity="center" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/settings_sound"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/seekBar3"
-        android:layout_alignLeft="@+id/seekBar3"
-        android:layout_alignStart="@+id/seekBar3"
-        android:textSize="20sp"
-        android:textColor="#33B5E5"
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/musicBar"
+            android:max="100"
+            android:progress="0"
+            android:layout_weight="1"
+            android:indeterminate="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/settings_sound"
+            android:id="@+id/soundText"
+            android:textSize="30sp"
+            android:textColor="#33B5E5"
 
 
-        />
+            android:layout_gravity="center" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/soundBar"
+            android:max="100"
+            android:progress="0"
+            android:layout_weight="1"
+            android:indeterminate="false" />
+
+    </LinearLayout>
+
 </RelativeLayout>

@@ -19,17 +19,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 
 public class Settings extends Activity {
 
-
-    //Declaring variables TextViews, SeekBars and AudioManager
-    private AudioManager audioManager = null;
-
-    private SeekBar musicSeekBar = null;
+    private SeekBar musicSeekBar;
     private SeekBar soundSeekBar = null;
 
     private TextView musicText = null;
@@ -38,82 +35,91 @@ public class Settings extends Activity {
     protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
     protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
 
-    String settingFile = "settings.txt";
-    String upgradesFile = "upgrades.txt";
+    final String settingFile = "settings.txt";
+    final String upgradesFile = "upgrades.txt";
 
-    // Read setting file and storing the
-    // database settings in a vector
+    //Read setting files and storing the
+    //database settings in vectors
     public void readFile() throws IOException
     {
         String line;
         StringTokenizer tokens;
 
-        FileInputStream rs = openFileInput(settingFile);
-        BufferedReader infile = new BufferedReader(new InputStreamReader(rs));
+        FileInputStream streamSettings = openFileInput(settingFile);
+        BufferedReader infileSettings = new BufferedReader(new InputStreamReader(streamSettings));
 
-        while( ( line = infile.readLine() ) != null)
+        FileInputStream streamUpgrades = openFileInput(upgradesFile);
+        BufferedReader infileUpgrades = new BufferedReader(new InputStreamReader(streamUpgrades));
+
+        while( ( line = infileSettings.readLine() ) != null)
         {
             tokens = new StringTokenizer(line, " ");
             String setting = tokens.nextToken();
-
             int val = Integer.parseInt(tokens.nextToken());
 
             dbSettings.add(new dbSettings(setting, val));
         }
 
-        infile.close();
+        infileSettings.close();
 
-        rs = openFileInput(upgradesFile);
-        infile = new BufferedReader(new InputStreamReader(rs));
-
-        while( ( line = infile.readLine() ) != null)
+        while( ( line = infileUpgrades.readLine() ) != null)
         {
             tokens = new StringTokenizer(line, " ");
-            String setting = tokens.nextToken();
-            int val = Integer.parseInt(tokens.nextToken());
+            String upgrade = tokens.nextToken();
+            int level = Integer.parseInt(tokens.nextToken());
             int price = Integer.parseInt(tokens.nextToken());
 
-            dbUpgrades.add(new dbUpgrades(setting, val, price));
+            dbUpgrades.add(new dbUpgrades(upgrade, level, price));
         }
-        infile.close();
+        infileUpgrades.close();
     }
 
+    //Write to database files
     public void writeFile() throws IOException
     {
         //Write to settings.txt
-        FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
+        FileOutputStream outFileSettings = openFileOutput(settingFile, MODE_PRIVATE);
+        PrintWriter printSettings = new PrintWriter(outFileSettings);
 
-        for (int i = 0; i < dbSettings.size(); i++) {
-            outFile.write( (dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes() );
+        for (int i = 0; i < dbSettings.size(); i++)
+        {
+            printSettings.print((dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n"));
         }
+        outFileSettings.flush();
+        outFileSettings.close();
 
         //Write to upgrades.txt
-        outFile = openFileOutput(upgradesFile, MODE_PRIVATE);
+        FileOutputStream outFileUpgrades = openFileOutput(upgradesFile, MODE_PRIVATE);
+        PrintWriter printUpgrades = new PrintWriter(outFileUpgrades);
 
-        for (int i = 0; i < dbUpgrades.size(); i++) {
-            outFile.write( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes() );
+        for (int i = 0; i < dbUpgrades.size(); i++)
+        {
+            printUpgrades.print( (dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n"));
         }
-        outFile.close();
+        outFileSettings.flush();
+        outFileUpgrades.close();
     }
 
-    public void changeSound(int progress)
+    public int getVolume(String setting)
     {
-        for(int i = 0; i < dbSettings.size(); i++)
+        for (int i = 0; i < dbSettings.size(); i++)
         {
-            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("sound")){
-                dbSettings.elementAt(i).setVal(progress);
-                return;
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase(setting))
+            {
+                return dbSettings.elementAt(i).getVal();
             }
         }
+        return 0;
     }
 
-    public void changeMusic(int progress)
+    //Function to change the volume
+    public void setVolume(String setting, int newVolume)
     {
-        for(int i = 0; i < dbSettings.size(); i++)
+        for (int i = 0; i < dbSettings.size(); i++)
         {
-            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase("music")){
-                dbSettings.elementAt(i).setVal(progress);
-                return;
+            if(dbSettings.elementAt(i).getSetting().equalsIgnoreCase(setting))
+            {
+                dbSettings.elementAt(i).setVal(newVolume);
             }
         }
     }
@@ -121,6 +127,9 @@ public class Settings extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
@@ -128,67 +137,55 @@ public class Settings extends Activity {
         try { readFile(); Log.d("TextLog", "Databasefile read!"); }
         catch (IOException e) { e.printStackTrace(); }
 
-        //changes activity and checks for previous instance state
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
 
-            //Initializing all variables
-        musicText = (TextView)findViewById(R.id.textView);
-        soundText = (TextView)findViewById(R.id.textView2);
+        //Initializing all variables
+        musicText = (TextView)findViewById(R.id.musicText);
+        soundText = (TextView)findViewById(R.id.soundText);
 
-        musicSeekBar = (SeekBar)findViewById(R.id.seekBar2);
-        soundSeekBar = (SeekBar)findViewById(R.id.seekBar3);
+        musicSeekBar = (SeekBar)findViewById(R.id.musicBar);
+        soundSeekBar = (SeekBar)findViewById(R.id.soundBar);
 
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        musicSeekBar.setProgress(getVolume("music"));
+        soundSeekBar.setProgress(getVolume("sound"));
 
-            //call function
-        initControls();
+        musicSeekBar.setMax(10);
+        soundSeekBar.setMax(10);
+
+        musicSeekBar.setOnSeekBarChangeListener(seekBarListener);
+        soundSeekBar.setOnSeekBarChangeListener(seekBarListener);
     }
 
-    private void initControls()
-    {       //needs a try/catch
-        try
+    //the seekbar listener - must have all 3 functions that are inside
+    public OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
         {
-            musicSeekBar = (SeekBar)findViewById(R.id.seekBar2);
-            audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-
-            musicSeekBar.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-
-            musicSeekBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-
-                //the seekbar listener - must have all 3 functions that are inside
-            musicSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
+            if(seekBar == musicSeekBar)
             {
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar)
-                {
-                    //Writes to file when you let the fucking bar go
-                    try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
-                }
+                setVolume("music", progress);
+            }
+            else if(seekBar == soundSeekBar)
+            {
+                setVolume("sound", progress);
+            }
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar)
-                {
-                }
-
-                @Override //progress is the current value where the seekbar is
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-                {
-                        //progress value is given to the AudioManager
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,progress, 0);
-
-                    changeSound(progress);
-
-                        //console test
-                    Log.d("TextLog", "Progress: " + progress + " FromUser : " + fromUser);
-                }
-            });
+            Log.d("TextLog", "Progress: " + progress );
         }
-        catch (Exception e)
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar)
         {
-            e.printStackTrace();
+
         }
-    }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar)
+        {
+            try { writeFile(); } catch (IOException e) { e.printStackTrace(); }
+
+            Log.d("TextLog","Music: " + getVolume("music") + "\nSound: " + getVolume("sound"));
+        }
+    };
 
 
     @Override

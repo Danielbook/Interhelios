@@ -15,10 +15,6 @@ public class dbSettings
         return setting;
     }
 
-    public void setSetting(String setting) {
-        this.setting = setting;
-    }
-
     public int getVal() {
         return val;
     }
