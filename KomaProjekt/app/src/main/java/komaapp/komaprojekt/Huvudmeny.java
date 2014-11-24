@@ -15,7 +15,7 @@ import java.util.Vector;
 
 public class Huvudmeny extends Activity {
 
-    protected Vector<Database> db = new Vector<Database>();
+    protected Vector<database> db = new Vector<database>();
 
     // Read setting file and storing the
     // database settings in a vector
@@ -38,7 +38,7 @@ public class Huvudmeny extends Activity {
 
            //Log.d("TextLog","Setting: " + setting  + ", Value: " + val);
 
-            db.add(new Database(setting, val));
+            db.add(new database(setting, val));
         }
         infile.close();
     }

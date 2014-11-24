@@ -25,11 +25,15 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import komaapp.komaprojekt.GameLogic.EnemyManager;
+import komaapp.komaprojekt.GameLogic.Player;
+import komaapp.komaprojekt.GameLogic.SimpleEnemy;
+
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
 
     private Camera camera;
-    private static final int CAMERA_WIDTH = 768;
-    private static final int CAMERA_HEIGHT = 1280;
+    public static final int CAMERA_WIDTH = 768;
+    public static final int CAMERA_HEIGHT = 1280;
 
     private Font mFont;
 
@@ -38,6 +42,20 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private ITextureRegion xWing_tex;
 
     private Player player;
+
+    //ENEMIES
+    private EnemyManager enemyManager;
+
+    private ITextureRegion loadITextureRegion(String filename, int width, int height)
+    {
+        //GRAPHICS
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+        texAtlas = new BitmapTextureAtlas(getTextureManager(), width, height, TextureOptions.DEFAULT);
+        ITextureRegion tex = BitmapTextureAtlasTextureRegionFactory.createFromAsset(texAtlas, this, filename, 0, 0);
+        texAtlas.load();
+
+        return tex;
+    }
 
     @Override
     public EngineOptions onCreateEngineOptions()
@@ -56,11 +74,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
         this.mFont.load();
 
-        //GRAPHICS
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        texAtlas = new BitmapTextureAtlas(getTextureManager(), 200, 217, TextureOptions.DEFAULT);
-        xWing_tex = BitmapTextureAtlasTextureRegionFactory.createFromAsset(texAtlas, this, "xwing_sprite.png", 0, 0);
-        texAtlas.load();
+        xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
 
     }
 
@@ -75,8 +89,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
         this.mEngine.registerUpdateHandler(fpsCounter);
-        final Text fpsText = new Text(10, 10, this.mFont, "FPS: ", "FPS: XXXXX".length(), this.getVertexBufferObjectManager());
+        final Text fpsText = new Text(10, 10, this.mFont, "FPS: ", 10, this.getVertexBufferObjectManager());
         scene.attachChild(fpsText);
+
+        //ENEMY MANAGEMENT
+        this.enemyManager = new EnemyManager(scene, this.getVertexBufferObjectManager() );
+        enemyManager.addEnemyTexture(loadITextureRegion("tie_sprite_small.png", 200, 257), "tie_fighter");
 
         //Instantiate the player object
         player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager())
@@ -100,10 +118,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             @Override
             public void onUpdate(float v) {
                 currentTime += v;
-
                 fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
-
                 player.update(v);
+
+                enemyManager.update(currentTime, v);
             }
 
             @Override
