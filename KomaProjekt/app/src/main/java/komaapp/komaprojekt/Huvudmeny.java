@@ -15,7 +15,7 @@ public class Huvudmeny extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Context ctx = getBaseContext();
+        Context ctx = getApplicationContext();
 
         Log.d("TextLog", "App Context: " + ctx);
         super.onCreate(savedInstanceState);

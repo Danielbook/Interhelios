@@ -81,7 +81,7 @@ public class Upgrades extends Activity
         @Override
         public void onClick(View v)
         {
-            Context ctx = getBaseContext();
+            Context ctx = getApplicationContext();
 
             if(v.getId() == R.id.gunsBtn)
             {
