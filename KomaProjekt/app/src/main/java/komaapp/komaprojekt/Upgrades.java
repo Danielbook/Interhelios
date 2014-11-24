@@ -32,9 +32,7 @@ public class Upgrades extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Huvudmeny huvudmeny = new Huvudmeny();
-
-        Context ctx = huvudmeny.getContext();
+        Context ctx = getBaseContext();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrades);

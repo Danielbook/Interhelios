@@ -12,24 +12,10 @@ public class Huvudmeny extends Activity
 {
     private Database database = new Database();
 
-    protected Context ctx;
-
-    protected void setContext(Context ctx)
-    {
-        this.ctx = ctx;
-    }
-
-    protected Context getContext()
-    {
-        return ctx;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Context ctx = getApplicationContext();
-
-        setContext(ctx);
+        Context ctx = getBaseContext();
 
         Log.d("TextLog", "App Context: " + ctx);
         super.onCreate(savedInstanceState);

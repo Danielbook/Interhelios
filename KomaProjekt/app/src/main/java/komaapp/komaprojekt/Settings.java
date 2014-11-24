@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -29,7 +30,7 @@ public class Settings extends Activity {
     {
         Huvudmeny huvudmeny = new Huvudmeny();
 
-        Context ctx = huvudmeny.getContext();
+        Context ctx = getBaseContext();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
