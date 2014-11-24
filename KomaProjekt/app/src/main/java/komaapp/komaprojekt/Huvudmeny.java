@@ -2,142 +2,34 @@ package komaapp.komaprojekt;
 
 import android.app.*;
 import android.content.*;
-import android.gesture.Gesture;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-
-import org.andengine.entity.scene.background.Background;
-
 import java.io.*;
-import java.util.*;
 
-public class Huvudmeny extends Activity {
-
-    protected Vector<dbSettings> dbSettings = new Vector<dbSettings>();
-    protected Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
-
-    protected final String settingFile = "settings.txt";
-    protected final String upgradesFile = "upgrades.txt";
-
-    //Called when the textfiles are no where to be found on that fucking
-    //piece of shit android device...
-    //Creates a "new" player from the shitty files in the assets folder
-    public void newPlayer() throws IOException
-    {
-        String line;
-        StringTokenizer tokens;
-
-        //Read from the fucking assets folder
-        InputStream settingStream = getResources().getAssets().open(settingFile);
-        BufferedReader settingsReader = new BufferedReader(new InputStreamReader(settingStream));
-
-        InputStream upgradeStream = getResources().getAssets().open(upgradesFile);
-        BufferedReader upgradesReader = new BufferedReader(new InputStreamReader(upgradeStream));
-
-        //Save in the half assed databases
-        while( ( line = settingsReader.readLine() ) != null)
-        {
-            tokens = new StringTokenizer(line, " ");
-            String setting = tokens.nextToken();
-            int val = Integer.parseInt(tokens.nextToken());
-
-            dbSettings.add(new dbSettings(setting, val));
-        }
-
-        settingStream.close();
-
-        while( ( line = upgradesReader.readLine() ) != null)
-        {
-            tokens = new StringTokenizer(line, " ");
-            String setting = tokens.nextToken();
-            int val = Integer.parseInt(tokens.nextToken());
-            int price = Integer.parseInt(tokens.nextToken());
-
-            dbUpgrades.add(new dbUpgrades(setting, val, price));
-        }
-
-        upgradeStream.close();
-
-        //Write to the shittty devices internal fucking memory
-        writeFile();
-    }
-
-    //Read setting file and storing the
-    //database settings in a vector
-    public void readFile() throws IOException
-    {
-        String line;
-        StringTokenizer tokens;
-
-        FileInputStream rs = openFileInput(settingFile);
-        BufferedReader infile = new BufferedReader(new InputStreamReader(rs));
-
-        while( ( line = infile.readLine() ) != null)
-        {
-            tokens = new StringTokenizer(line, " ");
-            String setting = tokens.nextToken();
-            int val = Integer.parseInt(tokens.nextToken());
-
-            dbSettings.add(new dbSettings(setting, val));
-        }
-
-        infile.close();
-
-        rs = openFileInput(upgradesFile);
-        infile = new BufferedReader(new InputStreamReader(rs));
-
-        while( ( line = infile.readLine() ) != null)
-        {
-            tokens = new StringTokenizer(line, " ");
-            String setting = tokens.nextToken();
-            int val = Integer.parseInt(tokens.nextToken());
-            int price = Integer.parseInt(tokens.nextToken());
-
-            dbUpgrades.add(new dbUpgrades(setting, val, price));
-        }
-        infile.close();
-    }
-
-    public void writeFile() throws IOException
-    {
-        //Write to settings.txt
-        FileOutputStream outFile = openFileOutput(settingFile, MODE_PRIVATE);
-
-        for (int i = 0; i < dbSettings.size(); i++) {
-            outFile.write((dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n").getBytes());
-        }
-
-        //Write to upgrades.txt
-        outFile = openFileOutput(upgradesFile, MODE_PRIVATE);
-
-        for (int i = 0; i < dbUpgrades.size(); i++) {
-            outFile.write((dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n").getBytes());
-        }
-        outFile.close();
-    }
-
+public class Huvudmeny extends Activity
+{
+    private Database database = new Database();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        Context ctx = getBaseContext();
+
+        Log.d("TextLog", "App Context: " + ctx);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
 
         Log.d("TextLog", "App start\n");
 
-        try{ readFile(); Log.d("TextLog", "Databasefile read!"); }
-        catch (FileNotFoundException e){
-            try {
-                newPlayer();
-                Log.d("TextLog", "New Player");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+        try{ database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
+            catch (FileNotFoundException e){
+                try { database.newPlayer(ctx); Log.d("TextLog", "New Player"); }
+                catch (IOException e1) { e1.printStackTrace(); }
         } catch (IOException e) { e.printStackTrace(); }
 
-        //Hides the ugly statusbar
+        //Hides the ugly status bar
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
