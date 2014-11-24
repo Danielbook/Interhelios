@@ -27,7 +27,9 @@ public class Settings extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Context ctx = getBaseContext();
+        Huvudmeny huvudmeny = new Huvudmeny();
+
+        Context ctx = huvudmeny.getContext();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -80,7 +82,7 @@ public class Settings extends Activity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar)
         {
-            Context ctx = getBaseContext();
+            Context ctx = getApplicationContext();
             try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
             Log.d("TextLog","Music: " + database.getVolume("music") + "\nSound: " + database.getVolume("sound"));

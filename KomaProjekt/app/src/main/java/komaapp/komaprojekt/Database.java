@@ -96,25 +96,28 @@ public class Database extends Activity
     public void writeFile(Context ctx) throws IOException
     {
         //Write to settings.txt
-        BufferedWriter settingsWriter = new BufferedWriter(new PrintWriter(ctx.openFileOutput(settingFile, MODE_PRIVATE)));
+        FileOutputStream settingsStream = ctx.openFileOutput(settingFile, MODE_PRIVATE);
+        BufferedWriter settingsWriter = new BufferedWriter(new PrintWriter(settingsStream));
 
         for (int i = 0; i < dbSettings.size(); i++)
         {
             settingsWriter.write("" + dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n");
 
         }
-        settingsWriter.flush();
         settingsWriter.close();
+        settingsStream.close();
 
         //Write to upgrades.txt
-        BufferedWriter upgradesWriter = new BufferedWriter(new PrintWriter(ctx.openFileOutput(settingFile, MODE_PRIVATE)));
+        FileOutputStream upgradesStream = ctx.openFileOutput(settingFile, MODE_PRIVATE);
+        BufferedWriter upgradesWriter = new BufferedWriter(new PrintWriter(upgradesStream));
 
         for (int i = 0; i < dbUpgrades.size(); i++)
         {
             upgradesWriter.write("" + dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n");
         }
-        upgradesWriter.flush();
         upgradesWriter.close();
+        upgradesStream.close();
+        Log.d("TextLog","File written!");
     }
 
     //Returns the volume of the setting
