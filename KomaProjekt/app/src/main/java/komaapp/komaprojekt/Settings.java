@@ -1,96 +1,89 @@
 package komaapp.komaprojekt;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.app.*;
 import android.content.Context;
-import android.media.AudioManager;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.*;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.*;
 
+import java.io.IOException;
 
 
 public class Settings extends Activity {
 
+    private Database database = new Database();
 
-         //Declaring variables TextViews, SeekBars and AudioManager
-    private AudioManager audioManager = null;
+    private SeekBar musicSeekBar;
+    private SeekBar soundSeekBar;
 
-    private SeekBar musicSeekBar = null;
-    private SeekBar soundSeekBar = null;
-
-    private TextView musicText = null;
-    private TextView soundText = null;
+    private TextView musicText;
+    private TextView soundText;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState)
     {
-        ActionBar actionBar = getActionBar();
-        actionBar.hide();
+        Context ctx = getBaseContext();
 
-            //changes activity and checks for previous instance state
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-            //Initializing all variables
-        musicText = (TextView)findViewById(R.id.textView);
-        soundText = (TextView)findViewById(R.id.textView2);
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
 
-        musicSeekBar = (SeekBar)findViewById(R.id.seekBar2);
-        soundSeekBar = (SeekBar)findViewById(R.id.seekBar3);
+        //Read settings file
+        try { database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
+        catch (IOException e) { e.printStackTrace(); }
 
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-            //call function
-        initControls();
+        //Initializing all variables
+        musicText = (TextView)findViewById(R.id.musicText);
+        soundText = (TextView)findViewById(R.id.soundText);
+
+        musicSeekBar = (SeekBar)findViewById(R.id.musicBar);
+        soundSeekBar = (SeekBar)findViewById(R.id.soundBar);
+
+        musicSeekBar.setProgress(database.getVolume("music"));
+        soundSeekBar.setProgress(database.getVolume("sound"));
+
+        musicSeekBar.setMax(10);
+        soundSeekBar.setMax(10);
+
+        musicSeekBar.setOnSeekBarChangeListener(seekBarListener);
+        soundSeekBar.setOnSeekBarChangeListener(seekBarListener);
     }
 
-    private void initControls()
-    {       //needs a try/catch
-        try
+    //the seekbar listener - must have all 3 functions that are inside
+    public OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
         {
-            musicSeekBar = (SeekBar)findViewById(R.id.seekBar2);
-            audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-
-            musicSeekBar.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-
-            musicSeekBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-
-                //the seekbar listener - must have all 3 functions that are inside
-            musicSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
+            if(seekBar == musicSeekBar)
             {
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar)
-                {
-                }
+                database.setVolume("music", progress);
+            }
+            else if(seekBar == soundSeekBar)
+            {
+                database.setVolume("sound", progress);
+            }
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar)
-                {
-                }
-
-                @Override //progress is the current value where the seekbar is
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-                {
-                        //progress value is given to the AudioManager
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,progress, 0);
-
-                        //console test
-                    System.out.println("Progress: " + progress + "FromUser : " + fromUser);
-                }
-            });
+            Log.d("TextLog", "Progress: " + progress );
         }
-        catch (Exception e)
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar){}
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar)
         {
-            e.printStackTrace();
+            Context ctx = getApplicationContext();
+            try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+
+            Log.d("TextLog","Music: " + database.getVolume("music") + "\nSound: " + database.getVolume("sound"));
         }
-    }
+    };
 
 
     @Override

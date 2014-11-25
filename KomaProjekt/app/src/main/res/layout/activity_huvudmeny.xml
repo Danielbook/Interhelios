@@ -1,49 +1,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context=".Huvudmeny"
     android:id="@+id/huvudmeny"
     android:padding="10dp"
-    android:background="@drawable/background">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/startBtn"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Upgrades"
-        android:id="@+id/upgradeBtn"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    android:background="@drawable/startmenu_background">
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="How To"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/howToBtn"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="left" />
-
-    <Button
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:id="@+id/settingsBtn"
-        android:background="@drawable/settingsbtn"
-        android:layout_gravity="right"
-        android:layout_column="30"
-        android:layout_above="@+id/howToBtn"
+        android:layout_gravity="left"
+        android:background="@drawable/how_to_btn"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:contentDescription="@string/planet"
+        android:background="@drawable/start_menu"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/startBtn"
+        android:background="@drawable/startbtn_small"
+        android:layout_gravity="bottom"
+        android:layout_above="@+id/upgradeBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingsBtn"
+        android:background="@drawable/settingsbtn_small"
+        android:layout_gravity="center_vertical"
+        android:layout_alignRight="@+id/upgradeBtn"
+        android:layout_alignLeft="@+id/upgradeBtn"
+        android:layout_alignStart="@+id/upgradeBtn"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upgradeBtn"
+        android:layout_gravity="center"
+        android:background="@drawable/upgradesbtn_small"
+        android:layout_above="@+id/settingsBtn"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -4,33 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#ff000000">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/upgradesbtnnew"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="false"
+        android:cropToPadding="false" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+        android:baselineAligned="false"
+        android:layout_below="@+id/imageView2">
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/imageView"
             android:background="@drawable/space_ship"
-            android:layout_weight="3" />
+            android:layout_weight="2" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/linearLayout2"
-            android:layout_below="@+id/cashTxt"
             android:weightSum="1"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentRight="false"
             android:layout_weight="1">
 
             <LinearLayout
@@ -42,43 +49,122 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Cash"
-                    android:id="@+id/cash" />
+                    android:text="@string/upgrade_cash"
+                    android:id="@+id/cash"
+                    android:textColor="#ffffffff"
+                    android:textSize="30sp"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/cashTxt"
+                    android:textColor="#ffffffff"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upgrade_guns"
+                android:id="@+id/gunsBtn"
+                style="@style/AppTheme" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/cashTxt" />
+                    android:id="@+id/gunsLvlTxt"
+                    android:textColor="#ffffffff"
+                    android:textSize="30sp"
+                    android:text="@string/upgrade_level" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/gunsLvlVal"
+                    android:textColor="#ffffffff" />
             </LinearLayout>
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Guns"
-                android:id="@+id/gunsBtn"
-                style="@style/AppTheme"
-                android:layout_alignTop="@+id/engineBtn"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Engine"
+                android:text="@string/upgrade_engine"
                 android:id="@+id/engineBtn"/>
 
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Shield"
+                android:id="@+id/linearLayout3" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/upgrade_level"
+                    android:id="@+id/engineLvlTxt"
+                    android:textColor="#ffffffff"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/engineLvlVal"
+                    android:textColor="#ffffffff" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upgrade_shield"
                 android:id="@+id/shieldBtn" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout4" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/upgrade_level"
+                    android:id="@+id/shieldLvlTxt"
+                    android:textColor="#ffffffff"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/shieldLvlVal"
+                    android:textColor="#ffffffff" />
+            </LinearLayout>
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Back"
-                android:id="@+id/backBtn"
-                android:layout_above="@+id/gunsBtn" />
+                android:text="NEEED CASH"
+                android:id="@+id/cashBtn" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upgrade_back"
+                android:id="@+id/backBtn" />
 
         </LinearLayout>
     </LinearLayout>

@@ -1,135 +1,144 @@
 package komaapp.komaprojekt;
 
 import android.app.*;
-import android.content.Intent;
+import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.io.*;
 
 public class Upgrades extends Activity
 {
+    private Database database = new Database();
 
-    protected Vector<Database> db = new Vector<Database>();
-
-    // Read setting file and storing the
-    // database settings in a vector
-    public void readFile() throws IOException
+    //Updates the txt in the tables
+    public void updateTable()
     {
-        String line;
-        StringTokenizer tokens;
+        TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
+        cashTxt.setText("" + database.getCash());
 
-        InputStream is = getAssets().open("settings.txt");
+        TextView gunsLvl = (TextView)findViewById(R.id.gunsLvlVal);
+        gunsLvl.setText("" + database.getLvl("guns"));
 
-        BufferedReader infile = new BufferedReader(new InputStreamReader(is));
+        TextView engineLvl = (TextView)findViewById(R.id.engineLvlVal);
+        engineLvl.setText("" + database.getLvl("engine"));
 
-        while( ( line = infile.readLine() ) != null)
-        {
-            tokens = new StringTokenizer(line, " ");
-
-            String setting = tokens.nextToken();
-
-            int val = Integer.parseInt(tokens.nextToken());
-
-            //Log.d("TextLog","Setting: " + setting  + ", Value: " + val);
-
-            db.add(new Database(setting, val));
-        }
-
-        infile.close();
+        TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
+        shieldLvl.setText("" + database.getLvl("shield"));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        Context ctx = getBaseContext();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrades);
 
         Log.d("TextLog", "Upgrade start\n");
 
-        try
-        {
-            readFile();
-            Log.d("TextLog", "Databasefile read!");
-        }
+        Log.d("TextLog", "Upgrades is saved here: " + getFilesDir());
 
-        catch (IOException e)
-        {
-            Log.d("TextLog", "Could not read file!");
-        }
+        try { database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
+        catch (FileNotFoundException e) { Log.d("TextLog", "Could not read file!"); }
+        catch (IOException e) { e.printStackTrace(); }
 
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        View.OnClickListener buttonListener = new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                if(v.getId() == R.id.gunsBtn)
-                {
-                    Log.d("TextLog", "Guns");
-
-                    /*if(gunsRadio.getVisibility() == View.GONE)
-                    {
-                        gunsRadio.setVisibility(View.VISIBLE);
-                    }
-
-                    else if(gunsRadio.getVisibility() == View.VISIBLE)
-                    {
-                        gunsRadio.setVisibility(View.GONE);
-                    }*/
-                }
-
-                if(v.getId() == R.id.shieldBtn)
-                {
-                    Log.d("TextLog", "Shield");
-                }
-
-                if(v.getId() == R.id.engineBtn)
-                {
-                    Log.d("TextLog", "Engine");
-                }
-
-                if(v.getId() == R.id.backBtn)
-                {
-                    startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
-                }
-            }
-        };
-
+        //Initiate buttons
         Button gunsBtn = (Button)findViewById(R.id.gunsBtn);
         Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
         Button engineBtn = (Button)findViewById(R.id.engineBtn);
         Button backBtn = (Button)findViewById(R.id.backBtn);
+        Button cashBtn = (Button)findViewById(R.id.cashBtn);
 
+        //Add values from the database
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
+        cashTxt.setText("" + database.getCash());
 
-        for(int i = 0; i < db.size(); i++)
-        {
-            Log.d("TextLog", " " + i);
-            if(db.elementAt(i).getSetting().equalsIgnoreCase("cash"))
-            {
-                cashTxt.setText(String.valueOf( db.elementAt(i).getVal() ));
-            }
-        }
+        TextView gunsLvl = (TextView)findViewById(R.id.gunsLvlVal);
+        gunsLvl.setText("" + database.getLvl("guns"));
 
+        TextView engineLvl = (TextView)findViewById(R.id.engineLvlVal);
+        engineLvl.setText("" + database.getLvl("engine"));
+
+        TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
+        shieldLvl.setText("" + database.getLvl("shield"));
+
+        //Add listeners to all the buttons
         gunsBtn.setOnClickListener(buttonListener);
         shieldBtn.setOnClickListener(buttonListener);
         engineBtn.setOnClickListener(buttonListener);
         backBtn.setOnClickListener(buttonListener);
+        cashBtn.setOnClickListener(buttonListener);
 
     }
+
+    public View.OnClickListener buttonListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            Context ctx = getApplicationContext();
+
+            if(v.getId() == R.id.gunsBtn)
+            {
+                Log.d("TextLog", "Guns");
+                if( database.buyUpgrade("Guns") )
+                {
+                    try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+                    try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+
+                    updateTable();
+                }
+            }
+
+            if(v.getId() == R.id.shieldBtn)
+            {
+                Log.d("TextLog", "Shield");
+
+                if(database.buyUpgrade("Shield"))
+                {
+                    try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+                    try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+
+                    updateTable();
+                }
+            }
+
+            if(v.getId() == R.id.engineBtn)
+            {
+                Log.d("TextLog", "Engine");
+
+                if( database.buyUpgrade("Engine") )
+                {
+                    try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+                    try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+
+                    updateTable();
+                }
+            }
+
+            if(v.getId() == R.id.cashBtn)
+            {
+                database.addCash(500);
+
+                try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+                try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
+
+                updateTable();
+
+            }
+
+            if(v.getId() == R.id.backBtn)
+            {
+                startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
+            }
+        }
+    };
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
