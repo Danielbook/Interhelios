@@ -12,20 +12,13 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 
 public class SimpleEnemy extends BaseEnemy {
-
-    private float speed;
-
     public SimpleEnemy(float startX, float startY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int ID, float speed) {
-        super(startX, startY, pTextureRegion, pVertexBufferObjectManager, ID);
+        super(startX, startY, pTextureRegion, pVertexBufferObjectManager, ID, speed);
         this.setCenterPosition(startX, startY);
-
-        this.speed = speed;
     }
 
     @Override
-    void update(float dt) {
-        this.setCenterPosition(this.getCenterX(), this.getCenterY()+dt*speed);
-    }
+    void update(float dt) { this.setCenterPosition(this.getCenterX(), this.getCenterY()+dt*this.getSpeed()); }
 
     @Override
     void fire() { Log.d("EnemyLog", "Shot fired by ID=" + this.getID()); }

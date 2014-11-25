@@ -65,7 +65,7 @@ public class EnemyManager {
         //Remove enemies too far down
         for (final Integer ID : toRemoveIDs)
         {
-            Log.d("EnemyLog", "Will try to remove enemy with ID=" + String.valueOf(ID));
+            Log.d("EnemyLog", "Will try to remove enemy with ID=" + String.valueOf( ID.intValue() ));
             removeEnemy(enemies.get(ID));
         }
 
@@ -84,8 +84,12 @@ public class EnemyManager {
 
     // texName is the key in the HashTable enemyTextures for the wanted ITextureRegion
     public void addEnemy(String texName, float spawnX, float spawnY, float speed) {
-        SimpleEnemy newEnemy = new SimpleEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, enemyCounter, speed);
-        //WavingEnemy newEnemy = new WavingEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, enemyCounter, speed, 0.01f, 5000.0f);
+        BaseEnemy newEnemy;
+
+        if (enemyCounter%4 == 0) {
+            newEnemy = new WavingEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, enemyCounter, (randGen.nextFloat()+0.5f)*speed, 0.02f, 100.0f);
+        }
+        else newEnemy = new SimpleEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, enemyCounter, (randGen.nextFloat()+0.5f)*speed);
 
         enemyCounter++;
 
