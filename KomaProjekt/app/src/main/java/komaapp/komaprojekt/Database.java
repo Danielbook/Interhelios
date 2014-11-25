@@ -3,7 +3,6 @@ package komaapp.komaprojekt;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 import java.io.*;
 import java.util.*;
 
@@ -63,6 +62,8 @@ public class Database extends Activity
         String line;
         StringTokenizer tokens;
 
+        Log.d("TextLog", "Read files directory: " + ctx.getFilesDir());
+
         FileInputStream settingsStream = ctx.openFileInput(settingFile);
         BufferedReader settingsReader = new BufferedReader(new InputStreamReader(settingsStream));
 
@@ -95,6 +96,8 @@ public class Database extends Activity
 
     public void writeFile(Context ctx) throws IOException
     {
+        Log.d("TextLog", "Write files directory: " + ctx.getFilesDir());
+
         //Write to settings.txt
         FileOutputStream settingsStream = ctx.openFileOutput(settingFile, MODE_PRIVATE);
         BufferedWriter settingsWriter = new BufferedWriter(new PrintWriter(settingsStream));
@@ -108,7 +111,7 @@ public class Database extends Activity
         settingsStream.close();
 
         //Write to upgrades.txt
-        FileOutputStream upgradesStream = ctx.openFileOutput(settingFile, MODE_PRIVATE);
+        FileOutputStream upgradesStream = ctx.openFileOutput(upgradesFile, MODE_PRIVATE);
         BufferedWriter upgradesWriter = new BufferedWriter(new PrintWriter(upgradesStream));
 
         for (int i = 0; i < dbUpgrades.size(); i++)

@@ -33,6 +33,7 @@ public class Huvudmeny extends Activity
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
+        //Initiate the buttons and add listeners to them
         Button startBtn = (Button)findViewById(R.id.startBtn);
         Button upgradeBtn = (Button)findViewById(R.id.upgradeBtn);
         Button settingsBtn = (Button)findViewById(R.id.settingsBtn);
@@ -42,6 +43,7 @@ public class Huvudmeny extends Activity
         upgradeBtn.setOnClickListener(buttonListener);
         settingsBtn.setOnClickListener(buttonListener);
         howToBtn.setOnClickListener(buttonListener);
+
     }
 
     @Override

@@ -1,8 +1,7 @@
 package komaapp.komaprojekt;
 
 import android.app.*;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -39,9 +38,10 @@ public class Upgrades extends Activity
 
         Log.d("TextLog", "Upgrade start\n");
 
-        //Log.d("TextLog", "Filer sparas här: " + getFilesDir());
+        Log.d("TextLog", "Upgrades is saved here: " + getFilesDir());
 
         try { database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
+        catch (FileNotFoundException e) { Log.d("TextLog", "Could not read file!"); }
         catch (IOException e) { e.printStackTrace(); }
 
         ActionBar actionBar = getActionBar();
