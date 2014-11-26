@@ -14,7 +14,6 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSCounter;
 import org.andengine.input.touch.TouchEvent;
@@ -26,8 +25,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-
 import komaapp.komaprojekt.GameLogic.EnemyManager;
+import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
@@ -44,11 +43,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private BitmapTextureAtlas texAtlas;
 
     private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars;
-    private Sprite background_clouds1,background_clouds2, background_stars;
+    private MovingBackground background_clouds1,background_clouds2, background_stars;
 
 
     private Player player;
-    private Sprite background_game;
 
     //ENEMIES
     private EnemyManager enemyManager;
@@ -106,12 +104,16 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
         scene.setOnSceneTouchListener(this);
 
-
         //The background sprite
-        background_clouds1 = new Sprite(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
-        background_clouds2 = new Sprite(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
 
-        background_stars = new Sprite(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
+        background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
+        background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
+
+      //  background_clouds1 = new Sprite(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
+      //  background_clouds2 = new Sprite(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
+
+        background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
+
         scene.attachChild(background_stars);
         scene.attachChild(background_clouds1);
         scene.attachChild(background_clouds2);
@@ -139,10 +141,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 return true;
             }
         };
-
-        scene.attachChild(background_game);
         scene.attachChild(player);
-        scene.attachChild(fpsText);
 
         scene.registerUpdateHandler(new IUpdateHandler()
         {
@@ -156,23 +155,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
                 player.update(v);
 
-                backY1 += v*backgroundSpeed;
-
-                background_clouds1.setY(backY1);
-
-                if(  backY1 > CAMERA_HEIGHT )
-                {
-                    backY1 = -3000;
-                }
-
-                backY2 += v*backgroundSpeed;
-
-                background_clouds2.setY(backY2);
-
-                if(  backY2 > CAMERA_HEIGHT )
-                {
-                    backY2 = -3000;
-                }
+                background_clouds1.updatePosition(v);
+                background_clouds2.updatePosition(v);
 
                 enemyManager.update(currentTime, v);
             }
