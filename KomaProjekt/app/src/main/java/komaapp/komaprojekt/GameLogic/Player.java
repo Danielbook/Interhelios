@@ -22,14 +22,22 @@ public class Player extends Sprite {
     private float maxSpeed;
     private float currentSpeed = 0.0f;
 
+    //DATABASE
+    private int engineLvl;
+    private int gunsLvl;
+    private int shieldLvl;
+
+    private int cash;
+    private int sound;
+    private int music;
+
     ///// INTERFACE
 
     public Player(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int engineLvl)
     {
         super(pX - pTextureRegion.getWidth() / 2, pY - pTextureRegion.getHeight() / 2, pTextureRegion, pVertexBufferObjectManager);
         Log.d("TextLog", "Engine level: " + engineLvl);
-        switch (engineLvl)
-        {
+        switch (engineLvl){
             case 1:{
                 maxSpeed = 200.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);

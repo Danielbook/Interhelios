@@ -83,7 +83,7 @@ public class Upgrades extends Activity
 
     }
 
-    public View.OnClickListener buttonListener = new View.OnClickListener()
+    private View.OnClickListener buttonListener = new View.OnClickListener()
     {
         @Override
         public void onClick(View v)
