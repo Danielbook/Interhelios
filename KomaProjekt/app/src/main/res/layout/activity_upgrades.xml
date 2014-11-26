@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView2"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/upgradesbtnnew"
+        android:background="@drawable/btn_upgrades"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="false"
         android:cropToPadding="false" />
