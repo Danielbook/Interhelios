@@ -1,0 +1,3 @@
+Cash 1000
+Music 5
+Sound 5

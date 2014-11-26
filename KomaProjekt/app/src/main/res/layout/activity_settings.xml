@@ -2,64 +2,75 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ff000000">
 
 
-    <SeekBar
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar2"
+        android:id="@+id/imageView4"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_settings" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="126dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:max="100"
-        android:progress="0"
-                                                />
+        android:layout_below="@+id/imageView4"
+        android:layout_alignParentBottom="true">
 
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar3"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/seekBar2"
-        android:layout_alignEnd="@+id/seekBar2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:max="100"
-        android:progress="0"
-                                                 />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Music"
-        android:id="@+id/textView"
-        android:layout_alignBottom="@+id/seekBar2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="36dp"
-        android:textSize="20dp"
-        android:textColor="#33B5E5"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView5"
+            android:layout_gravity="center"
+            android:background="@drawable/text_music" />
 
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/musicBar"
+            android:max="100"
+            android:progress="0"
+            android:layout_weight="0"
+            android:indeterminate="false"
+            android:layout_gravity="center" />
 
-        />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Sound"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/seekBar3"
-        android:layout_alignLeft="@+id/seekBar3"
-        android:layout_alignStart="@+id/seekBar3"
-        android:textSize="20dp"
-        android:textColor="#33B5E5"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView7"
+            android:layout_gravity="center"
+            android:background="@drawable/text_sound" />
 
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/soundBar"
+            android:max="100"
+            android:progress="0"
+            android:layout_weight="0"
+            android:indeterminate="false" />
 
-        />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
 </RelativeLayout>
