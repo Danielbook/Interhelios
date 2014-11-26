@@ -26,6 +26,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.Player;
 
@@ -36,14 +37,18 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public static  int CAMERA_HEIGHT;
     private float backX = 0, backY1 = 0,backY2= -3000, backgroundSpeed = 100;
 
+
     private Font mFont;
 
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
+
     private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars;
     private Sprite background_clouds1,background_clouds2, background_stars;
 
+
     private Player player;
+    private Sprite background_game;
 
     //ENEMIES
     private EnemyManager enemyManager;
@@ -89,11 +94,13 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
 
+
     }
 
     @Override
     protected Scene onCreateScene()
     {
+
         //Create the scene
         final Scene scene = new Scene();
         //scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
@@ -108,7 +115,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(background_stars);
         scene.attachChild(background_clouds1);
         scene.attachChild(background_clouds2);
-
 
         //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
@@ -134,14 +140,19 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
 
+        scene.attachChild(background_game);
         scene.attachChild(player);
+        scene.attachChild(fpsText);
 
-        scene.registerUpdateHandler(new IUpdateHandler() {
+        scene.registerUpdateHandler(new IUpdateHandler()
+        {
             float currentTime = 0;
 
             @Override
-            public void onUpdate(float v) {
+            public void onUpdate(float v)
+            {
                 currentTime += v;
+
                 fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
                 player.update(v);
 
@@ -188,7 +199,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         {
             player.setIsMoving(false);
         }
-
         return false;
     }
 }
