@@ -45,7 +45,7 @@ public class Upgrades extends Activity
 
         Log.d("TextLog", "Upgrade start\n");
 
-        Log.d("TextLog", "Upgrades is saved here: " + getFilesDir());
+        //Log.d("TextLog", "Upgrades is saved here: " + getFilesDir());
 
         try { database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
         catch (FileNotFoundException e) { Log.d("TextLog", "Could not read file!"); }

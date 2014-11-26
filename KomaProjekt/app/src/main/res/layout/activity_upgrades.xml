@@ -5,14 +5,15 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#ff000000">
+    android:background="#ff000000"
+    android:padding="20dp">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView2"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_upgrades"
+        android:background="@drawable/text_upgrade"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="false"
         android:cropToPadding="false" />
@@ -35,7 +36,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/linearLayout2"
             android:weightSum="1"
             android:layout_weight="1">
@@ -224,17 +225,19 @@
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="NEEED CASH"
-                android:id="@+id/cashBtn" />
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/cashBtn"
+                android:background="@drawable/dollar"
+                android:layout_gravity="center" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/upgrade_back"
-                android:id="@+id/backBtn" />
+                android:id="@+id/backBtn"
+                android:background="@drawable/btn_back"
+                android:layout_gravity="center" />
 
         </LinearLayout>
     </LinearLayout>
