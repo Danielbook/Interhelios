@@ -13,9 +13,6 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.AutoParallaxBackground;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.scene.background.ParallaxBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSCounter;
@@ -26,27 +23,24 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
+public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener  {
 
     private Camera camera;
     private static final int CAMERA_WIDTH = 768;
     private static final int CAMERA_HEIGHT = 1280;
+    private float backX = 0, backY = 0, backgroundSpeed = 100;
+
+
 
     private Font mFont;
 
     //TEXTURES
-    private BitmapTextureAtlas texAtlas, mAutoParallaxBackgroundTexture;
-    private ITextureRegion xWing_tex;
+    private BitmapTextureAtlas texAtlas;
+    private ITextureRegion xWing_tex, background_tex;
     private Player player;
-
-    private AutoParallaxBackground autoParallaxBackground;
-
-    private TextureRegion mParallaxLayerBack;
-    private TextureRegion mParallaxLayerMid;
-    private TextureRegion mParallaxLayerFront;
+    private Sprite background_game;
 
     @Override
     public EngineOptions onCreateEngineOptions()
@@ -68,19 +62,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //GRAPHICS
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-        //Moving Background
-
-        mAutoParallaxBackgroundTexture = new BitmapTextureAtlas(getTextureManager(), 768, 1280, TextureOptions.DEFAULT);
-
-
-        this.mParallaxLayerFront = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAutoParallaxBackgroundTexture, this, "back_layer.png", 0, 0);
-        this.mParallaxLayerBack = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAutoParallaxBackgroundTexture, this, "background1.jpg", 0, 188);
-        this.mParallaxLayerMid = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAutoParallaxBackgroundTexture, this, "background1.jpg", 0, 669);
-        mAutoParallaxBackgroundTexture.load();
-
-        //**************
-        //  this.mEngine.getTextureManager().loadTextures(this.mAutoParallaxBackgroundTexture);
-        //**************
+        //background
+        texAtlas = new BitmapTextureAtlas(getTextureManager(), CAMERA_HEIGHT, CAMERA_WIDTH, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        background_tex= BitmapTextureAtlasTextureRegionFactory.createFromAsset(texAtlas, this, "back_layer.png", 0, 0);
+        texAtlas.load();
 
         //x-wing
         texAtlas = new BitmapTextureAtlas(getTextureManager(), 200, 217, TextureOptions.DEFAULT);
@@ -92,23 +77,24 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     @Override
     protected Scene onCreateScene()
     {
+
         //Create the scene
         final Scene scene = new Scene();
-
-        AutoParallaxBackground autoParallaxBackground = new AutoParallaxBackground(0, 0, 0, 5);
-        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(0.0f, new Sprite(camera.getWidth(), camera.getHeight(), mParallaxLayerFront, this.getVertexBufferObjectManager())));
-        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(-5.0f, new Sprite(camera.getWidth(), camera.getHeight(), mParallaxLayerMid, this.getVertexBufferObjectManager())));
-        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(-10.0f, new Sprite(camera.getWidth(), camera.getHeight(), mParallaxLayerBack, this.getVertexBufferObjectManager())));
-        scene.setBackground(autoParallaxBackground);
-
-
+        background_tex.setTextureWidth(768);
+        background_tex.setTextureHeight(1280);
 
         scene.setOnSceneTouchListener(this);
+
+        background_game = new Sprite(backX, backY, this.background_tex, this.getVertexBufferObjectManager());
 
         //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
         this.mEngine.registerUpdateHandler(fpsCounter);
         final Text fpsText = new Text(10, 10, this.mFont, "FPS: ", "FPS: XXXXX".length(), this.getVertexBufferObjectManager());
+
+        //Instantiate background
+        //background_game = new SpriteBackground()
+
 
         //Instantiate the player object
         player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager())
@@ -124,20 +110,31 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
 
+        scene.attachChild(background_game);
         scene.attachChild(player);
         scene.attachChild(fpsText);
 
-
-
-        scene.registerUpdateHandler(new IUpdateHandler() {
+        scene.registerUpdateHandler(new IUpdateHandler()
+        {
             float currentTime = 0;
 
             @Override
-            public void onUpdate(float v) {
+            public void onUpdate(float v)
+            {
                 currentTime += v;
 
-                fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
+                backY += v*backgroundSpeed;
 
+                background_game.setY(backY);
+
+                if(  backY > CAMERA_HEIGHT )
+                {
+                    backY = 0;
+                }
+
+
+                Log.d("Shit", String.valueOf(backY));
+                fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
                 player.update(v);
             }
 
@@ -163,7 +160,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         {
             player.setIsMoving(false);
         }
-
         return false;
     }
 }
