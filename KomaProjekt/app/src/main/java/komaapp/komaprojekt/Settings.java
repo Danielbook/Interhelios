@@ -39,9 +39,6 @@ public class Settings extends Activity {
 
 
         //Initializing all variables
-        musicText = (TextView)findViewById(R.id.musicText);
-        soundText = (TextView)findViewById(R.id.soundText);
-
         musicSeekBar = (SeekBar)findViewById(R.id.musicBar);
         soundSeekBar = (SeekBar)findViewById(R.id.soundBar);
 
