@@ -62,7 +62,9 @@ public class Database extends Activity
         String line;
         StringTokenizer tokens;
 
-        Log.d("TextLog", "Read files directory: " + ctx.getFilesDir());
+        //Clear the previous used vectors
+        dbSettings.clear();
+        dbUpgrades.clear();
 
         FileInputStream settingsStream = ctx.openFileInput(settingFile);
         BufferedReader settingsReader = new BufferedReader(new InputStreamReader(settingsStream));
@@ -79,8 +81,6 @@ public class Database extends Activity
         FileInputStream upgradesStream = ctx.openFileInput(upgradesFile);
         BufferedReader upgradesReader = new BufferedReader(new InputStreamReader(upgradesStream));
 
-        Log.d("TextLog", "Upgrades size before add: " + dbUpgrades.size());
-
         while ((line = upgradesReader.readLine()) != null) {
             tokens = new StringTokenizer(line, " ");
             String setting = tokens.nextToken();
@@ -89,22 +89,19 @@ public class Database extends Activity
             dbUpgrades.add(new dbUpgrades(setting, val, price));
         }
 
-        Log.d("TextLog", "Upgrades size after add: " + dbUpgrades.size());
         upgradesReader.close();
         upgradesStream.close();
     }
 
     public void writeFile(Context ctx) throws IOException
     {
-        Log.d("TextLog", "Write files directory: " + ctx.getFilesDir());
-
         //Write to settings.txt
         FileOutputStream settingsStream = ctx.openFileOutput(settingFile, MODE_PRIVATE);
         BufferedWriter settingsWriter = new BufferedWriter(new PrintWriter(settingsStream));
 
         for (int i = 0; i < dbSettings.size(); i++)
         {
-            settingsWriter.write("" + dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n");
+            settingsWriter.write(dbSettings.elementAt(i).getSetting() + " " + dbSettings.elementAt(i).getVal() + "\n");
 
         }
         settingsWriter.close();
@@ -116,7 +113,7 @@ public class Database extends Activity
 
         for (int i = 0; i < dbUpgrades.size(); i++)
         {
-            upgradesWriter.write("" + dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n");
+            upgradesWriter.write(dbUpgrades.elementAt(i).getUpgrade() + " " + dbUpgrades.elementAt(i).getLevel() + " " + dbUpgrades.elementAt(i).getPrice() + "\n");
         }
         upgradesWriter.close();
         upgradesStream.close();
@@ -234,7 +231,7 @@ public class Database extends Activity
             {
                 if (dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
                 {
-                    if(dbUpgrades.elementAt(i).getLevel() >= MAX_LEVEL)
+                    if(dbUpgrades.elementAt(i).getLevel() > MAX_LEVEL)
                     {
                         return false;
                     }
