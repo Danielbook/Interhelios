@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView4"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_settings" />
+        android:background="@drawable/text_settings"
+        android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,7 +21,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imageView4"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearLayout5">
 
         <Space
             android:layout_width="match_parent"

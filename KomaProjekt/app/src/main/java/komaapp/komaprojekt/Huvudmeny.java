@@ -23,7 +23,7 @@ public class Huvudmeny extends Activity
     {
         Context ctx = getBaseContext();
 
-        Log.d("TextLog", "App Context: " + ctx);
+        //Log.d("TextLog", "App Context: " + ctx);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
 
