@@ -2,6 +2,8 @@ package komaapp.komaprojekt.GameLogic;
 
 import android.util.Log;
 
+import com.badlogic.gdx.math.Vector2;
+
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -12,8 +14,8 @@ public class WavingEnemy extends BaseEnemy {
     private float waveFrequency, waveAmplitude;
     private float symmetryLineX;
 
-    public WavingEnemy(float spawnX, float spawnY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int ID, float speed, float frequency, float waveAmplitude) {
-        super(spawnX, spawnY, pTextureRegion, pVertexBufferObjectManager, ID, speed);
+    public WavingEnemy(float spawnX, float spawnY, ITextureRegion pTextureRegion, VertexBufferObjectManager VBOmanager, ShotManager shotManager, int ID, float speed, float frequency, float waveAmplitude) {
+        super(spawnX, spawnY, pTextureRegion, VBOmanager, shotManager, ID, speed);
         this.setCenterPosition(spawnX, spawnY);
 
         this.waveFrequency = frequency;
@@ -30,10 +32,28 @@ public class WavingEnemy extends BaseEnemy {
 
         this.setCenterPosition(newX, newY);
         this.setRotation(rotationAngle);
+
+        //SHOOTING
+        this.shootTimer += dt;
+        if (this.shouldFire())
+        {
+            shootTimer = 0.0f;
+            fire();
+        }
     }
 
     @Override
-    void fire() { Log.d("EnemyLog", "Shot fired by ID=" + this.getID()); }
+    void fire() {
+        Log.d("EnemyLog", "Shot fired by ID=" + this.getID());
+
+        //float dirX = -(float)Math.sin(getRotation()*Math.PI/180);
+        //float dirY = (float)Math.cos(getRotation()*Math.PI/180);
+        //Vector2 dir = new Vector2(dirX, dirY);
+
+        Vector2 dir = new Vector2(0, 1);
+
+        this.addShotToShotManager(getCenterX(), getCenterY(), dir, 15f, 60f, 0, 100f, 0);
+    }
 
     @Override
     void destroy() { Log.d("EnemyLog", "ID=" + this.getID() + " destroyed."); }
