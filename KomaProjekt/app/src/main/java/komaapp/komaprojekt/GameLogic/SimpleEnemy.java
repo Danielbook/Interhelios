@@ -2,6 +2,8 @@ package komaapp.komaprojekt.GameLogic;
 
 import android.util.Log;
 
+import com.badlogic.gdx.math.Vector2;
+
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -12,17 +14,32 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 
 public class SimpleEnemy extends BaseEnemy {
-    public SimpleEnemy(float startX, float startY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int ID, float speed) {
-        super(startX, startY, pTextureRegion, pVertexBufferObjectManager, ID, speed);
+    public SimpleEnemy(float startX, float startY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, ShotManager theShotManager, int ID, float speed) {
+        super(startX, startY, pTextureRegion, pVertexBufferObjectManager, theShotManager, ID, speed);
         this.setCenterPosition(startX, startY);
     }
 
     @Override
-    void update(float dt) { this.setCenterPosition(this.getCenterX(), this.getCenterY()+dt*this.getSpeed()); }
+    void update(float dt) {
+        this.setCenterPosition(this.getCenterX(), this.getCenterY()+dt*this.getSpeed());
+        this.shootTimer += dt;
+        if (this.shouldFire())
+        {
+            shootTimer = 0.0f;
+            fire();
+        }
+    }
 
     @Override
-    void fire() { Log.d("EnemyLog", "Shot fired by ID=" + this.getID()); }
+    void fire() {
+        Log.d("EnemyLog", "Shot fired by ID=" + this.getID());
+
+        this.addShotToShotManager(getCenterX(), getCenterY(), new Vector2(0f, 1f), 15f, 60f, 100f, 0, 0);
+    }
 
     @Override
-    void destroy() { Log.d("EnemyLog", "ID=" + this.getID() + " destroyed."); }
+    void destroy() {
+        Log.d("EnemyLog", "ID=" + this.getID() + " destroyed.");
+        this.dispose();
+    }
 }
