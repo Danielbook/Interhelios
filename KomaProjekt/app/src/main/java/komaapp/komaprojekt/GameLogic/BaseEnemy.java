@@ -1,5 +1,9 @@
 package komaapp.komaprojekt.GameLogic;
 
+import android.util.Log;
+
+import com.badlogic.gdx.math.Vector2;
+
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -13,16 +17,31 @@ abstract class BaseEnemy extends Sprite {
 
     private final int ID;
     private final float speed;
+    protected float shootTimer;
 
-    protected BaseEnemy(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int ID, float speed) {
+    private ShotManager shotManagerReference;
+
+    protected BaseEnemy(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, ShotManager theShotManager, int ID, float speed) {
         super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
         this.ID = ID;
         this.speed = speed;
+        this.shootTimer = 0;
+        this.shotManagerReference = theShotManager;
     }
+
+    protected boolean shouldFire() {
+        return (shootTimer > EnemyManager.shootInterval);
+    };
 
     abstract void update(float dt);
     abstract void fire();
     abstract void destroy();
+
+    protected void addShotToShotManager(float pX, float pY, Vector2 direction, float pWidth, float pHeight, final float pRed, final float pGreen, final float pBlue)
+    {
+        shotManagerReference.addShot(pX, pY, direction, pWidth, pHeight, pRed, pGreen, pBlue);
+        Log.d("ShotLog", "enemy with ID=" + ID + " tried to shoot");
+    };
 
     protected int getID() { return this.ID; } // Basic identifying integer, unique for each spawned enemy
     protected float getSpeed() { return this.speed; }

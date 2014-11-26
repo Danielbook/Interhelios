@@ -1,12 +1,14 @@
 package komaapp.komaprojekt;
 
 import android.graphics.Typeface;
+import android.text.method.Touch;
 import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -14,6 +16,7 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSCounter;
 import org.andengine.input.touch.TouchEvent;
@@ -27,6 +30,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.Player;
+import komaapp.komaprojekt.GameLogic.ShotManager;
 import komaapp.komaprojekt.GameLogic.SimpleEnemy;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
@@ -45,6 +49,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     //ENEMIES
     private EnemyManager enemyManager;
+    private ShotManager shotManager;
 
     private ITextureRegion loadITextureRegion(String filename, int width, int height)
     {
@@ -55,6 +60,41 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         texAtlas.load();
 
         return tex;
+    }
+
+    private void createHUD()
+    {
+        HUD hud = new HUD();
+
+        final Sprite mainHud = new Sprite(0, CAMERA_HEIGHT-132, loadITextureRegion("HUD.png", 768, 132),this.getVertexBufferObjectManager() )
+        {
+            public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
+            {
+                return true;
+            };
+        };
+
+        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("button_shoot.png", 96, 96), this.getVertexBufferObjectManager() )
+        {
+            public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
+            {
+                if (touchEvent.isActionDown())
+                {
+                    //SHOOT
+                    Log.d("ShotLog", "Player tried to shoot!");
+                }
+                return true;
+            };
+        };
+
+        hud.registerTouchArea(shootBtn);
+        hud.registerTouchArea(mainHud);
+        hud.attachChild(mainHud);
+        hud.attachChild(shootBtn);
+
+
+        camera.setHUD(hud);
+
     }
 
     @Override
@@ -76,6 +116,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
 
+        createHUD();
+
     }
 
     @Override
@@ -93,7 +135,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(fpsText);
 
         //ENEMY MANAGEMENT
-        this.enemyManager = new EnemyManager(scene, this.getVertexBufferObjectManager() );
+        this.shotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
+        this.enemyManager = new EnemyManager( scene, this.getVertexBufferObjectManager(), this.shotManager );
         enemyManager.addEnemyTexture(loadITextureRegion("tie_sprite_small.png", 200, 257), "tie_fighter");
 
         //Instantiate the player object
@@ -122,6 +165,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 player.update(v);
 
                 enemyManager.update(currentTime, v);
+                shotManager.update(v);
             }
 
             @Override
