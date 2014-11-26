@@ -3,15 +3,22 @@ package komaapp.komaprojekt;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import java.io.*;
-import java.util.*;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 public class Database extends Activity
 {
     private static Vector<dbSettings> dbSettings = new Vector<dbSettings>();
     private static Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
-
-    private final int MAX_LEVEL = 5;
 
     private final static String settingFile = "settings.txt";
     private final static String upgradesFile = "upgrades.txt";
@@ -226,11 +233,13 @@ public class Database extends Activity
     //Called when player chose to buy an upgrade
     public boolean buyUpgrade(String upgrade)
     {
+        final int MAX_LEVEL = 5;
         if (enoughCash(upgrade)) {
             for (int i = 0; i < dbUpgrades.size(); i++)
             {
                 if (dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
                 {
+
                     if(dbUpgrades.elementAt(i).getLevel() > MAX_LEVEL)
                     {
                         return false;

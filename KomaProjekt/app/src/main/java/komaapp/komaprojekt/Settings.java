@@ -1,13 +1,14 @@
 package komaapp.komaprojekt;
 
-import android.app.*;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.*;
 
 import java.io.IOException;
 
@@ -18,9 +19,6 @@ public class Settings extends Activity {
 
     private SeekBar musicSeekBar;
     private SeekBar soundSeekBar;
-
-    private TextView musicText;
-    private TextView soundText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
