@@ -1,6 +1,7 @@
 package komaapp.komaprojekt;
 
 import android.graphics.Typeface;
+import android.util.DisplayMetrics;
 import android.text.method.Touch;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import komaapp.komaprojekt.GameLogic.EnemyManager;
+import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
 import komaapp.komaprojekt.GameLogic.ShotManager;
 import komaapp.komaprojekt.GameLogic.SimpleEnemy;
@@ -36,14 +38,18 @@ import komaapp.komaprojekt.GameLogic.SimpleEnemy;
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
 
     private Camera camera;
-    public static final int CAMERA_WIDTH = 768;
-    public static final int CAMERA_HEIGHT = 1280;
+    public static  int CAMERA_WIDTH;
+    public static  int CAMERA_HEIGHT;
+    private float backX = 0, backY1 = 0,backY2= -3000, backgroundSpeed = 100;
 
     private Font mFont;
 
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
-    private ITextureRegion xWing_tex;
+
+    private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars;
+    private MovingBackground background_clouds1,background_clouds2, background_stars;
+
 
     private Player player;
 
@@ -100,6 +106,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     @Override
     public EngineOptions onCreateEngineOptions()
     {
+        final DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        CAMERA_HEIGHT= displayMetrics.heightPixels;
+        CAMERA_WIDTH= displayMetrics.widthPixels;
+
         camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
@@ -114,6 +126,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
         this.mFont.load();
 
+        background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
+        background_tex_clouds2 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
+
+        background_tex_stars = loadITextureRegion("bkgrnd_stars.png", CAMERA_WIDTH, 3000);
+
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
 
         createHUD();
@@ -125,8 +142,22 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     {
         //Create the scene
         final Scene scene = new Scene();
-        scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+        //scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
         scene.setOnSceneTouchListener(this);
+
+        //The background sprite
+
+        background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
+        background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
+
+      //  background_clouds1 = new Sprite(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
+      //  background_clouds2 = new Sprite(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
+
+        background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
+
+        scene.attachChild(background_stars);
+        scene.attachChild(background_clouds1);
+        scene.attachChild(background_clouds2);
 
         //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
@@ -152,17 +183,22 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 return true;
             }
         };
-
         scene.attachChild(player);
 
-        scene.registerUpdateHandler(new IUpdateHandler() {
+        scene.registerUpdateHandler(new IUpdateHandler()
+        {
             float currentTime = 0;
 
             @Override
-            public void onUpdate(float v) {
+            public void onUpdate(float v)
+            {
                 currentTime += v;
+
                 fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
                 player.update(v);
+
+                background_clouds1.updatePosition(v);
+                background_clouds2.updatePosition(v);
 
                 enemyManager.update(currentTime, v);
                 shotManager.update(v);
@@ -190,7 +226,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         {
             player.setIsMoving(false);
         }
-
         return false;
     }
 }
