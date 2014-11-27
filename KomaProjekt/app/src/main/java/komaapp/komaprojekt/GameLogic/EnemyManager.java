@@ -28,6 +28,7 @@ public class EnemyManager {
     // Reference to the active scene, for attaching enemies to the scene
     private Scene scene;
     private VertexBufferObjectManager VBOmanager;
+    private ShotManager shotManager;
 
     // List of currently active enemies
     private ArrayList<BaseEnemy> enemies;
@@ -36,14 +37,18 @@ public class EnemyManager {
     private float spawnInterval;
     private int enemyCounter;
 
-    public EnemyManager(Scene scene, VertexBufferObjectManager VBOmanager) {
+    //Hard-coded shoot frequency
+    public static final float shootInterval = 0.75f; // 2 seconds
+
+    public EnemyManager(Scene scene, VertexBufferObjectManager VBOmanager, ShotManager shotManager) {
         this.scene = scene;
         this.VBOmanager = VBOmanager;
+        this.shotManager = shotManager;
         enemies = new ArrayList<BaseEnemy>(10);
 
         enemyTextures = new Hashtable<String, ITextureRegion>();
 
-        spawnInterval = 2.0f;
+        spawnInterval = 1.6f;
         enemyCounter = 0;
     }
 
@@ -87,9 +92,9 @@ public class EnemyManager {
         BaseEnemy newEnemy;
 
         if (enemyCounter%4 == 0) {
-            newEnemy = new WavingEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, enemyCounter, (randGen.nextFloat()+0.5f)*speed, 0.02f, 100.0f);
+            newEnemy = new WavingEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, shotManager, enemyCounter, (randGen.nextFloat()+0.5f)*speed, 0.02f, 100.0f);
         }
-        else newEnemy = new SimpleEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, enemyCounter, (randGen.nextFloat()+0.5f)*speed);
+        else newEnemy = new SimpleEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, shotManager, enemyCounter, (randGen.nextFloat()+0.5f)*speed);
 
         enemyCounter++;
 
