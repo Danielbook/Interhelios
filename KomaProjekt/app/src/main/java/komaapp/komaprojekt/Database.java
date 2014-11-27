@@ -259,7 +259,7 @@ public class Database extends Activity
                 if (dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
                 {
 
-                    if(dbUpgrades.elementAt(i).getLevel() > MAX_LEVEL)
+                    if(dbUpgrades.elementAt(i).getLevel() >= MAX_LEVEL)
                     {
                         return false;
                     }

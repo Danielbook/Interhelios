@@ -72,7 +72,7 @@ public class Upgrades extends Activity
         Button cashBtn = (Button)findViewById(R.id.cashBtn);
 
 
-        if(!database.enoughCash("guns") || database.getLvl("guns") > 5){
+        if(!database.enoughCash("guns") || database.getLvl("guns") >= 5){
             gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
         else{
@@ -80,7 +80,7 @@ public class Upgrades extends Activity
         }
 
 
-        if(!database.enoughCash("engine")|| database.getLvl("engine") > 5){
+        if(!database.enoughCash("engine")|| database.getLvl("engine") >= 5){
             engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
         else{
@@ -88,7 +88,7 @@ public class Upgrades extends Activity
         }
 
 
-        if(!database.enoughCash("shield")|| database.getLvl("shield") > 5){
+        if(!database.enoughCash("shield")|| database.getLvl("shield") >= 5){
             shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
         else{
