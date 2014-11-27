@@ -56,6 +56,7 @@ public class Huvudmeny extends Activity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.huvudmeny, menu);
         return true;
     }
@@ -94,7 +95,8 @@ public class Huvudmeny extends Activity
 
             else if (v.getId() == R.id.startBtn)
             {
-                startActivity(new Intent (getApplicationContext(), Game.class));
+                startActivity( new Intent (getApplicationContext(), Launcher.class));
+               // startActivity(new Intent (getApplicationContext(), Game.class));
             }
 
             else if(v.getId() == R.id.howToBtn)

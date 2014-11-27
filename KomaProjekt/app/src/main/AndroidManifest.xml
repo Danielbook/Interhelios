@@ -35,7 +35,11 @@
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            </activity>
+        </activity>
+        <activity
+            android:name=".Launcher"
+            android:label="@string/title_activity_launcher" >
+        </activity>
     </application>
 
 </manifest>

@@ -13,5 +13,7 @@
     <string name="settings_music">Music</string>
     <string name="settings_sound">Sound</string>
     <string name="planet">planet</string>
+    <string name="title_activity_launcher">Launcher</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

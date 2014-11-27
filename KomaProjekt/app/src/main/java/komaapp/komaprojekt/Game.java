@@ -2,7 +2,6 @@ package komaapp.komaprojekt;
 
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
-import android.text.method.Touch;
 import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
@@ -16,7 +15,6 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSCounter;
@@ -33,14 +31,13 @@ import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
 import komaapp.komaprojekt.GameLogic.ShotManager;
-import komaapp.komaprojekt.GameLogic.SimpleEnemy;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
 
     private Camera camera;
     public static  int CAMERA_WIDTH;
     public static  int CAMERA_HEIGHT;
-    private float backX = 0, backY1 = 0,backY2= -3000, backgroundSpeed = 100;
+    private float backX = 0, backY1 = 0,backY2= -3000;
 
     private Font mFont;
 
