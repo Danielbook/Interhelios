@@ -16,13 +16,16 @@
         android:background="@drawable/text_upgrade"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="false"
-        android:cropToPadding="false" />
+        android:cropToPadding="false"
+        android:contentDescription="upgrades_title"
+        android:layout_margin="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView2"
-        android:id="@+id/linearLayout9">
+        android:id="@+id/linearLayout9"
+        android:layout_margin="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +45,8 @@
             android:textColor="#6FCCDC"
             android:layout_gravity="center"
             android:gravity="center_vertical|center_horizontal"
-            android:text="cash" />
+            android:text="cash"
+            android:fontFamily="Space Age" />
     </LinearLayout>
 
     <ScrollView
@@ -51,10 +55,10 @@
         android:id="@+id/scrollView"
         android:layout_below="@+id/linearLayout9"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -65,35 +69,40 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_gravity="center">
 
-                <LinearLayout
+                <RelativeLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|right">
+                    android:layout_gravity="center"
+                    android:weightSum="1">
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/gunsTxt"
                         android:background="@drawable/text_guns"
-                        android:layout_gravity="center"
-                        android:layout_weight="1" />
+                        android:layout_gravity="center|right"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp" />
 
                     <Button
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/gunsBtn"
                         style="@style/AppTheme"
                         android:background="@drawable/btn_buy"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -119,7 +128,8 @@
                         android:textColor="#6FCCDC"
                         android:text="level"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -147,38 +157,45 @@
                         android:text="price"
                         android:textAlignment="center"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_gravity="center">
 
-                <LinearLayout
+                <RelativeLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|right" >
+                    android:layout_gravity="center|right"
+                    android:weightSum="1">
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView6"
                         android:background="@drawable/text_engine"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp" />
 
                     <Button
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/engineBtn"
                         android:background="@drawable/btn_buy"
-                        android:layout_gravity="center" />
-                </LinearLayout>
+                        android:layout_gravity="center"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -204,7 +221,8 @@
                         android:textColor="#6FCCDC"
                         android:text="level"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -231,37 +249,49 @@
                         android:textColor="#6FCCDC"
                         android:text="price"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_gravity="center">
 
-                <LinearLayout
+                <RelativeLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|right" >
+                    android:layout_gravity="center|right"
+                    android:weightSum="1"
+                    android:gravity="start|center_horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView8"
                         android:background="@drawable/text_shield"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:layout_gravity="center"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp" />
 
                     <Button
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/shieldBtn"
-                        android:background="@drawable/btn_buy" />
-                </LinearLayout>
+                        android:background="@drawable/btn_buy"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignWithParentIfMissing="false" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -287,7 +317,8 @@
                         android:textColor="#6FCCDC"
                         android:text="level"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
 
                 </LinearLayout>
 
@@ -315,7 +346,8 @@
                         android:textColor="#6FCCDC"
                         android:text="price"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
 
             </LinearLayout>

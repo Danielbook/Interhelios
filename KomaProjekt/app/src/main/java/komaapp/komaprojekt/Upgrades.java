@@ -4,6 +4,9 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +36,71 @@ public class Upgrades extends Activity
 
         TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
         shieldLvl.setText("" + database.getLvl("shield"));
+
+        //PRICE
+        TextView gunsPrice = (TextView)findViewById(R.id.gunsPrice);
+
+        if(database.getPrice("guns") != -1) {
+            gunsPrice.setText("" + database.getPrice("guns"));
+        }
+        else {
+            gunsPrice.setText("Maxed out!");
+        }
+
+        TextView enginePrice = (TextView)findViewById(R.id.enginePrice);
+        if(database.getPrice("engine") != -1) {
+            enginePrice.setText("" + database.getPrice("engine"));
+        }
+        else{
+            enginePrice.setText("Maxed out!");
+        }
+
+
+        TextView shieldPrice = (TextView)findViewById(R.id.shieldPrice);
+        if(database.getPrice("shield") != -1) {
+            shieldPrice.setText("" + database.getPrice("shield"));
+        }
+        else{
+            shieldPrice.setText("Maxed out!");
+        }
+
+        //Initiate buttons
+        Button gunsBtn = (Button)findViewById(R.id.gunsBtn);
+        Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
+        Button engineBtn = (Button)findViewById(R.id.engineBtn);
+        Button backBtn = (Button)findViewById(R.id.backBtn);
+        Button cashBtn = (Button)findViewById(R.id.cashBtn);
+
+
+        if(!database.enoughCash("guns")){
+            gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
+        }
+        else{
+            gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy));
+        }
+
+
+        if(!database.enoughCash("engine")){
+            engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
+        }
+        else{
+            engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy));
+        }
+
+
+        if(!database.enoughCash("shield")){
+            shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
+        }
+        else{
+            shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy));
+        }
+
+        //Add listeners to all the buttons
+        gunsBtn.setOnClickListener(buttonListener);
+        shieldBtn.setOnClickListener(buttonListener);
+        engineBtn.setOnClickListener(buttonListener);
+        backBtn.setOnClickListener(buttonListener);
+        cashBtn.setOnClickListener(buttonListener);
     }
 
     @Override
@@ -54,33 +122,8 @@ public class Upgrades extends Activity
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        //Initiate buttons
-        Button gunsBtn = (Button)findViewById(R.id.gunsBtn);
-        Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
-        Button engineBtn = (Button)findViewById(R.id.engineBtn);
-        Button backBtn = (Button)findViewById(R.id.backBtn);
-        Button cashBtn = (Button)findViewById(R.id.cashBtn);
-
-        //Add values from the database
-        TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
-        cashTxt.setText("" + database.getCash());
-
-        TextView gunsLvl = (TextView)findViewById(R.id.gunsLvlVal);
-        gunsLvl.setText("" + database.getLvl("guns"));
-
-        TextView engineLvl = (TextView)findViewById(R.id.engineLvlVal);
-        engineLvl.setText("" + database.getLvl("engine"));
-
-        TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
-        shieldLvl.setText("" + database.getLvl("shield"));
-
-        //Add listeners to all the buttons
-        gunsBtn.setOnClickListener(buttonListener);
-        shieldBtn.setOnClickListener(buttonListener);
-        engineBtn.setOnClickListener(buttonListener);
-        backBtn.setOnClickListener(buttonListener);
-        cashBtn.setOnClickListener(buttonListener);
-
+        //Creates all the buttons and text
+        updateTable();
     }
 
     private View.OnClickListener buttonListener = new View.OnClickListener()
