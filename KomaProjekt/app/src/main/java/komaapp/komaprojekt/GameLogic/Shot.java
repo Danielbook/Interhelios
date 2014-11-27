@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import java.util.TimerTask;
-
 /**
  * Created by benjamin on 14-11-26.
  */

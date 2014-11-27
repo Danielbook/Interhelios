@@ -11,7 +11,7 @@ import komaapp.komaprojekt.Game;
  */
 public class MovingBackground extends Sprite
 {
-    private float backX =0, backgroundSpeed = 100;
+    private float backgroundSpeed = 100;
 
     public MovingBackground (float bX, float bY, ITextureRegion bTextureRegion, VertexBufferObjectManager bVertexBufferObjectManager)
     {
@@ -21,7 +21,7 @@ public class MovingBackground extends Sprite
     public void updatePosition(float v)
     {
         this.setY(this.getY() + backgroundSpeed*v);
-        if(  this.getY() > Game.CAMERA_HEIGHT )
+        if( this.getY() > Game.CAMERA_HEIGHT )
         {
             this.setY(-3000);
         }
