@@ -3,10 +3,13 @@ package komaapp.komaprojekt;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
@@ -40,6 +43,9 @@ public class Settings extends Activity {
         musicSeekBar = (SeekBar)findViewById(R.id.musicBar);
         soundSeekBar = (SeekBar)findViewById(R.id.soundBar);
 
+        Button backBtn = (Button)findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(buttonListener);
+
         musicSeekBar.setProgress(database.getVolume("music"));
         soundSeekBar.setProgress(database.getVolume("sound"));
 
@@ -49,6 +55,18 @@ public class Settings extends Activity {
         musicSeekBar.setOnSeekBarChangeListener(seekBarListener);
         soundSeekBar.setOnSeekBarChangeListener(seekBarListener);
     }
+
+    private View.OnClickListener buttonListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            if(v.getId() == R.id.backBtn)
+            {
+                startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
+            }
+        }
+    };
 
     //the seekbar listener - must have all 3 functions that are inside
     public OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener() {

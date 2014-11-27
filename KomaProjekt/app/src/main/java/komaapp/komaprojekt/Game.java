@@ -42,6 +42,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public static  int CAMERA_HEIGHT;
     private float backX = 0, backY1 = 0,backY2= -3000, backgroundSpeed = 100;
 
+
     private Font mFont;
 
     //TEXTURES
@@ -56,6 +57,16 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     //ENEMIES
     private EnemyManager enemyManager;
     private ShotManager shotManager;
+
+    //DATABASE
+    private Database database = new Database();
+    private int engineLvl;
+    private int gunsLvl;
+    private int shieldLvl;
+
+    private int sound;
+    private int music;
+    private int cash;
 
     private ITextureRegion loadITextureRegion(String filename, int width, int height)
     {
@@ -171,7 +182,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         enemyManager.addEnemyTexture(loadITextureRegion("tie_sprite_small.png", 200, 257), "tie_fighter");
 
         //Instantiate the player object
-        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager())
+        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), engineLvl)
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X, float Y)
@@ -216,7 +227,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //if (!touch in HUD)
         if (touchEvent.isActionDown() || touchEvent.isActionMove())
         {
-            Log.d("TextLog", "Screen touched at X=" + touchEvent.getX() + ", Y=" + touchEvent.getY());
             //Execute touch event
             player.setTargetPosition(new Vector2(touchEvent.getX(), touchEvent.getY()));
             player.setIsMoving(true);

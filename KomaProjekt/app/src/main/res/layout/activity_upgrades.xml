@@ -5,95 +5,104 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#ff000000">
+    android:background="#ff000000"
+    android:padding="20dp">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView2"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_upgrades"
+        android:background="@drawable/text_upgrade"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="false"
-        android:cropToPadding="false" />
+        android:cropToPadding="false"
+        android:contentDescription="upgrades_title"
+        android:layout_margin="20dp" />
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:baselineAligned="false"
-        android:layout_below="@+id/imageView2">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:id="@+id/linearLayout9"
+        android:layout_margin="20dp">
 
-        <ImageView
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/cash"
+            android:textColor="#ffffffff"
+            android:textSize="30sp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/text_cash" />
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imageView"
-            android:background="@drawable/space_ship"
-            android:layout_weight="1" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/cashTxt"
+            android:textColor="#6FCCDC"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="cash"
+            android:fontFamily="Space Age" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/linearLayout9"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout2"
-            android:weightSum="1"
-            android:layout_weight="1">
+            android:padding="10dp">
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/cash"
-                    android:textColor="#ffffffff"
-                    android:textSize="30sp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/text_cash" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/cashTxt"
-                    android:textColor="#6FCCDC"
-                    android:layout_gravity="center" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:layout_gravity="center">
 
-                <LinearLayout
+                <RelativeLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|right">
+                    android:layout_gravity="center"
+                    android:weightSum="1">
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/gunsTxt"
                         android:background="@drawable/text_guns"
-                        android:layout_gravity="center"
-                        android:layout_weight="1" />
+                        android:layout_gravity="center|right"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp" />
 
                     <Button
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/gunsBtn"
                         style="@style/AppTheme"
                         android:background="@drawable/btn_buy"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -106,46 +115,87 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:id="@+id/gunsLvlTxt"
-                        android:textColor="#ffffffff"
+                        android:textColor="#6FCCDC"
                         android:textSize="30sp"
-                        android:text="@string/upgrade_level" />
+                        android:text="@string/upgrade_level"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:id="@+id/gunsLvlVal"
+                        android:textColor="#6FCCDC"
+                        android:text="level"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout6" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:id="@+id/gunsLvlVal"
-                        android:textColor="#ffffffff" />
+                        android:id="@+id/textView"
+                        android:textColor="#6FCCDC"
+                        android:textSize="30sp"
+                        android:text="@string/upgrade_price"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:id="@+id/gunsPrice"
+                        android:textColor="#6FCCDC"
+                        android:text="price"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:layout_gravity="center">
 
-                <LinearLayout
+                <RelativeLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|right" >
+                    android:layout_gravity="center|right"
+                    android:weightSum="1">
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView6"
                         android:background="@drawable/text_engine"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp" />
 
                     <Button
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/engineBtn"
                         android:background="@drawable/btn_buy"
-                        android:layout_gravity="center" />
-                </LinearLayout>
+                        android:layout_gravity="center"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -159,44 +209,89 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/upgrade_level"
                         android:id="@+id/engineLvlTxt"
-                        android:textColor="#ffffffff"
-                        android:textSize="30sp" />
+                        android:textColor="#6FCCDC"
+                        android:textSize="30sp"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:id="@+id/engineLvlVal"
+                        android:textColor="#6FCCDC"
+                        android:text="level"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout7" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:id="@+id/engineLvlVal"
-                        android:textColor="#ffffffff" />
+                        android:id="@+id/textView2"
+                        android:textColor="#6FCCDC"
+                        android:textSize="30sp"
+                        android:text="@string/upgrade_price"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:id="@+id/enginePrice"
+                        android:textColor="#6FCCDC"
+                        android:text="price"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:layout_gravity="center">
 
-                <LinearLayout
+                <RelativeLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|right" >
+                    android:layout_gravity="center|right"
+                    android:weightSum="1"
+                    android:gravity="start|center_horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView8"
                         android:background="@drawable/text_shield"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:layout_gravity="center"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp" />
 
                     <Button
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/shieldBtn"
-                        android:background="@drawable/btn_buy" />
-                </LinearLayout>
+                        android:background="@drawable/btn_buy"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignWithParentIfMissing="false" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -210,33 +305,70 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/upgrade_level"
                         android:id="@+id/shieldLvlTxt"
-                        android:textColor="#ffffffff"
-                        android:textSize="30sp" />
+                        android:textColor="#6FCCDC"
+                        android:textSize="30sp"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:id="@+id/shieldLvlVal"
+                        android:textColor="#6FCCDC"
+                        android:text="level"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout8" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:id="@+id/shieldLvlVal"
-                        android:textColor="#ffffffff" />
+                        android:id="@+id/textView4"
+                        android:textColor="#6FCCDC"
+                        android:textSize="30sp"
+                        android:text="@string/upgrade_price"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:id="@+id/shieldPrice"
+                        android:textColor="#6FCCDC"
+                        android:text="price"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:fontFamily="Space Age" />
                 </LinearLayout>
+
             </LinearLayout>
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="NEEED CASH"
-                android:id="@+id/cashBtn" />
+                android:layout_width="91dp"
+                android:layout_height="79dp"
+                android:id="@+id/cashBtn"
+                android:background="@drawable/dollar"
+                android:layout_gravity="center_horizontal" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/upgrade_back"
-                android:id="@+id/backBtn" />
+                android:id="@+id/backBtn"
+                android:background="@drawable/btn_back"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

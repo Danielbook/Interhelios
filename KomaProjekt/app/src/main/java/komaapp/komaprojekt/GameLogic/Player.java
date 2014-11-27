@@ -19,14 +19,51 @@ public class Player extends Sprite {
     private Vector2 targetPosition = new Vector2(0, 0);
     private Vector2 velocity_dir = new Vector2(0, 0);
     private boolean isMoving = false;
-    private float maxSpeed = 600.0f;
+    private float maxSpeed;
     private float currentSpeed = 0.0f;
+
+    //DATABASE
+    private int engineLvl;
+    private int gunsLvl;
+    private int shieldLvl;
+
+    private int cash;
+    private int sound;
+    private int music;
 
     ///// INTERFACE
 
-    public Player(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager)
+    public Player(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int engineLvl)
     {
         super(pX - pTextureRegion.getWidth() / 2, pY - pTextureRegion.getHeight() / 2, pTextureRegion, pVertexBufferObjectManager);
+        Log.d("TextLog", "Engine level: " + engineLvl);
+        switch (engineLvl){
+            case 1:{
+                maxSpeed = 200.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 2:{
+                maxSpeed = 600.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 3:{
+                maxSpeed = 1000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 4:{
+                maxSpeed = 1400.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 5:{
+                maxSpeed = 2000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+        }
     }
 
     public float getCenterX()

@@ -23,6 +23,8 @@ public class Database extends Activity
     private final static String settingFile = "settings.txt";
     private final static String upgradesFile = "upgrades.txt";
 
+    private final int MAX_LEVEL = 5;
+
     //Called when the text files are no where to be found on that fucking
     //piece of shit android device...
     //Creates a "new" player from the shitty files in the assets folder
@@ -178,6 +180,23 @@ public class Database extends Activity
         return 0;
     }
 
+    public int getPrice(String upgrade){
+
+        if(getLvl(upgrade) >= MAX_LEVEL)
+        {
+            return -1;
+        }
+
+        for(int i = 0; i < dbUpgrades.size(); i++)
+        {
+            if(dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
+            {
+                return dbUpgrades.elementAt(i).getPrice();
+            }
+        }
+        return 0;
+    }
+
     //Used when buying upgrades
     public void removeCash(int cash)
     {
@@ -233,7 +252,7 @@ public class Database extends Activity
     //Called when player chose to buy an upgrade
     public boolean buyUpgrade(String upgrade)
     {
-        final int MAX_LEVEL = 5;
+
         if (enoughCash(upgrade)) {
             for (int i = 0; i < dbUpgrades.size(); i++)
             {

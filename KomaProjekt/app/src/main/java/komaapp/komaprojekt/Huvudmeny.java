@@ -49,7 +49,6 @@ public class Huvudmeny extends Activity
         upgradeBtn.setOnClickListener(buttonListener);
         settingsBtn.setOnClickListener(buttonListener);
         howToBtn.setOnClickListener(buttonListener);
-
     }
 
     @Override
@@ -75,9 +74,8 @@ public class Huvudmeny extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-
     //Takes care of the button clicks
-    public View.OnClickListener buttonListener = new View.OnClickListener()
+    private View.OnClickListener buttonListener = new View.OnClickListener()
     {
         @Override
         public void onClick(View v)
