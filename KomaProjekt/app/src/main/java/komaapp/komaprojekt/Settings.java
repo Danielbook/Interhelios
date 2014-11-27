@@ -61,8 +61,7 @@ public class Settings extends Activity {
         @Override
         public void onClick(View v)
         {
-            if(v.getId() == R.id.backBtn)
-            {
+            if(v.getId() == R.id.backBtn){
                 startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
             }
         }

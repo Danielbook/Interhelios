@@ -25,15 +25,23 @@ public class Huvudmeny extends Activity
     {
         Context ctx = getBaseContext();
 
-        //Log.d("TextLog", "App Context: " + ctx);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
 
+        //// TUTORIAL OVERLAY
+        tutorial = (RelativeLayout)findViewById(R.id.tutorialView);
+
         Log.d("TextLog", "App start\n");
 
+        //Tries to read database files
         try{ database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
-            catch (FileNotFoundException e){
-                try { database.newPlayer(ctx); Log.d("TextLog", "New Player"); }
+        //If the files couldnt be found, a new player is created and the tutorial is shown
+        catch (FileNotFoundException e){
+                try {
+                    database.newPlayer(ctx);
+                    tutorial.setVisibility(View.VISIBLE);
+                    Log.d("TextLog", "New Player");
+                }
                 catch (IOException e1) { e1.printStackTrace(); }
         } catch (IOException e) { e.printStackTrace(); }
 
@@ -51,9 +59,6 @@ public class Huvudmeny extends Activity
         upgradeBtn.setOnClickListener(buttonListener);
         settingsBtn.setOnClickListener(buttonListener);
         howToBtn.setOnClickListener(buttonListener);
-
-        //// TUTORIAL OVERLAY
-        tutorial = (RelativeLayout)findViewById(R.id.tutorialView);
 
         Button tutorialBack = (Button)findViewById(R.id.tutorialBack);
         tutorialBack.setOnClickListener(buttonListener);

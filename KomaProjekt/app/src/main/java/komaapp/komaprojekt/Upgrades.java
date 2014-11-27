@@ -25,6 +25,7 @@ public class Upgrades extends Activity
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void updateTable()
     {
+        //Sets the value of all the properties
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
         cashTxt.setText("" + database.getCash());
 
@@ -37,9 +38,10 @@ public class Upgrades extends Activity
         TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
         shieldLvl.setText("" + database.getLvl("shield"));
 
-        //PRICE
+        //Sets the price of all the upgrades
+        //If the price is -1, the player is either at max level, or not
+        //enough money to buy upgrade, sets text accordingly
         TextView gunsPrice = (TextView)findViewById(R.id.gunsPrice);
-
         if(database.getPrice("guns") != -1) {
             gunsPrice.setText("" + database.getPrice("guns"));
         }
@@ -54,7 +56,6 @@ public class Upgrades extends Activity
         else{
             enginePrice.setText("Maxed out!");
         }
-
 
         TextView shieldPrice = (TextView)findViewById(R.id.shieldPrice);
         if(database.getPrice("shield") != -1) {
@@ -71,14 +72,13 @@ public class Upgrades extends Activity
         Button backBtn = (Button)findViewById(R.id.backBtn);
         Button cashBtn = (Button)findViewById(R.id.cashBtn);
 
-
+        //If there is not enough cash or reached max level, make the button red
         if(!database.enoughCash("guns") || database.getLvl("guns") >= 5){
             gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
         else{
             gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
         }
-
 
         if(!database.enoughCash("engine")|| database.getLvl("engine") >= 5){
             engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
@@ -122,7 +122,7 @@ public class Upgrades extends Activity
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        //Creates all the buttons and text
+        //Creates all the buttons, text and updates them according to database
         updateTable();
     }
 
@@ -138,6 +138,7 @@ public class Upgrades extends Activity
                 Log.d("TextLog", "Guns");
                 if( database.buyUpgrade("Guns") )
                 {
+                    //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
@@ -151,6 +152,7 @@ public class Upgrades extends Activity
 
                 if(database.buyUpgrade("Shield"))
                 {
+                    //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
@@ -164,6 +166,7 @@ public class Upgrades extends Activity
 
                 if( database.buyUpgrade("Engine") )
                 {
+                    //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
@@ -175,11 +178,11 @@ public class Upgrades extends Activity
             {
                 database.addCash(500);
 
+                //Write/read to database
                 try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                 try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
                 updateTable();
-
             }
 
             if(v.getId() == R.id.backBtn)

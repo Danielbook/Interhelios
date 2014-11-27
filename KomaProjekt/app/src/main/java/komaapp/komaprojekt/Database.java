@@ -17,12 +17,10 @@ import java.util.Vector;
 
 public class Database extends Activity
 {
-    private static Vector<dbSettings> dbSettings = new Vector<dbSettings>();
-    private static Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
-
     private final static String settingFile = "settings.txt";
     private final static String upgradesFile = "upgrades.txt";
-
+    private static Vector<dbSettings> dbSettings = new Vector<dbSettings>();
+    private static Vector<dbUpgrades> dbUpgrades = new Vector<dbUpgrades>();
     private final int MAX_LEVEL = 5;
 
     //Called when the text files are no where to be found on that fucking
@@ -167,7 +165,7 @@ public class Database extends Activity
         return 0;
     }
 
-    //Returns the level of the input upgrade
+    //Returns the level of the specified upgrade
     public int getLvl(String upgrade)
     {
         for(int i = 0; i < dbUpgrades.size(); i++)
@@ -180,8 +178,8 @@ public class Database extends Activity
         return 0;
     }
 
+    //Returns price of specified upgrade
     public int getPrice(String upgrade){
-
         if(getLvl(upgrade) >= MAX_LEVEL)
         {
             return -1;
@@ -213,8 +211,7 @@ public class Database extends Activity
     }
 
     //Used when player want to get more cash
-    public void addCash(int cash)
-    {
+    public void addCash(int cash){
         int currentCash = getCash();
         currentCash += cash;
 
@@ -243,6 +240,7 @@ public class Database extends Activity
         return false;
     }
 
+    //Make the upgrades more expensive after buying one
     public void addPrice(int i)
     {
         int currentPrice = dbUpgrades.elementAt(i).getPrice();
@@ -250,22 +248,15 @@ public class Database extends Activity
     }
 
     //Called when player chose to buy an upgrade
-    public boolean buyUpgrade(String upgrade)
-    {
-
+    public boolean buyUpgrade(String upgrade){
         if (enoughCash(upgrade)) {
-            for (int i = 0; i < dbUpgrades.size(); i++)
-            {
-                if (dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade))
-                {
-
-                    if(dbUpgrades.elementAt(i).getLevel() >= MAX_LEVEL)
-                    {
+            for (int i = 0; i < dbUpgrades.size(); i++){
+                if (dbUpgrades.elementAt(i).getUpgrade().equalsIgnoreCase(upgrade)){
+                    if(dbUpgrades.elementAt(i).getLevel() >= MAX_LEVEL){
                         return false;
                     }
 
-                    else
-                    {
+                    else{
                         removeCash(dbUpgrades.elementAt(i).getPrice());
                         dbUpgrades.elementAt(i).addLevel();
                         addPrice(i);
