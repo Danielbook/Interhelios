@@ -29,6 +29,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
+import komaapp.komaprojekt.GameLogic.Shot;
 import komaapp.komaprojekt.GameLogic.ShotManager;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
@@ -38,7 +39,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public static final int CAMERA_HEIGHT = 1920;
     private float backX = 0, backY1 = 0,backY2= -3000;
 
-
     private Font mFont;
 
     //TEXTURES
@@ -46,8 +46,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars;
     private MovingBackground background_clouds1,background_clouds2, background_stars;
-
-    private Sprite background_stars_test;
 
     private Player player;
 
@@ -96,6 +94,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 {
                     //SHOOT
                     Log.d("ShotLog", "Player tried to shoot!");
+                    shotManager.addShot(new Shot(player.getCenterX()-player.getWidth()/2, player.getCenterY(), new Vector2(0f, -1f), 15f, 60f, this.getVertexBufferObjectManager(), 100f, 0, 0));
+                    shotManager.addShot(new Shot(player.getCenterX()+player.getWidth()/2, player.getCenterY(), new Vector2(0f, -1f), 15f, 60f, this.getVertexBufferObjectManager(), 100f, 0, 0));
                 }
                 return true;
             };
@@ -133,16 +133,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
         this.mFont.load();
 
-        background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", 1080, 3000);
+        background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", 1200, 3000);
 
-        background_tex_clouds2 = loadITextureRegion("bkgrnd_clouds.png", 1080, 3000);
+        background_tex_clouds2 = loadITextureRegion("bkgrnd_clouds.png", 1200, 3000);
 
-        background_tex_stars = loadITextureRegion("bkgrnd_stars.png", 1080, 3000);
+        background_tex_stars = loadITextureRegion("bkgrnd_stars.png", 1200, 3000);
 
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
 
-        //createHUD();
-
+        createHUD();
     }
 
     @Override
@@ -159,14 +158,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
 
-       // background_stars_test = new Sprite(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
-
-
         scene.attachChild(background_stars);
         scene.attachChild(background_clouds1);
         scene.attachChild(background_clouds2);
-
-        Log.d("Watlog", "" + background_clouds1.getWidth());
 
         //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
@@ -192,6 +186,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 return true;
             }
         };
+
         scene.attachChild(player);
 
         scene.registerUpdateHandler(new IUpdateHandler()
@@ -216,8 +211,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             @Override
             public void reset() {}
         });
-
-
 
         return scene;
     }
