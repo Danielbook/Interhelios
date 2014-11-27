@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class Huvudmeny extends Activity
 {
     private Database database = new Database();
+    private RelativeLayout tutorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,6 +51,12 @@ public class Huvudmeny extends Activity
         upgradeBtn.setOnClickListener(buttonListener);
         settingsBtn.setOnClickListener(buttonListener);
         howToBtn.setOnClickListener(buttonListener);
+
+        //// TUTORIAL OVERLAY
+        tutorial = (RelativeLayout)findViewById(R.id.tutorialView);
+
+        Button tutorialBack = (Button)findViewById(R.id.tutorialBack);
+        tutorialBack.setOnClickListener(buttonListener);
     }
 
     @Override
@@ -85,19 +93,25 @@ public class Huvudmeny extends Activity
                 startActivity(new Intent (getApplicationContext(), Upgrades.class));
             }
 
-            else if (v.getId() == R.id.settingsBtn)
+            if (v.getId() == R.id.settingsBtn)
             {
                 startActivity(new Intent (getApplicationContext(), Settings.class));
             }
 
-            else if (v.getId() == R.id.startBtn)
+            if (v.getId() == R.id.startBtn)
             {
                 startActivity(new Intent (getApplicationContext(), Game.class));
             }
 
-            else if(v.getId() == R.id.howToBtn)
+            if(v.getId() == R.id.howToBtn)
             {
-                Log.d("TextLog", "Inte implementerad än");
+                Log.d("TextLog","How to pushed");
+                tutorial.setVisibility(View.VISIBLE);
+            }
+
+            if(v.getId() == R.id.tutorialBack)
+            {
+                tutorial.setVisibility(View.GONE);
             }
         }
     };

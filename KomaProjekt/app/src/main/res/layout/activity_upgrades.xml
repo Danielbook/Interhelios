@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/gunsBtn"
                         style="@style/AppTheme"
-                        android:background="@drawable/btn_buy"
+                        android:background="@drawable/btn_buy_xml"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true" />
@@ -190,7 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/engineBtn"
-                        android:background="@drawable/btn_buy"
+                        android:background="@drawable/btn_buy_xml"
                         android:layout_gravity="center"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
@@ -284,7 +284,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/shieldBtn"
-                        android:background="@drawable/btn_buy"
+                        android:background="@drawable/btn_buy_xml"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
@@ -365,7 +365,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/backBtn"
-                android:background="@drawable/btn_back"
+                android:background="@drawable/btn_back_xml"
                 android:layout_gravity="center_horizontal" />
 
         </LinearLayout>

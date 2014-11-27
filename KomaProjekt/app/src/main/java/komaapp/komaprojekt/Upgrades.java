@@ -1,9 +1,11 @@
 package komaapp.komaprojekt;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +22,7 @@ public class Upgrades extends Activity
     private Database database = new Database();
 
     //Updates the txt in the tables
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void updateTable()
     {
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
@@ -69,27 +72,27 @@ public class Upgrades extends Activity
         Button cashBtn = (Button)findViewById(R.id.cashBtn);
 
 
-        if(!database.enoughCash("guns")){
+        if(!database.enoughCash("guns") || database.getLvl("guns") > 5){
             gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
         else{
-            gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy));
+            gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
         }
 
 
-        if(!database.enoughCash("engine")){
+        if(!database.enoughCash("engine")|| database.getLvl("engine") > 5){
             engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
         else{
-            engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy));
+            engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
         }
 
 
-        if(!database.enoughCash("shield")){
+        if(!database.enoughCash("shield")|| database.getLvl("shield") > 5){
             shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
         else{
-            shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy));
+            shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
         }
 
         //Add listeners to all the buttons
