@@ -30,6 +30,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':AndEngine')
+    compile project(':andengine')
     compile project(':AndEnginePhysicsBox2DExtension')
 }
