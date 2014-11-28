@@ -106,7 +106,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         hud.attachChild(mainHud);
         hud.attachChild(shootBtn);
 
-
         camera.setHUD(hud);
 
     }
