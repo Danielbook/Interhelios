@@ -108,8 +108,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         hud.attachChild(shootBtn);
 
         camera.setHUD(hud);
-
     }
+
     @Override
     public EngineOptions onCreateEngineOptions()
     {
