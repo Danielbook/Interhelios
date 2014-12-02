@@ -95,8 +95,8 @@ public class Huvudmeny extends Activity
 
             else if (v.getId() == R.id.startBtn)
             {
-                startActivity( new Intent (getApplicationContext(), Launcher.class));
-               // startActivity(new Intent (getApplicationContext(), Game.class));
+              //  startActivity( new Intent (getApplicationContext(), Launcher.class));
+                startActivity(new Intent (getApplicationContext(), Game.class));
             }
 
             else if(v.getId() == R.id.howToBtn)

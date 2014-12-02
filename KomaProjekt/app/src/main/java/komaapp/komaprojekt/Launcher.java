@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 
 public class Launcher extends Activity
 {
-
     private ProgressBar progressBar;
 
     @Override
@@ -41,7 +40,7 @@ public class Launcher extends Activity
 
     private void startGame()
     {
-        startActivity(new Intent (getApplicationContext(), Game.class));
+         startActivity(new Intent(getApplicationContext(), Game.class));
     }
 
     @Override

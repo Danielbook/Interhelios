@@ -3,6 +3,7 @@ package komaapp.komaprojekt;
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -39,14 +40,16 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public static  int CAMERA_HEIGHT;
     private float backX = 0, backY1 = 0,backY2= -3000;
 
+    private Sprite pauseButton;
+
     private Font mFont;
 
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
 
-    private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars;
+    private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars, pause_tex;
     private MovingBackground background_clouds1,background_clouds2, background_stars;
-
+    private RelativeLayout pause;
 
     private Player player;
 
@@ -83,21 +86,16 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    //SHOOT
                     Log.d("ShotLog", "Player tried to shoot!");
                 }
                 return true;
             };
         };
-
         hud.registerTouchArea(shootBtn);
         hud.registerTouchArea(mainHud);
         hud.attachChild(mainHud);
         hud.attachChild(shootBtn);
-
-
         camera.setHUD(hud);
-
     }
 
     @Override
@@ -125,13 +123,13 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
         background_tex_clouds2 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
+        pause_tex = loadITextureRegion("btn_howto.png", 884, 917);
 
         background_tex_stars = loadITextureRegion("bkgrnd_stars.png", CAMERA_WIDTH, 3000);
 
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
 
         createHUD();
-
     }
 
     @Override
@@ -139,17 +137,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     {
         //Create the scene
         final Scene scene = new Scene();
-        //scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
         scene.setOnSceneTouchListener(this);
 
-        //The background sprite
-
+                //The backgrounds
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
         background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
-
-      //  background_clouds1 = new Sprite(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
-      //  background_clouds2 = new Sprite(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
-
         background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
 
         scene.attachChild(background_stars);
@@ -201,9 +193,28 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 shotManager.update(v);
             }
 
+
             @Override
             public void reset() {}
         });
+
+        pause = (RelativeLayout) findViewById(R.id.pauseScreen);
+
+        pauseButton = new Sprite(0, 0, this.pause_tex, this.getVertexBufferObjectManager())
+        {
+            public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
+            {
+                if (touchEvent.isActionDown())
+                {
+                    scene.setIgnoreUpdate(true);
+                    //   pause.setVisibility(View.VISIBLE);
+                    Log.v("shit", "THIS SHOULD PAUSE THE GAME");
+                }
+                return true;
+            };
+        };
+        scene.registerTouchArea(pauseButton);
+        scene.attachChild(pauseButton);
 
         return scene;
     }
@@ -211,7 +222,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     @Override
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
         //if (!touch in HUD)
-        if (touchEvent.isActionDown() || touchEvent.isActionMove())
+         if (touchEvent.isActionDown() || touchEvent.isActionMove())
         {
             Log.d("TextLog", "Screen touched at X=" + touchEvent.getX() + ", Y=" + touchEvent.getY());
             //Execute touch event
@@ -219,7 +230,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             player.setIsMoving(true);
 
             //player.setCenterPosition(touchEvent.getX(),touchEvent.getY());
-        } else if (touchEvent.isActionUp() || touchEvent.isActionOutside())
+        }
+        else if (touchEvent.isActionUp() || touchEvent.isActionOutside())
         {
             player.setIsMoving(false);
         }
