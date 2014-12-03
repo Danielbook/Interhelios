@@ -26,6 +26,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import komaapp.komaprojekt.GameLogic.Collision.CollisionManager;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
@@ -84,7 +85,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
                 return true;
-            };
+            }
         };
 
         final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("button_shoot.png", 96, 96), this.getVertexBufferObjectManager() )
@@ -95,11 +96,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 {
                     //SHOOT
                     Log.d("ShotLog", "Player tried to shoot!");
-                    playerShotManager.addShot(new Shot(player.getCenterX() - player.getWidth() / 2, player.getCenterY(), new Vector2(0f, -1f), 15f, 60f, this.getVertexBufferObjectManager(), 100f, 0, 0));
-                    playerShotManager.addShot(new Shot(player.getCenterX() + player.getWidth() / 2, player.getCenterY(), new Vector2(0f, -1f), 15f, 60f, this.getVertexBufferObjectManager(), 100f, 0, 0));
+                    player.shoot();
                 }
                 return true;
-            };
+            }
         };
 
         hud.registerTouchArea(shootBtn);
@@ -173,8 +173,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.enemyManager = new EnemyManager( scene, this.getVertexBufferObjectManager(), this.enemyShotManager);
         enemyManager.addEnemyTexture(loadITextureRegion("tie_sprite_small.png", 200, 257), "tie_fighter");
 
+        //SHOT MANAGMENT
+        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
+
         //Instantiate the player object
-        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), engineLvl)
+        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), playerShotManager, engineLvl)
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X, float Y)
@@ -186,10 +189,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 return true;
             }
         };
-
-        //SHOT MANAGMENT
-        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
-
         scene.attachChild(player);
 
         scene.registerUpdateHandler(new IUpdateHandler()
@@ -210,6 +209,17 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 enemyManager.update(currentTime, v);
                 enemyShotManager.update(v);
+
+                /* COLLISION DETECTION */
+
+                // 1. Check for collisions between player and enemies
+                CollisionManager.collidePlayerWithEnemies(player, enemyManager);
+
+                // 2. Check for collision between player and enemy shots
+                CollisionManager.collidePlayerWithShots(player, enemyShotManager);
+
+                // 3. Check for collision between enemies and player shots
+                CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
               }
 
             @Override
@@ -226,12 +236,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         {
             //Execute touch event
             player.setTargetPosition(new Vector2(touchEvent.getX(), touchEvent.getY()));
-            player.setIsMoving(true);
+            player.setTouchActive(true);
 
             //player.setCenterPosition(touchEvent.getX(),touchEvent.getY());
         } else if (touchEvent.isActionUp() || touchEvent.isActionOutside())
         {
-            player.setIsMoving(false);
+            player.setTouchActive(false);
         }
         return false;
     }

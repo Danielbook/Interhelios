@@ -20,26 +20,15 @@ public class SimpleEnemy extends BaseEnemy {
     }
 
     @Override
-    void update(float dt) {
+    void updatePosition(float dt)
+    {
         this.setCenterPosition(this.getCenterX(), this.getCenterY()+dt*this.getSpeed());
-        this.shootTimer += dt;
-        if (this.shouldFire())
-        {
-            shootTimer = 0.0f;
-            fire();
-        }
     }
 
     @Override
     void fire() {
-        Log.d("EnemyLog", "Shot fired by ID=" + this.getID());
+        //Log.d("EnemyLog", "Shot fired by ID=" + this.getID());
 
-        this.addShotToShotManager(getCenterX(), getCenterY(), new Vector2(0f, 1f), 15f, 60f, 100f, 0, 0);
-    }
-
-    @Override
-    void destroy() {
-        Log.d("EnemyLog", "ID=" + this.getID() + " destroyed.");
-        this.dispose();
+        this.addShotToShotManager(getCenterX(), getCenterY(), new Vector2(0f, 1f), 15f, 60f, 10f, 100f, 0, 0);
     }
 }
