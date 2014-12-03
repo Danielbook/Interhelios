@@ -48,9 +48,9 @@ public class ShotManager {
         }
     }
 
-    public void addShot(float pX, float pY, Vector2 direction, float pWidth, float pHeight, final float pRed, final float pGreen, final float pBlue)
+    public void addShot(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float speed, final float pRed, final float pGreen, final float pBlue)
     {
-        addShot(new Shot(pX, pY, direction, pWidth, pHeight, VBOmanager, pRed, pGreen, pBlue) );
+        addShot(new Shot(pX, pY, direction, pWidth, pHeight, speed, VBOmanager, pRed, pGreen, pBlue) );
     }
 
     public void addShot(Shot shot)
@@ -58,5 +58,20 @@ public class ShotManager {
         Log.d("ShotLog", "Shot added: X=" + shot.getCenterX() + ", Y=" + shot.getCenterY() );
         shotList.add(shot);
         scene.attachChild(shot);
+    }
+
+    public ArrayList<Shot> getShots()
+    {
+        return this.shotList;
+    }
+
+    public void removeShots(ArrayList<Shot> shotsToRemove) {
+        for (Shot shot : shotsToRemove)
+        {
+            shot.detachSelf();
+            shot.dispose();
+        }
+
+        shotList.removeAll(shotsToRemove);
     }
 }

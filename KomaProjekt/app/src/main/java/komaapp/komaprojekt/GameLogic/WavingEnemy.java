@@ -24,7 +24,8 @@ public class WavingEnemy extends BaseEnemy {
     }
 
     @Override
-    void update(float dt) {
+    void updatePosition(float dt)
+    {
         float newY = this.getCenterY() + this.getSpeed()*dt;
         float offsetX = ( (float)Math.cos( newY * waveFrequency ) ) * waveAmplitude;
         float rotationAngle = (float)Math.sin( newY*waveFrequency)*waveAmplitude*0.025f;
@@ -32,19 +33,11 @@ public class WavingEnemy extends BaseEnemy {
 
         this.setCenterPosition(newX, newY);
         this.setRotation(rotationAngle);
-
-        //SHOOTING
-        this.shootTimer += dt;
-        if (this.shouldFire())
-        {
-            shootTimer = 0.0f;
-            fire();
-        }
     }
 
     @Override
     void fire() {
-        Log.d("EnemyLog", "Shot fired by ID=" + this.getID());
+        //Log.d("EnemyLog", "Shot fired by ID=" + this.getID());
 
         //float dirX = -(float)Math.sin(getRotation()*Math.PI/180);
         //float dirY = (float)Math.cos(getRotation()*Math.PI/180);
@@ -52,9 +45,6 @@ public class WavingEnemy extends BaseEnemy {
 
         Vector2 dir = new Vector2(0, 1);
 
-        this.addShotToShotManager(getCenterX(), getCenterY(), dir, 15f, 60f, 0, 100f, 0);
+        this.addShotToShotManager(getCenterX(), getCenterY(), dir, 15f, 60f, 15f, 0, 0, 100f);
     }
-
-    @Override
-    void destroy() { Log.d("EnemyLog", "ID=" + this.getID() + " destroyed."); }
 }
