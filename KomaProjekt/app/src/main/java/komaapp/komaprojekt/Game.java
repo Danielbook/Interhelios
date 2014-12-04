@@ -29,6 +29,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.color.Color;
 
 import java.io.IOException;
 
@@ -45,7 +46,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public static final int CAMERA_HEIGHT = 1920;
     private float backX = 0, backY1 = 0,backY2= -1920;
 
-
+    public static Text missileTimerText;
+    public static Sprite shootBtn;
     private Font mFont;
 
     //GAME OVER OVERLAY
@@ -103,7 +105,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };*/
 
-        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-363, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
+        shootBtn = new Sprite(24, CAMERA_HEIGHT-363, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
@@ -117,7 +119,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
 
+        Font daFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 512, 512, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 96, Color.WHITE.hashCode());
+        daFont.load();
+
+        missileTimerText = new Text(shootBtn.getX()+shootBtn.getWidth()/2 - 20f, shootBtn.getY()+shootBtn.getHeight()/2 - 20f, daFont, "", 2, this.getVertexBufferObjectManager());
+        missileTimerText.setColor(0f, 20f, 80f);
+
         hud.registerTouchArea(shootBtn);
+        hud.attachChild(missileTimerText);
         //hud.registerTouchArea(mainHud);
         //hud.attachChild(mainHud);
         hud.attachChild(shootBtn);
