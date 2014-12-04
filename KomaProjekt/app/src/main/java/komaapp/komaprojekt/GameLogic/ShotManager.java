@@ -53,6 +53,11 @@ public class ShotManager {
         addShot(new Shot(pX, pY, direction, pWidth, pHeight, speed, VBOmanager, pRed, pGreen, pBlue) );
     }
 
+    public void addMissile(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float initialSpeed, final float pRed, final float pGreen, final float pBlue)
+    {
+        addShot(new Missile(pX, pY, direction, pWidth, pHeight, initialSpeed, VBOmanager, pRed, pGreen, pBlue));
+    }
+
     public void addShot(Shot shot)
     {
         Log.d("ShotLog", "Shot added: X=" + shot.getCenterX() + ", Y=" + shot.getCenterY() );
@@ -69,7 +74,7 @@ public class ShotManager {
         for (Shot shot : shotsToRemove)
         {
             shot.detachSelf();
-            shot.dispose();
+            if (!shot.isDisposed()) shot.dispose();
         }
 
         shotList.removeAll(shotsToRemove);

@@ -55,7 +55,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
 
-    private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars;
+    private ITextureRegion xWing_tex, background_tex_clouds1, background_tex_stars;
     private MovingBackground background_clouds1,background_clouds2, background_stars;
 
     private Player player;
@@ -111,7 +111,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 {
                     //SHOOT
                     Log.d("ShotLog", "Player tried to shoot!");
-                    player.shoot();
+                    player.shootMissile();
                 }
                 return true;
             }

@@ -61,7 +61,7 @@ public class CollisionManager {
 
             for (BaseEnemy enemy : enemyManager.getEnemies())
             {
-                if (enemy != null) // Failsafe
+                if (!enemy.isDisposed() ||!shot.isDisposed()) // Failsafe
                 {
                     if (circleBodiesCollide(shotCircleBody, enemy.getCircleBody()))
                     {
