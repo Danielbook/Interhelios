@@ -95,15 +95,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     {
         HUD hud = new HUD();
 
-        final Sprite mainHud = new Sprite(0, CAMERA_HEIGHT-132, loadITextureRegion("HUD.png", 1200, 132),this.getVertexBufferObjectManager() )
+/*        final Sprite mainHud = new Sprite(0, CAMERA_HEIGHT-132, loadITextureRegion("HUD.png", 1200, 132),this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
                 return true;
             }
-        };
+        };*/
 
-        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
+        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-363, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
@@ -118,8 +118,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         };
 
         hud.registerTouchArea(shootBtn);
-        hud.registerTouchArea(mainHud);
-        hud.attachChild(mainHud);
+        //hud.registerTouchArea(mainHud);
+        //hud.attachChild(mainHud);
         hud.attachChild(shootBtn);
 
         camera.setHUD(hud);
