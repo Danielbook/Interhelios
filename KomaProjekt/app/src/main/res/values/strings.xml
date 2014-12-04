@@ -13,5 +13,6 @@
     <string name="settings_music">Music</string>
     <string name="settings_sound">Sound</string>
     <string name="planet">planet</string>
+    <string name="upgrade_price">Price:</string>
 
 </resources>

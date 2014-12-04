@@ -21,7 +21,7 @@ public class MovingBackground extends Sprite
     public void updatePosition(float v)
     {
         this.setY(this.getY() + backgroundSpeed*v);
-        if(  this.getY() > Game.CAMERA_HEIGHT )
+        if( this.getY() > Game.CAMERA_HEIGHT )
         {
             this.setY(-1920);
         }

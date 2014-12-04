@@ -2,13 +2,14 @@ package komaapp.komaprojekt.GameLogic;
 
 import android.util.Log;
 
+import com.badlogic.gdx.math.Vector2;
+
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import com.badlogic.gdx.math.Vector2;
-
 import komaapp.komaprojekt.Game;
+import komaapp.komaprojekt.GameLogic.Collision.CircleBody;
 
 /**
  * Created by benjamin on 14-11-12.
@@ -16,17 +17,136 @@ import komaapp.komaprojekt.Game;
 
 public class Player extends Sprite {
 
-    private Vector2 targetPosition = new Vector2(0, 0);
+    private ShotManager shotManagerReference;
+    private CircleBody body;
+
+    private Vector2 targetPosition;
     private Vector2 velocity_dir = new Vector2(0, 0);
-    private boolean isMoving = false;
-    private float maxSpeed = 600.0f;
+    private boolean touchActive = false;
+    private float maxSpeed;
     private float currentSpeed = 0.0f;
+
+    public static int health = 15;
+
+    private int damage = 0;
+
 
     ///// INTERFACE
 
-    public Player(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager)
+    public Player(float pX, float pY, ITextureRegion pTextureRegion,
+                  VertexBufferObjectManager pVertexBufferObjectManager,
+                  ShotManager playerShotManager, int gunsLvl ,int engineLvl, int shieldLvl)
     {
         super(pX - pTextureRegion.getWidth() / 2, pY - pTextureRegion.getHeight() / 2, pTextureRegion, pVertexBufferObjectManager);
+        this.body = new CircleBody(CircleBody.calcRadiusFromWidthAndHeight(pTextureRegion.getWidth(), pTextureRegion.getHeight()), this.getCenterX(), this.getCenterY());
+
+        this.shotManagerReference = playerShotManager;
+
+        this.targetPosition = new Vector2(pX, pY);
+
+        setPlayerAttributes(gunsLvl, engineLvl, shieldLvl);
+    }
+
+    public void setPlayerAttributes(int gunsLvl, int engineLvl, int shieldLvl)
+    {
+        Log.d("TextLog", "Guns level: " + gunsLvl);
+        /*switch (gunsLvl)
+        {
+            case 1:
+            {
+                maxSpeed = 200.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 2:
+            {
+                maxSpeed = 600.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 3:
+            {
+                maxSpeed = 1000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 4:
+            {
+                maxSpeed = 1400.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 5:
+            {
+                maxSpeed = 2000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+        }
+*/
+        Log.d("TextLog", "Engine level: " + engineLvl);
+        switch (engineLvl)
+        {
+            case 1:
+            {
+                maxSpeed = 200.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 2:
+            {
+                maxSpeed = 600.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 3:
+            {
+                maxSpeed = 1000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 4:
+            {
+                maxSpeed = 1400.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 5:
+            {
+                maxSpeed = 2000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+        }
+
+        Log.d("TextLog", "Shield level: " + shieldLvl);
+        switch (shieldLvl){
+            case 1:{
+                health = 10;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 2:{
+                health = 15;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 3:{
+                health = 20;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 4:{
+                health = 25;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 5:{
+                health = 30;
+                Log.d("TextLog","Speed: " + health);
+                break;
+            }
+        }
     }
 
     public float getCenterX()
@@ -43,6 +163,8 @@ public class Player extends Sprite {
     {
         return new Vector2(getCenterX(), getCenterY());
     }
+
+    public CircleBody getCircleBody() { return this.body; }
 
     public void setCenterPosition(Vector2 pos)
     {
@@ -82,16 +204,12 @@ public class Player extends Sprite {
         {
             currentSpeed = 0.0f;
             return;
-        } else {
-            if (isMoving) {
-                currentSpeed = maxSpeed + 1.5f * dst;
-                if (currentSpeed * dt > dst) currentSpeed = dst / dt;
-            } else {
-                if (currentSpeed * dt > dst) currentSpeed = dst / dt;
-                else if (currentSpeed > 0.0f) currentSpeed -= dt * maxSpeed;
+        }
+        else
+        {
 
-                if (currentSpeed < 0.0f) currentSpeed = 0.0f;
-            }
+            currentSpeed = 10f*maxSpeed + dst;
+            if (currentSpeed * dt > dst) currentSpeed = dst / dt;
 
             setCenterPosition(getCenterPosition().add(velocity_dir.mul(currentSpeed * dt)));
         }
@@ -99,15 +217,17 @@ public class Player extends Sprite {
 
     private void updateRotation()
     {
-        float newAngle = (velocity_dir.x) * currentSpeed * 0.0004f;
+        float newAngle = (velocity_dir.x) * currentSpeed * 0.001f;
         setRotation(newAngle);
     }
 
     public void update(float dt)
     {
         updatePosition(dt);
-        updateRotation();
-        makeWithinWindow();
+        //updateRotation();
+        //makeWithinWindow();
+
+        this.body.setCenterPosition(this.getCenterX(), this.getCenterY());
 
     }
 
@@ -126,13 +246,32 @@ public class Player extends Sprite {
         targetPosition = targetPos;
     }
 
-    public void setIsMoving(boolean willMove)
+    public void setTouchActive(boolean touchActive)
     {
-        isMoving = willMove;
+        this.touchActive = touchActive;
     }
 
-    public boolean isMoving()
+    public static int getHealth(){ return health; }
+
+    public void shoot()
     {
-        return isMoving;
+        //TODO fix so that the player shoots along its rotational axis?
+        //Vector2 shootDir = new Vector2( (float)(Math.sin(Math.toRadians(getRotation()))), -(float)(Math.cos(Math.toRadians(getRotation()))));
+
+        Vector2 shootDir = new Vector2(0, -1);
+        shotManagerReference.addShot(getCenterX()-getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
+        shotManagerReference.addShot(getCenterX()+getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
+    }
+
+    public void addDamage(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0)
+        {
+            // TODO Player has died, make game quit here
+            this.detachSelf();
+            this.dispose();
+        }
     }
 }

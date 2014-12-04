@@ -1,9 +1,11 @@
 package komaapp.komaprojekt;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,8 +22,10 @@ public class Upgrades extends Activity
     private Database database = new Database();
 
     //Updates the txt in the tables
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void updateTable()
     {
+        //Sets the value of all the properties
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
         cashTxt.setText("" + database.getCash());
 
@@ -33,6 +37,70 @@ public class Upgrades extends Activity
 
         TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
         shieldLvl.setText("" + database.getLvl("shield"));
+
+        //Sets the price of all the upgrades
+        //If the price is -1, the player is either at max level, or not
+        //enough money to buy upgrade, sets text accordingly
+        TextView gunsPrice = (TextView)findViewById(R.id.gunsPrice);
+        if(database.getPrice("guns") != -1) {
+            gunsPrice.setText("" + database.getPrice("guns"));
+        }
+        else {
+            gunsPrice.setText("Maxed out!");
+        }
+
+        TextView enginePrice = (TextView)findViewById(R.id.enginePrice);
+        if(database.getPrice("engine") != -1) {
+            enginePrice.setText("" + database.getPrice("engine"));
+        }
+        else{
+            enginePrice.setText("Maxed out!");
+        }
+
+        TextView shieldPrice = (TextView)findViewById(R.id.shieldPrice);
+        if(database.getPrice("shield") != -1) {
+            shieldPrice.setText("" + database.getPrice("shield"));
+        }
+        else{
+            shieldPrice.setText("Maxed out!");
+        }
+
+        //Initiate buttons
+        Button gunsBtn = (Button)findViewById(R.id.gunsBtn);
+        Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
+        Button engineBtn = (Button)findViewById(R.id.engineBtn);
+        Button backBtn = (Button)findViewById(R.id.backBtn);
+        Button cashBtn = (Button)findViewById(R.id.cashBtn);
+
+        //If there is not enough cash or reached max level, make the button red
+        if(!database.enoughCash("guns") || database.getLvl("guns") >= 5){
+            gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
+        }
+        else{
+            gunsBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
+        }
+
+        if(!database.enoughCash("engine")|| database.getLvl("engine") >= 5){
+            engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
+        }
+        else{
+            engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
+        }
+
+
+        if(!database.enoughCash("shield")|| database.getLvl("shield") >= 5){
+            shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
+        }
+        else{
+            shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
+        }
+
+        //Add listeners to all the buttons
+        gunsBtn.setOnClickListener(buttonListener);
+        shieldBtn.setOnClickListener(buttonListener);
+        engineBtn.setOnClickListener(buttonListener);
+        backBtn.setOnClickListener(buttonListener);
+        cashBtn.setOnClickListener(buttonListener);
     }
 
     @Override
@@ -45,7 +113,7 @@ public class Upgrades extends Activity
 
         Log.d("TextLog", "Upgrade start\n");
 
-        Log.d("TextLog", "Upgrades is saved here: " + getFilesDir());
+        //Log.d("TextLog", "Upgrades is saved here: " + getFilesDir());
 
         try { database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
         catch (FileNotFoundException e) { Log.d("TextLog", "Could not read file!"); }
@@ -54,36 +122,11 @@ public class Upgrades extends Activity
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        //Initiate buttons
-        Button gunsBtn = (Button)findViewById(R.id.gunsBtn);
-        Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
-        Button engineBtn = (Button)findViewById(R.id.engineBtn);
-        Button backBtn = (Button)findViewById(R.id.backBtn);
-        Button cashBtn = (Button)findViewById(R.id.cashBtn);
-
-        //Add values from the database
-        TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
-        cashTxt.setText("" + database.getCash());
-
-        TextView gunsLvl = (TextView)findViewById(R.id.gunsLvlVal);
-        gunsLvl.setText("" + database.getLvl("guns"));
-
-        TextView engineLvl = (TextView)findViewById(R.id.engineLvlVal);
-        engineLvl.setText("" + database.getLvl("engine"));
-
-        TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
-        shieldLvl.setText("" + database.getLvl("shield"));
-
-        //Add listeners to all the buttons
-        gunsBtn.setOnClickListener(buttonListener);
-        shieldBtn.setOnClickListener(buttonListener);
-        engineBtn.setOnClickListener(buttonListener);
-        backBtn.setOnClickListener(buttonListener);
-        cashBtn.setOnClickListener(buttonListener);
-
+        //Creates all the buttons, text and updates them according to database
+        updateTable();
     }
 
-    public View.OnClickListener buttonListener = new View.OnClickListener()
+    private View.OnClickListener buttonListener = new View.OnClickListener()
     {
         @Override
         public void onClick(View v)
@@ -95,6 +138,7 @@ public class Upgrades extends Activity
                 Log.d("TextLog", "Guns");
                 if( database.buyUpgrade("Guns") )
                 {
+                    //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
@@ -108,6 +152,7 @@ public class Upgrades extends Activity
 
                 if(database.buyUpgrade("Shield"))
                 {
+                    //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
@@ -121,6 +166,7 @@ public class Upgrades extends Activity
 
                 if( database.buyUpgrade("Engine") )
                 {
+                    //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
@@ -132,11 +178,11 @@ public class Upgrades extends Activity
             {
                 database.addCash(500);
 
+                //Write/read to database
                 try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                 try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
                 updateTable();
-
             }
 
             if(v.getId() == R.id.backBtn)

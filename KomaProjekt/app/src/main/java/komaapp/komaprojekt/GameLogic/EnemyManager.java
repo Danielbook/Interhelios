@@ -38,9 +38,10 @@ public class EnemyManager {
     private int enemyCounter;
 
     //Hard-coded shoot frequency
-    public static final float shootInterval = 0.75f; // 2 seconds
+    public static final float shootInterval = 0.75f;
 
-    public EnemyManager(Scene scene, VertexBufferObjectManager VBOmanager, ShotManager shotManager) {
+    public EnemyManager(Scene scene, VertexBufferObjectManager VBOmanager, ShotManager shotManager)
+    {
         this.scene = scene;
         this.VBOmanager = VBOmanager;
         this.shotManager = shotManager;
@@ -48,36 +49,34 @@ public class EnemyManager {
 
         enemyTextures = new Hashtable<String, ITextureRegion>();
 
-        spawnInterval = 1.6f;
+        spawnInterval = 2.5f;
         enemyCounter = 0;
     }
 
-    public void update(float currentTime, float dt) {
-        ArrayList<Integer> toRemoveIDs = new ArrayList<Integer>();
+    public void update(float currentTime, float dt)
+    {
+        ArrayList<BaseEnemy> enemiesToRemove = new ArrayList<BaseEnemy>();
 
         //Update each enemy
-        for (int i=0; i<enemies.size(); i++)
+        for (BaseEnemy enemy : enemies)
         {
-            BaseEnemy enemy = enemies.get(i);
-
             //Update the enemy
             enemy.update(dt);
 
             //Check if out of screen
-            if (enemy.getY() - enemy.getHeight()/2 >= Game.CAMERA_HEIGHT) toRemoveIDs.add(i);
+            if (enemy.getY() - enemy.getHeight()/2 >= Game.CAMERA_HEIGHT)
+            {
+                enemiesToRemove.add(enemy);
+                // dispose the memory of enemy
+                enemy.destroy();
+            }
         }
-
-        //Remove enemies too far down
-        for (final Integer ID : toRemoveIDs)
-        {
-            Log.d("EnemyLog", "Will try to remove enemy with ID=" + String.valueOf( ID.intValue() ));
-            removeEnemy(enemies.get(ID));
-        }
+        enemies.removeAll(enemiesToRemove); // Remove all enemies to far down from the arrayList
 
         //Try to spawn enemy
         if (currentTime >= spawnInterval*enemyCounter)
         {
-            float spawnX = randGen.nextInt(Game.CAMERA_WIDTH+1);
+            float spawnX = randGen.nextFloat() * Game.CAMERA_WIDTH;
             float spawnY = -150f;
             float speed = 150 + (randGen.nextFloat()-0.5f)*100;
 
@@ -88,7 +87,8 @@ public class EnemyManager {
     }
 
     // texName is the key in the HashTable enemyTextures for the wanted ITextureRegion
-    public void addEnemy(String texName, float spawnX, float spawnY, float speed) {
+    public void addEnemy(String texName, float spawnX, float spawnY, float speed)
+    {
         BaseEnemy newEnemy;
 
         if (enemyCounter%4 == 0) {
@@ -96,31 +96,41 @@ public class EnemyManager {
         }
         else newEnemy = new SimpleEnemy(spawnX, spawnY, enemyTextures.get(texName), VBOmanager, shotManager, enemyCounter, (randGen.nextFloat()+0.5f)*speed);
 
-        enemyCounter++;
-
         this.enemies.add(newEnemy);
         this.scene.attachChild(newEnemy);
 
-        Log.d("EnemyLog", "Enemy added: textureName=" + texName + " spawnX=" + spawnX + " spawnY=" + spawnY);
+        Log.d("EnemyLog", "Enemy added: textureName=" + texName + " spawnX=" + spawnX + " spawnY=" + spawnY + " ID=" + newEnemy.getID() );
     }
 
     // Remove an enemy, returns true on success and false on failure
-    public boolean removeEnemy(BaseEnemy remEnemy) {
-        this.scene.detachChild(remEnemy);
+    public void removeEnemy(BaseEnemy remEnemy)
+    {
         remEnemy.destroy();
 
         Log.d("EnemyLog", "Enemy removed: ID=" + remEnemy.getID() + " removeX=" + remEnemy.getX() + " removeY=" + remEnemy.getY() );
 
-        return this.enemies.remove(remEnemy);
+        this.enemies.remove(remEnemy);
+    }
+
+    public void removeEnemies(ArrayList<BaseEnemy> enemiesToRemove)
+    {
+        this.enemies.removeAll(enemiesToRemove);
     }
 
     // Set the rate of enemy spawns
-    public void setSpawnInterval(float dt) {
+    public void setSpawnInterval(float dt)
+    {
         this.spawnInterval = dt;
     }
 
     // Method to add a texture to the "library" of enemy textures
-    public void addEnemyTexture(ITextureRegion tex, String textureName) {
+    public void addEnemyTexture(ITextureRegion tex, String textureName)
+    {
         enemyTextures.put(textureName, tex);
+    }
+
+    public final ArrayList<BaseEnemy> getEnemies()
+    {
+        return enemies;
     }
 }
