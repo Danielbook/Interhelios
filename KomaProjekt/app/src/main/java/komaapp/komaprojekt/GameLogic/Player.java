@@ -8,8 +8,6 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import java.util.Vector;
-
 import komaapp.komaprojekt.Game;
 import komaapp.komaprojekt.GameLogic.Collision.CircleBody;
 
@@ -28,11 +26,16 @@ public class Player extends Sprite {
     private float maxSpeed;
     private float currentSpeed = 0.0f;
 
-    private int health = 15;
+    public static int health = 15;
+
+    private int damage = 0;
+
 
     ///// INTERFACE
 
-    public Player(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, ShotManager playerShotManager, int engineLvl)
+    public Player(float pX, float pY, ITextureRegion pTextureRegion,
+                  VertexBufferObjectManager pVertexBufferObjectManager,
+                  ShotManager playerShotManager, int gunsLvl ,int engineLvl, int shieldLvl)
     {
         super(pX - pTextureRegion.getWidth() / 2, pY - pTextureRegion.getHeight() / 2, pTextureRegion, pVertexBufferObjectManager);
         this.body = new CircleBody(CircleBody.calcRadiusFromWidthAndHeight(pTextureRegion.getWidth(), pTextureRegion.getHeight()), this.getCenterX(), this.getCenterY());
@@ -41,31 +44,106 @@ public class Player extends Sprite {
 
         this.targetPosition = new Vector2(pX, pY);
 
-        Log.d("TextLog", "Engine level: " + engineLvl);
-        switch (engineLvl){
-            case 1:{
+        setPlayerAttributes(gunsLvl, engineLvl, shieldLvl);
+    }
+
+    public void setPlayerAttributes(int gunsLvl, int engineLvl, int shieldLvl)
+    {
+        Log.d("TextLog", "Guns level: " + gunsLvl);
+        /*switch (gunsLvl)
+        {
+            case 1:
+            {
                 maxSpeed = 200.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 2:{
+            case 2:
+            {
                 maxSpeed = 600.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 3:{
+            case 3:
+            {
                 maxSpeed = 1000.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 4:{
+            case 4:
+            {
                 maxSpeed = 1400.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 5:{
+            case 5:
+            {
                 maxSpeed = 2000.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+        }
+*/
+        Log.d("TextLog", "Engine level: " + engineLvl);
+        switch (engineLvl)
+        {
+            case 1:
+            {
+                maxSpeed = 200.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 2:
+            {
+                maxSpeed = 600.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 3:
+            {
+                maxSpeed = 1000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 4:
+            {
+                maxSpeed = 1400.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+            case 5:
+            {
+                maxSpeed = 2000.0f;
+                Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+        }
+
+        Log.d("TextLog", "Shield level: " + shieldLvl);
+        switch (shieldLvl){
+            case 1:{
+                health = 10;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 2:{
+                health = 15;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 3:{
+                health = 20;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 4:{
+                health = 25;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 5:{
+                health = 30;
+                Log.d("TextLog","Speed: " + health);
                 break;
             }
         }
@@ -173,6 +251,8 @@ public class Player extends Sprite {
         this.touchActive = touchActive;
     }
 
+    public static int getHealth(){ return health; }
+
     public void shoot()
     {
         //TODO fix so that the player shoots along its rotational axis?
@@ -185,7 +265,7 @@ public class Player extends Sprite {
 
     public void addDamage(int damage)
     {
-        this.health -= damage;
+        health -= damage;
 
         if (health <= 0)
         {

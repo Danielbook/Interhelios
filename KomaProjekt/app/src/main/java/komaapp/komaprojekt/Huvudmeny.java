@@ -75,9 +75,9 @@ public class Huvudmeny extends Activity {
         tutNext = (Button) findViewById(R.id.tutNext);
         tutPrev = (Button) findViewById(R.id.tutPrev);
 
-        tutNext.setOnClickListener(buttonListener);
-        tutPrev.setOnClickListener(buttonListener);
-        tutSkip.setOnClickListener(buttonListener);
+        tutNext.setOnClickListener(tutorialButtonListener);
+        tutPrev.setOnClickListener(tutorialButtonListener);
+        tutSkip.setOnClickListener(tutorialButtonListener);
 
         tutUpdateBtns();
     }
@@ -86,20 +86,19 @@ public class Huvudmeny extends Activity {
     private View.OnClickListener buttonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.upgradeBtn) {
+            if (v.getId() == R.id.upgradeBtn && tutorial.getVisibility() == View.INVISIBLE) {
                 startActivity(new Intent(getApplicationContext(), Upgrades.class));
             }
 
-            if (v.getId() == R.id.settingsBtn) {
+            if (v.getId() == R.id.settingsBtn && tutorial.getVisibility() == View.INVISIBLE) {
                 startActivity(new Intent(getApplicationContext(), Settings.class));
             }
 
-            if (v.getId() == R.id.startBtn) {
+            if (v.getId() == R.id.startBtn && tutorial.getVisibility() == View.INVISIBLE) {
                 startActivity(new Intent(getApplicationContext(), Game.class));
             }
 
-            if (v.getId() == R.id.howToBtn) {
-
+            if (v.getId() == R.id.howToBtn && tutorial.getVisibility() == View.INVISIBLE) {
                 if (tutorial.getVisibility() == View.VISIBLE) {
                     tutorial.setVisibility(View.INVISIBLE);
                 }
@@ -107,32 +106,26 @@ public class Huvudmeny extends Activity {
                     tutorial.setVisibility(View.VISIBLE);
                 }
             }
+        }
+    };
 
+    private View.OnClickListener tutorialButtonListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v) {
             if (v.getId() == R.id.tutSkip) {
-                Log.d("TextLog", "Visibility before: " + tutorial.getVisibility());
-                tutorial.setVisibility(View.GONE);
-                Log.d("TextLog", "Visibility after: " + tutorial.getVisibility());
+                tutorial.setVisibility(View.INVISIBLE);
             }
 
             if (v.getId() == R.id.tutNext) {
-                // If no more View/Child to flip
                 if (viewSwitcher.getDisplayedChild() == 0) {
-
-                    //viewFlipper.setInAnimation(this, R.anim.in_from_left);
-                    //viewFlipper.setOutAnimation(this, R.anim.out_to_right);
-
                     viewSwitcher.showNext();
                     tutUpdateBtns();
                 }
             }
 
             if (v.getId() == R.id.tutPrev) {
-
                 if (viewSwitcher.getDisplayedChild() == 1) {
-
-                    //viewFlipper.setInAnimation(this, R.anim.in_from_right);
-                    //viewFlipper.setOutAnimation(this, R.anim.out_to_left);
-
                     viewSwitcher.showPrevious();
                     tutUpdateBtns();
                 }
@@ -141,12 +134,7 @@ public class Huvudmeny extends Activity {
     };
 
     private void tutUpdateBtns() {
-
         final int first = 0, last = 1;
-
-
-        Log.d("TextLog", "CHILD: " + viewSwitcher.getChildCount());
-
         if (viewSwitcher.getDisplayedChild() == first) {
             tutPrev.setVisibility(View.INVISIBLE);
         } else {

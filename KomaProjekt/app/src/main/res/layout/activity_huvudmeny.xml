@@ -61,7 +61,8 @@
         android:background="#f0131517"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="40dp">
+        android:layout_margin="40dp"
+        android:padding="10dp">
 
         <Button
             style="?android:attr/buttonStyleSmall"

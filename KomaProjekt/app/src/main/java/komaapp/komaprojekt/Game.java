@@ -1,7 +1,11 @@
 package komaapp.komaprojekt;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -26,11 +30,12 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import java.io.IOException;
+
 import komaapp.komaprojekt.GameLogic.Collision.CollisionManager;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
-import komaapp.komaprojekt.GameLogic.Shot;
 import komaapp.komaprojekt.GameLogic.ShotManager;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
@@ -41,6 +46,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private float backX = 0, backY1 = 0,backY2= -3000;
 
     private Font mFont;
+
+    //GAME OVER OVERLAY
+    private RelativeLayout layoutGameOver;
+    private Button btnPlayAgain, btnMainMenu;
 
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
@@ -151,6 +160,29 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         final Scene scene = new Scene();
         scene.setOnSceneTouchListener(this);
 
+        Context ctx = getBaseContext();
+
+        try {
+            database.readFile(ctx);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        gunsLvl = database.getLvl("guns");
+        engineLvl = database.getLvl("engine");
+        shieldLvl = database.getLvl("shield");
+
+        //TODO add an overlay on death, chose to play again or go to main menu?
+        //GAME OVER OVERLAY
+        /*layoutGameOver = (RelativeLayout)findViewById(R.id.gameOver);
+        btnPlayAgain = (Button)findViewById(R.id.btnPlayAgain);
+        btnMainMenu = (Button)findViewById(R.id.btnMainMenu);
+
+        btnPlayAgain.setOnClickListener(gameOverClick);
+        btnMainMenu.setOnClickListener(gameOverClick);
+
+        layoutGameOver.setVisibility(View.GONE);*/
+
         //The background sprite
 
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
@@ -161,6 +193,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(background_stars);
         scene.attachChild(background_clouds1);
         scene.attachChild(background_clouds2);
+
+        //TODO Add current cash in the upper right corner
 
         //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
@@ -177,7 +211,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
 
         //Instantiate the player object
-        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), playerShotManager, engineLvl)
+        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), playerShotManager, gunsLvl, engineLvl, shieldLvl)
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X, float Y)
@@ -220,6 +254,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 // 3. Check for collision between enemies and player shots
                 CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
+
+                if(Player.health == 0)
+                {
+                    startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
+                }
               }
 
             @Override
@@ -228,6 +267,21 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         return scene;
     }
+
+    /*private View.OnClickListener gameOverClick = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            if(v.getId() == R.id.btnPlayAgain)
+            {
+                startActivity(new Intent(getApplicationContext(), Game.class));
+            }
+            if(v.getId() == R.id.btnMainMenu)
+            {
+                startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
+            }
+        }
+    };*/
 
     @Override
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
