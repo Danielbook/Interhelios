@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/AndEnginePhysicsBox2DExtension/AndEnginePhysicsBox2DExtension.iml" filepath="$PROJECT_DIR$/AndEnginePhysicsBox2DExtension/AndEnginePhysicsBox2DExtension.iml" />
       <module fileurl="file://$PROJECT_DIR$/KomaProjekt.iml" filepath="$PROJECT_DIR$/KomaProjekt.iml" />
       <module fileurl="file://$PROJECT_DIR$/andengine/andengine.iml" filepath="$PROJECT_DIR$/andengine/andengine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/andengine/andengine.iml" filepath="$PROJECT_DIR$/andengine/andengine.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
