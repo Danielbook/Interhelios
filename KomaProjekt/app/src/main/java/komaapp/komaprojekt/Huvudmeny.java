@@ -13,9 +13,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
-import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -113,7 +110,7 @@ public class Huvudmeny extends Activity {
                 startActivity(new Intent(getApplicationContext(), Game.class));
             }
 
-            if (v.getId() == R.id.howToBtn && tutorial.getVisibility() == View.INVISIBLE) {
+            if (v.getId() == R.id.howToBtn) {
                 if (tutorial.getVisibility() == View.VISIBLE) {
                     tutorial.setVisibility(View.INVISIBLE);
                 }

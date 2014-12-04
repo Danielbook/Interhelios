@@ -9,8 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.math.Vector2;
 
-import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
@@ -105,7 +103,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
 
-        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("button_shoot.png", 96, 96), this.getVertexBufferObjectManager() )
+        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
@@ -190,11 +188,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         shieldLvl = database.getLvl("shield");
 
         //TODO add an overlay on death, chose to play again or go to main menu?
-
-        btnPlayAgain.setOnClickListener(gameOverClick);
-        btnMainMenu.setOnClickListener(gameOverClick);
-
-        layoutGameOver.setVisibility(View.GONE);*/
 
         //The background sprite
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
