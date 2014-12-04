@@ -1,7 +1,11 @@
 package komaapp.komaprojekt;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -26,6 +30,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import java.io.IOException;
+
 import komaapp.komaprojekt.GameLogic.Collision.CollisionManager;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
@@ -37,9 +43,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Camera camera;
     public static final int CAMERA_WIDTH = 1200;
     public static final int CAMERA_HEIGHT = 1920;
-    private float backX = 0, backY1 = 0,backY2= -3000;
+    private float backX = 0, backY1 = 0,backY2= -1920;
+
 
     private Font mFont;
+
+    //GAME OVER OVERLAY
+    private RelativeLayout layoutGameOver;
+    private Button btnPlayAgain, btnMainMenu;
 
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
@@ -50,12 +61,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Player player;
     private ShotManager playerShotManager;
 
+    Context ctx;
+
     //ENEMIES
     private EnemyManager enemyManager;
     private ShotManager enemyShotManager;
 
     //DATABASE
-    private Database database = new Database();
+    public static Database database = new Database();
     private int engineLvl;
     private int gunsLvl;
     private int shieldLvl;
@@ -63,6 +76,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private int sound;
     private int music;
     private int cash;
+
+    //Music and sounds
+    //private Music music;
 
     private ITextureRegion loadITextureRegion(String filename, int width, int height)
     {
@@ -79,7 +95,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     {
         HUD hud = new HUD();
 
-        final Sprite mainHud = new Sprite(0, CAMERA_HEIGHT-132, loadITextureRegion("HUD.png", 768, 132),this.getVertexBufferObjectManager() )
+        final Sprite mainHud = new Sprite(0, CAMERA_HEIGHT-132, loadITextureRegion("HUD.png", 1200, 132),this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
@@ -87,7 +103,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
 
-        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("button_shoot.png", 96, 96), this.getVertexBufferObjectManager() )
+        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
@@ -112,16 +128,17 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     @Override
     public EngineOptions onCreateEngineOptions()
     {
-        //final DisplayMetrics displayMetrics = new DisplayMetrics();
-       // this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        /*final DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-       // CAMERA_HEIGHT= displayMetrics.heightPixels;
-        //CAMERA_WIDTH= displayMetrics.widthPixels;
+        CAMERA_HEIGHT= displayMetrics.heightPixels;
+        CAMERA_WIDTH= displayMetrics.widthPixels;*/
 
         camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
         LimitedFPSEngine engine = new LimitedFPSEngine(engineOptions, 60);
+        //engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
         return engine.getEngineOptions();
     }
 
@@ -132,12 +149,23 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
         this.mFont.load();
 
-        background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
-        background_tex_stars = loadITextureRegion("bkgrnd_stars.png", CAMERA_WIDTH, 3000);
+        background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", 1200, 1920);
+        background_tex_stars = loadITextureRegion("bkgrnd_stars.png", 1200, 1920);
 
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
 
         createHUD();
+
+        //Music and sounds
+        /*try{
+            music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/Presenterator.ogg");
+            music.setLooping(true);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }*/
+       //music.play();
+
     }
 
     @Override
@@ -147,8 +175,21 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         final Scene scene = new Scene();
         scene.setOnSceneTouchListener(this);
 
-        //The background sprite
+        ctx = getBaseContext();
 
+        try {
+            database.readFile(ctx);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        gunsLvl = database.getLvl("guns");
+        engineLvl = database.getLvl("engine");
+        shieldLvl = database.getLvl("shield");
+
+        //TODO add an overlay on death, chose to play again or go to main menu?
+
+        //The background sprite
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
         background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds1, this.getVertexBufferObjectManager());
 
@@ -157,6 +198,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(background_stars);
         scene.attachChild(background_clouds1);
         scene.attachChild(background_clouds2);
+
+        //TODO Add current cash in the upper right corner
 
         //FPS setup
         final FPSCounter fpsCounter = new FPSCounter();
@@ -173,7 +216,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
 
         //Instantiate the player object
-        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), playerShotManager, engineLvl)
+        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), playerShotManager, gunsLvl, engineLvl, shieldLvl)
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X, float Y)
@@ -216,11 +259,25 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 // 3. Check for collision between enemies and player shots
                 CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
+
+                //DO SOMETHING IF PLAYER DIES
+                if(Player.health <= 0)
+                {
+                    try {
+                        database.writeFile(ctx);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
+                }
               }
 
             @Override
             public void reset() {}
         });
+
+        //this.music.play();
 
         return scene;
     }

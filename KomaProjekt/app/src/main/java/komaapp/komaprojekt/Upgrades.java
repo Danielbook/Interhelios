@@ -213,4 +213,7 @@ public class Upgrades extends Activity
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void onBackPressed() {
+    }
 }

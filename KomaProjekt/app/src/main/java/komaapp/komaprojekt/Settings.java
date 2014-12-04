@@ -116,6 +116,9 @@ public class Settings extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void onBackPressed() {
+    }
 }
 
 

@@ -26,11 +26,20 @@ public class Player extends Sprite {
     private float maxSpeed;
     private float currentSpeed = 0.0f;
 
-    private int health = 15;
+    private float shootTimer;
+
+    private float shootInterval;
+
+    public static int health = 15;
+
+    private int damage = 0;
+
 
     ///// INTERFACE
 
-    public Player(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, ShotManager playerShotManager, int engineLvl)
+    public Player(float pX, float pY, ITextureRegion pTextureRegion,
+                  VertexBufferObjectManager pVertexBufferObjectManager,
+                  ShotManager playerShotManager, int gunsLvl ,int engineLvl, int shieldLvl)
     {
         super(pX - pTextureRegion.getWidth() / 2, pY - pTextureRegion.getHeight() / 2, pTextureRegion, pVertexBufferObjectManager);
         this.body = new CircleBody(CircleBody.calcRadiusFromWidthAndHeight(pTextureRegion.getWidth(), pTextureRegion.getHeight()), this.getCenterX(), this.getCenterY());
@@ -39,31 +48,106 @@ public class Player extends Sprite {
 
         this.targetPosition = new Vector2(pX, pY);
 
+        setPlayerAttributes(gunsLvl, engineLvl, shieldLvl);
+    }
+
+    public void setPlayerAttributes(int gunsLvl, int engineLvl, int shieldLvl)
+    {
+        Log.d("TextLog", "Guns level: " + gunsLvl);
+        switch (gunsLvl)
+        {
+            case 1:
+            {
+                shootInterval = 0.50f;
+                Log.d("TextLog","Guns: " + shootInterval);
+                break;
+            }
+            case 2:
+            {
+                shootInterval = 0.40f;
+                Log.d("TextLog","Guns: " + shootInterval);
+                break;
+            }
+            case 3:
+            {
+                shootInterval = 0.30f;
+                Log.d("TextLog","Guns: " + shootInterval);
+                break;
+            }
+            case 4:
+            {
+                shootInterval = 0.20f;
+                Log.d("TextLog","Guns: " + shootInterval);
+                break;
+            }
+            case 5:
+            {
+                shootInterval = 0.10f;
+                Log.d("TextLog","Guns: " + shootInterval);
+                break;
+            }
+        }
+
         Log.d("TextLog", "Engine level: " + engineLvl);
-        switch (engineLvl){
-            case 1:{
+        switch (engineLvl)
+        {
+            case 1:
+            {
                 maxSpeed = 200.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 2:{
+            case 2:
+            {
                 maxSpeed = 600.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 3:{
+            case 3:
+            {
                 maxSpeed = 1000.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 4:{
+            case 4:
+            {
                 maxSpeed = 1400.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
-            case 5:{
+            case 5:
+            {
                 maxSpeed = 2000.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
+                break;
+            }
+        }
+
+        Log.d("TextLog", "Shield level: " + shieldLvl);
+        switch (shieldLvl){
+            case 1:{
+                health = 10;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 2:{
+                health = 15;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 3:{
+                health = 20;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 4:{
+                health = 25;
+                Log.d("TextLog","Shield: " + health);
+                break;
+            }
+            case 5:{
+                health = 30;
+                Log.d("TextLog","Speed: " + health);
                 break;
             }
         }
@@ -141,14 +225,24 @@ public class Player extends Sprite {
         setRotation(newAngle);
     }
 
+    protected boolean shouldFire() {
+        return (shootTimer > shootInterval);
+    }
+
     public void update(float dt)
     {
         updatePosition(dt);
         //updateRotation();
         //makeWithinWindow();
 
-        this.body.setCenterPosition(this.getCenterX(), this.getCenterY());
+        this.shootTimer += dt;
+        if (this.shouldFire())
+        {
+            shootTimer = 0.0f;
+            shoot();
+        }
 
+        this.body.setCenterPosition(this.getCenterX(), this.getCenterY());
     }
 
     public void setVelocityDirection(Vector2 vec)
@@ -167,6 +261,8 @@ public class Player extends Sprite {
     {
         this.touchActive = touchActive;
     }
+
+    public static int getHealth(){ return health; }
 
     public void shoot()
     {
@@ -187,7 +283,7 @@ public class Player extends Sprite {
 
     public void addDamage(int damage)
     {
-        this.health -= damage;
+        health -= damage;
 
         if (health <= 0)
         {

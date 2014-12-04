@@ -4,6 +4,7 @@ import org.andengine.util.IDisposable.AlreadyDisposedException;
 
 import java.util.ArrayList;
 
+import komaapp.komaprojekt.Game;
 import komaapp.komaprojekt.GameLogic.BaseEnemy;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.Player;
@@ -42,6 +43,7 @@ public class CollisionManager {
                 }
 
                 //TODO make game quit here
+                Player.health = 0;
             }
         }
         enemies.removeAll(enemiesToRemove); // Remove all enemies colliding with the player
@@ -66,7 +68,10 @@ public class CollisionManager {
                         // Affect enemy
                         try
                         {
-                            if (enemy.addDamage(shot.damage)) enemiesToRemove.add(enemy); // If destroyed, add to list to remove
+                            if (enemy.addDamage(shot.damage)) {
+                                enemiesToRemove.add(enemy); // If destroyed, add to list to remove
+                                Game.database.addCash(100);
+                            }
                         }
                         catch (AlreadyDisposedException e)
                         {
