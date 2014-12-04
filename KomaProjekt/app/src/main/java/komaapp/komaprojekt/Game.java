@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -51,10 +49,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Font mFont;
     private Font cashFont;
 
-    //GAME OVER OVERLAY
-    private RelativeLayout layoutGameOver;
-    private Button btnPlayAgain, btnMainMenu;
-
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
 
@@ -80,7 +74,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     private int sound;
     private int music;
-    private int cash;
 
     //Music and sounds
     //private Music music;
