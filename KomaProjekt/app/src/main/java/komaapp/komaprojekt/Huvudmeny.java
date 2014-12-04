@@ -188,8 +188,7 @@ public class Huvudmeny extends Activity
 
     public void onBackPressed() {
     }
-}
-
+    /*
     //Takes care of the button clicks
     public View.OnClickListener buttonListener = new View.OnClickListener()
     {
@@ -218,4 +217,5 @@ public class Huvudmeny extends Activity
             }
         }
     };
+    */
 }

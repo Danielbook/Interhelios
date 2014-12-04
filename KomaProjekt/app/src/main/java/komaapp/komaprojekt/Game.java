@@ -158,7 +158,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         resume_tex = loadITextureRegion("btn_resume.png",632, 306 );
         restart_tex = loadITextureRegion("btn_restart.png",632, 306 );
-       quit_tex = loadITextureRegion("btn_quit.png",632, 306 );
+        quit_tex = loadITextureRegion("btn_quit.png",632, 306 );
+        pause_tex = loadITextureRegion("btn_pause.png", 146, 146);
 
         background_tex_stars = loadITextureRegion("bkgrnd_stars.png", CAMERA_WIDTH, 3000);
 
