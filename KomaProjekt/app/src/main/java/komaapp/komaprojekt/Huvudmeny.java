@@ -167,6 +167,9 @@ public class Huvudmeny extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void onBackPressed() {
+    }
 }
 
 

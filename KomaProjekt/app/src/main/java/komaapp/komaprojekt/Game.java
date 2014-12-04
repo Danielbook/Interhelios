@@ -11,14 +11,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSCounter;
 import org.andengine.input.touch.TouchEvent;
@@ -60,12 +58,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Player player;
     private ShotManager playerShotManager;
 
+    Context ctx;
+
     //ENEMIES
     private EnemyManager enemyManager;
     private ShotManager enemyShotManager;
 
     //DATABASE
-    private Database database = new Database();
+    public static Database database = new Database();
     private int engineLvl;
     private int gunsLvl;
     private int shieldLvl;
@@ -83,40 +83,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         texAtlas.load();
 
         return tex;
-    }
-
-    private void createHUD()
-    {
-        HUD hud = new HUD();
-
-        final Sprite mainHud = new Sprite(0, CAMERA_HEIGHT-132, loadITextureRegion("HUD.png", 768, 132),this.getVertexBufferObjectManager() )
-        {
-            public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
-            {
-                return true;
-            }
-        };
-
-        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-108, loadITextureRegion("button_shoot.png", 96, 96), this.getVertexBufferObjectManager() )
-        {
-            public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
-            {
-                if (touchEvent.isActionDown())
-                {
-                    //SHOOT
-                    Log.d("ShotLog", "Player tried to shoot!");
-                    player.shoot();
-                }
-                return true;
-            }
-        };
-
-        hud.registerTouchArea(shootBtn);
-        hud.registerTouchArea(mainHud);
-        hud.attachChild(mainHud);
-        hud.attachChild(shootBtn);
-
-        camera.setHUD(hud);
     }
 
     @Override
@@ -149,8 +115,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         background_tex_stars = loadITextureRegion("bkgrnd_stars.png", CAMERA_WIDTH, 3000);
 
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
-
-        createHUD();
     }
 
     @Override
@@ -160,7 +124,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         final Scene scene = new Scene();
         scene.setOnSceneTouchListener(this);
 
-        Context ctx = getBaseContext();
+        ctx = getBaseContext();
 
         try {
             database.readFile(ctx);
@@ -173,18 +137,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         shieldLvl = database.getLvl("shield");
 
         //TODO add an overlay on death, chose to play again or go to main menu?
-        //GAME OVER OVERLAY
-        /*layoutGameOver = (RelativeLayout)findViewById(R.id.gameOver);
-        btnPlayAgain = (Button)findViewById(R.id.btnPlayAgain);
-        btnMainMenu = (Button)findViewById(R.id.btnMainMenu);
-
-        btnPlayAgain.setOnClickListener(gameOverClick);
-        btnMainMenu.setOnClickListener(gameOverClick);
-
-        layoutGameOver.setVisibility(View.GONE);*/
 
         //The background sprite
-
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
         background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
 
@@ -255,8 +209,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 // 3. Check for collision between enemies and player shots
                 CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
 
-                if(Player.health == 0)
+                //DO SOMETHING IF PLAYER DIES
+                if(Player.health <= 0)
                 {
+                    try {
+                        database.writeFile(ctx);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
                 }
               }
@@ -264,24 +225,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             @Override
             public void reset() {}
         });
-
         return scene;
     }
-
-    /*private View.OnClickListener gameOverClick = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            if(v.getId() == R.id.btnPlayAgain)
-            {
-                startActivity(new Intent(getApplicationContext(), Game.class));
-            }
-            if(v.getId() == R.id.btnMainMenu)
-            {
-                startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
-            }
-        }
-    };*/
 
     @Override
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {

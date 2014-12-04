@@ -26,6 +26,10 @@ public class Player extends Sprite {
     private float maxSpeed;
     private float currentSpeed = 0.0f;
 
+    private float shootTimer;
+
+    private float shootInterval;
+
     public static int health = 15;
 
     private int damage = 0;
@@ -50,40 +54,40 @@ public class Player extends Sprite {
     public void setPlayerAttributes(int gunsLvl, int engineLvl, int shieldLvl)
     {
         Log.d("TextLog", "Guns level: " + gunsLvl);
-        /*switch (gunsLvl)
+        switch (gunsLvl)
         {
             case 1:
             {
-                maxSpeed = 200.0f;
-                Log.d("TextLog","Speed: " + maxSpeed);
+                shootInterval = 0.50f;
+                Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 2:
             {
-                maxSpeed = 600.0f;
-                Log.d("TextLog","Speed: " + maxSpeed);
+                shootInterval = 0.40f;
+                Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 3:
             {
-                maxSpeed = 1000.0f;
-                Log.d("TextLog","Speed: " + maxSpeed);
+                shootInterval = 0.30f;
+                Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 4:
             {
-                maxSpeed = 1400.0f;
-                Log.d("TextLog","Speed: " + maxSpeed);
+                shootInterval = 0.20f;
+                Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 5:
             {
-                maxSpeed = 2000.0f;
-                Log.d("TextLog","Speed: " + maxSpeed);
+                shootInterval = 0.10f;
+                Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
         }
-*/
+
         Log.d("TextLog", "Engine level: " + engineLvl);
         switch (engineLvl)
         {
@@ -208,7 +212,7 @@ public class Player extends Sprite {
         else
         {
 
-            currentSpeed = 10f*maxSpeed + dst;
+            currentSpeed = maxSpeed + dst;
             if (currentSpeed * dt > dst) currentSpeed = dst / dt;
 
             setCenterPosition(getCenterPosition().add(velocity_dir.mul(currentSpeed * dt)));
@@ -221,14 +225,24 @@ public class Player extends Sprite {
         setRotation(newAngle);
     }
 
+    protected boolean shouldFire() {
+        return (shootTimer > shootInterval);
+    }
+
     public void update(float dt)
     {
         updatePosition(dt);
         //updateRotation();
         //makeWithinWindow();
 
-        this.body.setCenterPosition(this.getCenterX(), this.getCenterY());
+        this.shootTimer += dt;
+        if (this.shouldFire())
+        {
+            shootTimer = 0.0f;
+            shoot();
+        }
 
+        this.body.setCenterPosition(this.getCenterX(), this.getCenterY());
     }
 
     public void setVelocityDirection(Vector2 vec)
