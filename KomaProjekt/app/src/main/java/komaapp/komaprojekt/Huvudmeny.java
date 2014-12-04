@@ -11,13 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Huvudmeny extends Activity
 {
     private Database database = new Database();
-
+    //private Music music;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -50,6 +53,15 @@ public class Huvudmeny extends Activity
         settingsBtn.setOnClickListener(buttonListener);
         howToBtn.setOnClickListener(buttonListener);
 
+        /*try{
+            music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/Presenterator.ogg");
+            music.setLooping(true);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }*/
+
+        //music.play();
     }
 
     @Override
