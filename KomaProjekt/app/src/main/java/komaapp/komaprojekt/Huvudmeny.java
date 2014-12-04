@@ -13,11 +13,16 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Huvudmeny extends Activity {
     private Database database = new Database();
+
+    //private Music music;
     private RelativeLayout tutorial;
     private ViewSwitcher viewSwitcher;
     private Button tutSkip, tutNext, tutPrev;
@@ -70,6 +75,16 @@ public class Huvudmeny extends Activity {
         upgradeBtn.setOnClickListener(buttonListener);
         settingsBtn.setOnClickListener(buttonListener);
         howToBtn.setOnClickListener(buttonListener);
+
+        /*try{
+            music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/Presenterator.ogg");
+            music.setLooping(true);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }*/
+
+        //music.play();
 
         tutSkip = (Button) findViewById(R.id.tutSkip);
         tutNext = (Button) findViewById(R.id.tutNext);

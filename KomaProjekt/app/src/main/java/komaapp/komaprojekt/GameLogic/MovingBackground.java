@@ -23,7 +23,7 @@ public class MovingBackground extends Sprite
         this.setY(this.getY() + backgroundSpeed*v);
         if( this.getY() > Game.CAMERA_HEIGHT )
         {
-            this.setY(-3000);
+            this.setY(-1920);
         }
     }
 }
