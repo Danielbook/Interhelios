@@ -43,7 +43,7 @@ public class CollisionManager {
                 }
 
                 //TODO make game quit here
-                Player.health = 0;
+                Player.shield = 0;
             }
         }
         enemies.removeAll(enemiesToRemove); // Remove all enemies colliding with the player

@@ -20,7 +20,6 @@ import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.entity.util.FPSCounter;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -29,6 +28,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.color.Color;
 
 import java.io.IOException;
 
@@ -47,6 +47,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
 
     private Font mFont;
+    private Font cashFont;
 
     //GAME OVER OVERLAY
     private RelativeLayout layoutGameOver;
@@ -61,7 +62,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Player player;
     private ShotManager playerShotManager;
 
-    Context ctx;
+    private Context ctx;
 
     //ENEMIES
     private EnemyManager enemyManager;
@@ -86,6 +87,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         texAtlas = new BitmapTextureAtlas(getTextureManager(), width, height, TextureOptions.DEFAULT);
         ITextureRegion tex = BitmapTextureAtlasTextureRegionFactory.createFromAsset(texAtlas, this, filename, 0, 0);
+
         texAtlas.load();
 
         return tex;
@@ -103,7 +105,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };*/
 
-        final Sprite shootBtn = new Sprite(24, CAMERA_HEIGHT-363, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
+        final Sprite shootBtn = new Sprite(25, CAMERA_HEIGHT-200, loadITextureRegion("btn_rocket_small.png", 200,200), this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
@@ -149,6 +151,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
         this.mFont.load();
 
+        this.cashFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48, Color.WHITE.hashCode());
+        this.cashFont.load();
+
         background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", 1200, 1920);
         background_tex_stars = loadITextureRegion("bkgrnd_stars.png", 1200, 1920);
 
@@ -187,8 +192,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         engineLvl = database.getLvl("engine");
         shieldLvl = database.getLvl("shield");
 
-        //TODO add an overlay on death, chose to play again or go to main menu?
-
         //The background sprite
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
         background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds1, this.getVertexBufferObjectManager());
@@ -199,13 +202,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(background_clouds1);
         scene.attachChild(background_clouds2);
 
-        //TODO Add current cash in the upper right corner
-
-        //FPS setup
-        final FPSCounter fpsCounter = new FPSCounter();
-        this.mEngine.registerUpdateHandler(fpsCounter);
-        final Text fpsText = new Text(10, 10, this.mFont, "FPS: ", 10, this.getVertexBufferObjectManager());
-        scene.attachChild(fpsText);
 
         //ENEMY MANAGEMENT
         this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
@@ -230,6 +226,29 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         };
         scene.attachChild(player);
 
+        //CASH TEXT
+        final Text cashText = new Text(10, 10, cashFont, "Cash", 10, this.getVertexBufferObjectManager());
+        cashText.setPosition(CAMERA_WIDTH - cashText.getWidth() - 10, 10);
+        cashText.setColor(0.435f, 0.8f, 0.867f); //CYAN BLUE
+
+        final Text cashVal = new Text( 10, 10, cashFont, "" + database.getCash(), 10, this.getVertexBufferObjectManager());
+        cashVal.setPosition(CAMERA_WIDTH - cashVal.getWidth() - 10, 70);
+        cashVal.setColor(0.435f, 0.8f, 0.867f); //CYAN BLUE
+
+        scene.attachChild(cashText);
+        scene.attachChild(cashVal);
+
+        //HEALTH
+        final Text healthText = new Text(10, 10, cashFont, "Health", 10, this.getVertexBufferObjectManager());
+        healthText.setPosition(CAMERA_WIDTH - healthText.getWidth() - 20, CAMERA_HEIGHT - healthText.getHeight() - 70);
+        healthText.setColor(0.435f, 0.8f, 0.867f);
+
+        final Text healthVal = new Text(10, 10, cashFont, 100*(Player.shield / Player.maxShield) +" %", 10, this.getVertexBufferObjectManager());
+        healthVal.setPosition(CAMERA_WIDTH - healthText.getWidth() - 40, CAMERA_HEIGHT - healthText.getHeight() - 10);
+
+        scene.attachChild(healthText);
+        scene.attachChild(healthVal);
+
         scene.registerUpdateHandler(new IUpdateHandler()
         {
             float currentTime = 0;
@@ -239,7 +258,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 currentTime += v;
 
-                fpsText.setText(String.format("FPS: %.2f", fpsCounter.getFPS()));
                 player.update(v);
                 playerShotManager.update(v);
 
@@ -248,6 +266,27 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 enemyManager.update(currentTime, v);
                 enemyShotManager.update(v);
+
+                cashVal.setText("" + database.getCash());
+
+                healthVal.setText(100*(Player.shield / Player.maxShield) +" %");
+
+                if(100*(Player.shield/Player.maxShield) > 75)
+                {
+                    healthVal.setColor(0.0f, 1.0f, 0.0f); //GREEN
+                }
+                else if(100*(Player.shield/Player.maxShield) > 50)
+                {
+                    healthVal.setColor(0.6f, 0.8f, 0.0f); //DARKER GREEN
+                }
+                else if(100*(Player.shield/Player.maxShield) > 25)
+                {
+                    healthVal.setColor(1.0f, 0.6f, 0.0f); //ORANGE
+                }
+                else
+                {
+                    healthVal.setColor(1.0f, 0.0f, 0.0f); //RED
+                }
 
                 /* COLLISION DETECTION */
 
@@ -261,7 +300,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
 
                 //DO SOMETHING IF PLAYER DIES
-                if(Player.health <= 0)
+                if(Player.shield <= 0)
                 {
                     try {
                         database.writeFile(ctx);

@@ -30,7 +30,9 @@ public class Player extends Sprite {
 
     private float shootInterval;
 
-    public static int health = 15;
+    public static double maxShield = 10;
+
+    public static double shield = 10;
 
     private int damage = 0;
 
@@ -126,28 +128,33 @@ public class Player extends Sprite {
         Log.d("TextLog", "Shield level: " + shieldLvl);
         switch (shieldLvl){
             case 1:{
-                health = 10;
-                Log.d("TextLog","Shield: " + health);
+                maxShield = 10;
+                shield = 10;
+                Log.d("TextLog","Shield: " + shield);
                 break;
             }
             case 2:{
-                health = 15;
-                Log.d("TextLog","Shield: " + health);
+                maxShield = 15;
+                shield = 15;
+                Log.d("TextLog","Shield: " + shield);
                 break;
             }
             case 3:{
-                health = 20;
-                Log.d("TextLog","Shield: " + health);
+                maxShield = 20;
+                shield = 20;
+                Log.d("TextLog","Shield: " + shield);
                 break;
             }
             case 4:{
-                health = 25;
-                Log.d("TextLog","Shield: " + health);
+                maxShield = 25;
+                shield = 25;
+                Log.d("TextLog","Shield: " + shield);
                 break;
             }
             case 5:{
-                health = 30;
-                Log.d("TextLog","Speed: " + health);
+                maxShield = 30;
+                shield = 30;
+                Log.d("TextLog","Speed: " + shield);
                 break;
             }
         }
@@ -262,7 +269,7 @@ public class Player extends Sprite {
         this.touchActive = touchActive;
     }
 
-    public static int getHealth(){ return health; }
+    public static double getShield(){ return shield; }
 
     public void shoot()
     {
@@ -283,9 +290,9 @@ public class Player extends Sprite {
 
     public void addDamage(int damage)
     {
-        health -= damage;
+        shield -= damage;
 
-        if (health <= 0)
+        if (shield <= 0)
         {
             // TODO Player has died, make game quit here
             this.detachSelf();
