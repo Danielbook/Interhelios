@@ -1,17 +1,12 @@
 package komaapp.komaprojekt.GameLogic.Collision;
 
-import android.util.Log;
-
-import com.badlogic.gdx.math.Vector2;
-
 import org.andengine.util.IDisposable.AlreadyDisposedException;
 
 import java.util.ArrayList;
 
-import komaapp.komaprojekt.Game;
+import komaapp.komaprojekt.GameLogic.BaseEnemy;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.Player;
-import komaapp.komaprojekt.GameLogic.BaseEnemy;
 import komaapp.komaprojekt.GameLogic.Shot;
 import komaapp.komaprojekt.GameLogic.ShotManager;
 
@@ -64,7 +59,7 @@ public class CollisionManager {
 
             for (BaseEnemy enemy : enemyManager.getEnemies())
             {
-                if (enemy != null) // Failsafe
+                if (!enemy.isDisposed() ||!shot.isDisposed()) // Failsafe
                 {
                     if (circleBodiesCollide(shotCircleBody, enemy.getCircleBody()))
                     {

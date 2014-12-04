@@ -44,7 +44,6 @@ public abstract class BaseEnemy extends Sprite {
     abstract void updatePosition(float dt);
     public void update(float dt)
     {
-
         this.updatePosition(dt);
 
         this.shootTimer += dt;
@@ -60,7 +59,6 @@ public abstract class BaseEnemy extends Sprite {
         {
             this.destroy();
         }
-
     }
     abstract void fire();
 

@@ -30,7 +30,6 @@ import komaapp.komaprojekt.GameLogic.Collision.CollisionManager;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
-import komaapp.komaprojekt.GameLogic.Shot;
 import komaapp.komaprojekt.GameLogic.ShotManager;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
@@ -45,7 +44,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
 
-    private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars;
+    private ITextureRegion xWing_tex, background_tex_clouds1, background_tex_stars;
     private MovingBackground background_clouds1,background_clouds2, background_stars;
 
     private Player player;
@@ -96,7 +95,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 {
                     //SHOOT
                     Log.d("ShotLog", "Player tried to shoot!");
-                    player.shoot();
+                    player.shootMissile();
                 }
                 return true;
             }
@@ -134,9 +133,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mFont.load();
 
         background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
-
-        background_tex_clouds2 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
-
         background_tex_stars = loadITextureRegion("bkgrnd_stars.png", CAMERA_WIDTH, 3000);
 
         xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
@@ -154,7 +150,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //The background sprite
 
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
-        background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
+        background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds1, this.getVertexBufferObjectManager());
 
         background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
 

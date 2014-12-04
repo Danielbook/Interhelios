@@ -1,7 +1,5 @@
 package komaapp.komaprojekt.GameLogic;
 
-import android.util.Log;
-
 import com.badlogic.gdx.math.Vector2;
 
 import org.andengine.opengl.texture.region.ITextureRegion;

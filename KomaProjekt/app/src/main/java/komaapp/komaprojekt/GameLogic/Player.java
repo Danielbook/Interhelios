@@ -8,8 +8,6 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import java.util.Vector;
-
 import komaapp.komaprojekt.Game;
 import komaapp.komaprojekt.GameLogic.Collision.CircleBody;
 
@@ -130,7 +128,7 @@ public class Player extends Sprite {
         else
         {
 
-            currentSpeed = 10f*maxSpeed + dst;
+            currentSpeed = maxSpeed + dst;
             if (currentSpeed * dt > dst) currentSpeed = dst / dt;
 
             setCenterPosition(getCenterPosition().add(velocity_dir.mul(currentSpeed * dt)));
@@ -158,10 +156,7 @@ public class Player extends Sprite {
         velocity_dir = vec;
     }
 
-    public void setTargetPosition(float tx, float ty)
-    {
-        setTargetPosition(new Vector2(tx, ty));
-    }
+    public void setTargetPosition(float tx, float ty) { setTargetPosition(new Vector2(tx, ty)); }
 
     public void setTargetPosition(Vector2 targetPos)
     {
@@ -181,6 +176,13 @@ public class Player extends Sprite {
         Vector2 shootDir = new Vector2(0, -1);
         shotManagerReference.addShot(getCenterX()-getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
         shotManagerReference.addShot(getCenterX()+getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
+    }
+
+    public void shootMissile()
+    {
+        Vector2 shootDir = new Vector2(0, -1);
+
+        shotManagerReference.addMissile(getCenterX(), getCenterY()-getHeight()/2, shootDir, 30f, 30f, 5f, 25f, 75f, 75f);
     }
 
     public void addDamage(int damage)
