@@ -2,7 +2,6 @@ package komaapp.komaprojekt;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
@@ -37,8 +36,8 @@ import komaapp.komaprojekt.GameLogic.ShotManager;
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
 
     private Camera camera;
-    public static  int CAMERA_WIDTH;
-    public static  int CAMERA_HEIGHT;
+    public static  int CAMERA_WIDTH = 1200;
+    public static  int CAMERA_HEIGHT = 1920;
     private float backX = 0, backY1 = 0,backY2= -3000;
 
     private Sprite pauseButton, resumeButton, restartButton, quitButton;
@@ -48,7 +47,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
 
-    private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars, pause_tex;
+    private ITextureRegion xWing_tex, background_tex_clouds1, background_tex_stars, pause_tex;
     private ITextureRegion resume_tex, restart_tex, quit_tex;
     private MovingBackground background_clouds1,background_clouds2, background_stars;
    // private RelativeLayout pause;
@@ -103,11 +102,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     @Override
     public EngineOptions onCreateEngineOptions()
     {
-        final DisplayMetrics displayMetrics = new DisplayMetrics();
-        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        //final DisplayMetrics displayMetrics = new DisplayMetrics();
+        //this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        CAMERA_HEIGHT= displayMetrics.heightPixels;
-        CAMERA_WIDTH= displayMetrics.widthPixels;
+        //CAMERA_HEIGHT= displayMetrics.heightPixels;
+        //CAMERA_WIDTH= displayMetrics.widthPixels;
 
         camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
@@ -124,7 +123,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mFont.load();
 
         background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
-        background_tex_clouds2 = loadITextureRegion("bkgrnd_clouds.png", CAMERA_WIDTH, 3000);
         pause_tex = loadITextureRegion("btn_pause.png", 146, 146);
 
         resume_tex = loadITextureRegion("btn_resume.png",632, 306 );
@@ -140,7 +138,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     @Override
     protected Scene onCreateScene()
-    {
+{
         //Create pause background rectangle
         final Rectangle pauseRectangle = new Rectangle (0, 0 , CAMERA_WIDTH, CAMERA_HEIGHT, this.getVertexBufferObjectManager());
         pauseRectangle.setColor(org.andengine.util.color.Color.BLACK);
@@ -152,7 +150,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         //The backgrounds
         background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
-        background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds2, this.getVertexBufferObjectManager());
+        background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds1, this.getVertexBufferObjectManager());
         background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
 
         scene.attachChild(background_stars);

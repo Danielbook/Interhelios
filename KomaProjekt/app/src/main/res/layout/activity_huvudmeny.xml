@@ -14,7 +14,7 @@
         android:layout_height="50dp"
         android:id="@+id/howToBtn"
         android:layout_gravity="left"
-        android:background="#63ffffff"
+        android:background="@drawable/btn_howto"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
