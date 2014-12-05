@@ -55,8 +55,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private BitmapTextureAtlas texAtlas;
 
     private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars, pause_tex;
+    private ITextureRegion repeatingBackgroundTex1, repeatingBackgroundTex2, repeatingBackgroundClouds;
     private ITextureRegion resume_tex, restart_tex, quit_tex;
     private MovingBackground background_clouds1,background_clouds2, background_stars;
+
+    private MovingBackground bg_earth_1, bg_earth_2, bg_clouds_1, bg_clouds_2;
    // private RelativeLayout pause;
 
     private Player player;
@@ -160,8 +163,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.cashFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48, Color.WHITE.hashCode());
         this.cashFont.load();
 
-        background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", 1200, 1920);
-        background_tex_stars = loadITextureRegion("bkgrnd_stars.png", 1200, 1920);
+        //background_tex_clouds1 = loadITextureRegion("bkgrnd_clouds.png", 1200, 1920);
+        //background_tex_stars = loadITextureRegion("bkgrnd_stars.png", 1200, 1920);
+        repeatingBackgroundTex1 = loadITextureRegion("KomaProjekt_backgroundTop.jpg", 1200, 1920);
+        repeatingBackgroundTex2 = loadITextureRegion("KomaProjekt_backgroundBottom.jpg", 1200, 1920);
+        repeatingBackgroundClouds = loadITextureRegion("KomaProjekt_backgroundClouds.png", 1200, 1920);
 
         resume_tex = loadITextureRegion("btn_resume.png",632, 306 );
         restart_tex = loadITextureRegion("btn_restart.png",632, 306 );
@@ -211,14 +217,22 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         shieldLvl = database.getLvl("shield");
 
         //The background sprite
-        background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
-        background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds1, this.getVertexBufferObjectManager());
+        //background_clouds1 = new MovingBackground(backX, backY1, this.background_tex_clouds1, this.getVertexBufferObjectManager());
+        //background_clouds2 = new MovingBackground(backX, backY2, this.background_tex_clouds1, this.getVertexBufferObjectManager());
+        bg_earth_1 = new MovingBackground(backX, backY1, this.repeatingBackgroundTex1, this.getVertexBufferObjectManager());
+        bg_earth_2 = new MovingBackground(backX, backY2, this.repeatingBackgroundTex2, this.getVertexBufferObjectManager());
+        bg_clouds_1 = new MovingBackground(backX, backY1, this.repeatingBackgroundClouds, this.getVertexBufferObjectManager());
+        bg_clouds_1.setBackgroundSpeed(54f);
+        bg_clouds_2 = new MovingBackground(backX, backY2, this.repeatingBackgroundClouds, this.getVertexBufferObjectManager());
+        bg_clouds_2.setBackgroundSpeed(54f);
 
-        background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
+        //background_stars = new MovingBackground(backX, backY1, this.background_tex_stars, this.getVertexBufferObjectManager());
 
-        scene.attachChild(background_stars);
-        scene.attachChild(background_clouds1);
-        scene.attachChild(background_clouds2);
+        //scene.attachChild(background_stars);
+        scene.attachChild(bg_earth_1);
+        scene.attachChild(bg_earth_2);
+        scene.attachChild(bg_clouds_1);
+        scene.attachChild(bg_clouds_2);
 
 
         //ENEMY MANAGEMENT
@@ -281,8 +295,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 player.update(v);
                 playerShotManager.update(v);
 
-                background_clouds1.updatePosition(v);
-                background_clouds2.updatePosition(v);
+                bg_earth_1.updatePosition(v);
+                bg_earth_2.updatePosition(v);
+                bg_clouds_1.updatePosition(v);
+                bg_clouds_2.updatePosition(v);
 
                 enemyManager.update(currentTime, v);
                 enemyShotManager.update(v);

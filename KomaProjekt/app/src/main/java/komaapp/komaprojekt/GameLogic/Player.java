@@ -52,9 +52,11 @@ public class Player extends Sprite {
 
         this.targetPosition = new Vector2(pX, pY);
 
-        this.shootTimer = this.missileTimer = 0.0f;
+        this.shootTimer = 0.0f;
 
         setPlayerAttributes(gunsLvl, engineLvl, shieldLvl);
+
+        this.missileTimer = this.missileInterval;
     }
 
     public void setPlayerAttributes(int gunsLvl, int engineLvl, int shieldLvl)
