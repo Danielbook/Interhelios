@@ -111,25 +111,23 @@
                     android:id="@+id/linearLayout">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:id="@+id/gunsLvlTxt"
                         android:textColor="#6FCCDC"
                         android:textSize="30sp"
                         android:text="@string/upgrade_level"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:id="@+id/gunsLvlVal"
-                        android:textColor="#6FCCDC"
-                        android:text="level"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:fontFamily="Space Age" />
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gunsRadio"
+                        android:background="@drawable/radio_lvl1"
+                        android:layout_weight="1" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -204,25 +202,23 @@
                     android:id="@+id/linearLayout3" >
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/upgrade_level"
                         android:id="@+id/engineLvlTxt"
                         android:textColor="#6FCCDC"
                         android:textSize="30sp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:id="@+id/engineLvlVal"
-                        android:textColor="#6FCCDC"
-                        android:text="level"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:fontFamily="Space Age" />
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/engineRadio"
+                        android:background="@drawable/radio_lvl1"
+                        android:layout_weight="1" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -300,25 +296,22 @@
                     android:id="@+id/linearLayout4" >
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/upgrade_level"
                         android:id="@+id/shieldLvlTxt"
                         android:textColor="#6FCCDC"
                         android:textSize="30sp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:id="@+id/shieldLvlVal"
-                        android:textColor="#6FCCDC"
-                        android:text="level"
                         android:layout_gravity="center"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:fontFamily="Space Age" />
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/shieldRadio"
+                        android:background="@drawable/radio_lvl1"
+                        android:layout_weight="1" />
 
                 </LinearLayout>
 

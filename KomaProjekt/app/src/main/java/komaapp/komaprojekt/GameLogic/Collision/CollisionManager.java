@@ -109,7 +109,6 @@ public class CollisionManager {
                 }
             }
         }
-
         enemyShotManager.removeShots(shotsToRemove);
     }
 }

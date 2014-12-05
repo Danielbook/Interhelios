@@ -246,23 +246,24 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         //CASH TEXT
         final Text cashText = new Text(10, 10, cashFont, "Cash", 10, this.getVertexBufferObjectManager());
-        cashText.setPosition(CAMERA_WIDTH - cashText.getWidth() - 10, 10);
+        cashText.setPosition(CAMERA_WIDTH - 200, 10);
         cashText.setColor(0.435f, 0.8f, 0.867f); //CYAN BLUE
 
-        final Text cashVal = new Text( 10, 10, cashFont, "" + database.getCash(), 10, this.getVertexBufferObjectManager());
-        cashVal.setPosition(CAMERA_WIDTH - cashVal.getWidth() - 10, 70);
+        final Text cashVal = new Text( 10, 10, cashFont, "" + database.getCash(), 100, this.getVertexBufferObjectManager());
+        cashVal.setPosition(CAMERA_WIDTH  - 200, 70);
         cashVal.setColor(0.435f, 0.8f, 0.867f); //CYAN BLUE
 
         scene.attachChild(cashText);
         scene.attachChild(cashVal);
 
         //HEALTH
-        final Text healthText = new Text(10, 10, cashFont, "Health", 10, this.getVertexBufferObjectManager());
-        healthText.setPosition(CAMERA_WIDTH - healthText.getWidth() - 20, CAMERA_HEIGHT - healthText.getHeight() - 70);
+        final Text healthText = new Text(10, 10, cashFont, "Shield", 10, this.getVertexBufferObjectManager());
+        healthText.setPosition(CAMERA_WIDTH - 400, 10);
         healthText.setColor(0.435f, 0.8f, 0.867f);
 
-        final Text healthVal = new Text(10, 10, cashFont, 100*(Player.shield / Player.maxShield) +" %", 10, this.getVertexBufferObjectManager());
-        healthVal.setPosition(CAMERA_WIDTH - healthText.getWidth() - 40, CAMERA_HEIGHT - healthText.getHeight() - 10);
+        final Text healthVal = new Text(10, 10, cashFont, 100*(Player.shield / Player.maxShield) +" %", 100, this.getVertexBufferObjectManager());
+        healthVal.setPosition(CAMERA_WIDTH - 400, 70);
+        healthVal.setColor(0.0f, 1.0f, 0.0f); //GREEN
 
         scene.attachChild(healthText);
         scene.attachChild(healthVal);
@@ -274,6 +275,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             @Override
             public void onUpdate(float v)
             {
+                double playerShieldBeforeHit = Player.shield;
                 currentTime += v;
 
                 player.update(v);
@@ -287,25 +289,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 cashVal.setText("" + database.getCash());
 
-                healthVal.setText(100*(Player.shield / Player.maxShield) +" %");
-
-                if(100*(Player.shield/Player.maxShield) > 75)
-                {
-                    healthVal.setColor(0.0f, 1.0f, 0.0f); //GREEN
-                }
-                else if(100*(Player.shield/Player.maxShield) > 50)
-                {
-                    healthVal.setColor(0.6f, 0.8f, 0.0f); //DARKER GREEN
-                }
-                else if(100*(Player.shield/Player.maxShield) > 25)
-                {
-                    healthVal.setColor(1.0f, 0.6f, 0.0f); //ORANGE
-                }
-                else
-                {
-                    healthVal.setColor(1.0f, 0.0f, 0.0f); //RED
-                }
-
                 /* COLLISION DETECTION */
 
                 // 1. Check for collisions between player and enemies
@@ -316,6 +299,34 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 // 3. Check for collision between enemies and player shots
                 CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
+
+                if(Player.shield > 0)
+                {
+                    if(Player.shield != playerShieldBeforeHit)
+                    {
+                        healthVal.setText((int)(100 * (Player.shield / Player.maxShield))+ " %");
+
+                        if (100 * (Player.shield / Player.maxShield) > 75)
+                        {
+                            healthVal.setColor(0.0f, 1.0f, 0.0f); //GREEN
+                        }
+
+                        else if (100 * (Player.shield / Player.maxShield) > 50)
+                        {
+                            healthVal.setColor(0.6f, 0.8f, 0.0f); //DARKER GREEN
+                        }
+
+                        else if (100 * (Player.shield / Player.maxShield) > 25)
+                        {
+                            healthVal.setColor(1.0f, 0.6f, 0.0f); //ORANGE
+                        }
+
+                        else
+                        {
+                            healthVal.setColor(1.0f, 0.0f, 0.0f); //RED
+                        }
+                    }
+                }
 
                 //DO SOMETHING IF PLAYER DIES
                 if(Player.shield <= 0)

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -20,23 +21,20 @@ import java.io.IOException;
 public class Upgrades extends Activity
 {
     private Database database = new Database();
+    ImageView gunsRadio, engineRadio, shieldRadio;
 
     //Updates the txt in the tables
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void updateTable()
     {
+
+        int gunsLvl = database.getLvl("guns");
+        int engineLvl = database.getLvl("engine");
+        int shieldLvl = database.getLvl("shield");
+
         //Sets the value of all the properties
         TextView cashTxt = (TextView)findViewById(R.id.cashTxt);
         cashTxt.setText("" + database.getCash());
-
-        TextView gunsLvl = (TextView)findViewById(R.id.gunsLvlVal);
-        gunsLvl.setText("" + database.getLvl("guns"));
-
-        TextView engineLvl = (TextView)findViewById(R.id.engineLvlVal);
-        engineLvl.setText("" + database.getLvl("engine"));
-
-        TextView shieldLvl = (TextView)findViewById(R.id.shieldLvlVal);
-        shieldLvl.setText("" + database.getLvl("shield"));
 
         //Sets the price of all the upgrades
         //If the price is -1, the player is either at max level, or not
@@ -87,7 +85,6 @@ public class Upgrades extends Activity
             engineBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_xml));
         }
 
-
         if(!database.enoughCash("shield")|| database.getLvl("shield") >= 5){
             shieldBtn.setBackground(getResources().getDrawable(R.drawable.btn_buy_no));
         }
@@ -101,6 +98,95 @@ public class Upgrades extends Activity
         engineBtn.setOnClickListener(buttonListener);
         backBtn.setOnClickListener(buttonListener);
         cashBtn.setOnClickListener(buttonListener);
+
+        ////RADIOBUTTONS
+        switch(gunsLvl)
+        {
+            case 1:
+            {
+                gunsRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl1));
+                break;
+            }
+            case 2:
+            {
+                gunsRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl2));
+                break;
+            }
+            case 3:
+            {
+                gunsRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl3));
+                break;
+            }
+            case 4:
+            {
+                gunsRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl4));
+                break;
+            }
+            case 5:
+            {
+                gunsRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl5));
+                break;
+            }
+        }
+
+        switch(engineLvl)
+        {
+            case 1:
+            {
+                engineRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl1));
+                break;
+            }
+            case 2:
+            {
+                engineRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl2));
+                break;
+            }
+            case 3:
+            {
+                engineRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl3));
+                break;
+            }
+            case 4:
+            {
+                engineRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl4));
+                break;
+            }
+            case 5:
+            {
+                engineRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl5));
+                break;
+            }
+        }
+
+        switch(shieldLvl)
+        {
+            case 1:
+            {
+                shieldRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl1));
+                break;
+            }
+            case 2:
+            {
+                shieldRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl2));
+                break;
+            }
+            case 3:
+            {
+                shieldRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl3));
+                break;
+            }
+            case 4:
+            {
+                shieldRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl4));
+                break;
+            }
+            case 5:
+            {
+                shieldRadio.setBackground(getResources().getDrawable(R.drawable.radio_lvl5));
+                break;
+            }
+        }
+
     }
 
     @Override
@@ -123,6 +209,11 @@ public class Upgrades extends Activity
         actionBar.hide();
 
         //Creates all the buttons, text and updates them according to database
+
+        gunsRadio = (ImageView)findViewById(R.id.gunsRadio);
+        engineRadio = (ImageView)findViewById(R.id.engineRadio);
+        shieldRadio = (ImageView)findViewById(R.id.shieldRadio);
+
         updateTable();
     }
 
