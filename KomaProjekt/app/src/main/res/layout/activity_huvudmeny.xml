@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/startBtn"
-        android:background="@drawable/btn_start"
+        android:background="@drawable/btn_start_xml"
         android:layout_gravity="bottom"
         android:layout_above="@+id/upgradeBtn"
         android:layout_centerHorizontal="true" />
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/settingsBtn"
-        android:background="@drawable/btn_settings"
+        android:background="@drawable/btn_settings_xml"
         android:layout_gravity="center_vertical"
         android:layout_alignRight="@+id/upgradeBtn"
         android:layout_alignLeft="@+id/upgradeBtn"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/upgradeBtn"
         android:layout_gravity="center"
-        android:background="@drawable/btn_upgrades"
+        android:background="@drawable/btn_upgrades_xml"
         android:layout_above="@+id/settingsBtn"
         android:layout_centerHorizontal="true" />
 

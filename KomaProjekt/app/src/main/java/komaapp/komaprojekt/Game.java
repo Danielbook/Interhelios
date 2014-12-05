@@ -332,8 +332,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 if (touchEvent.isActionDown())
                 {
                     scene.detachChild(resumeButton);
+                    scene.unregisterTouchArea(resumeButton);
                     scene.detachChild(restartButton);
+                    scene.unregisterTouchArea(restartButton);
                     scene.detachChild(quitButton);
+                    scene.unregisterTouchArea(quitButton);
                     scene.detachChild(pauseRectangle);
                     scene.attachChild(pauseButton);
                     scene.setIgnoreUpdate(false);
@@ -342,7 +345,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 return true;
             };
         };
-        scene.registerTouchArea(resumeButton);
 
         //Button to restart the game, calls startActivity once again
         restartButton = new Sprite (((CAMERA_WIDTH/2)-316),((CAMERA_HEIGHT/2)-153), this.restart_tex, this.getVertexBufferObjectManager())
@@ -356,7 +358,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 return true;
             };
         };
-        scene.registerTouchArea(restartButton);
 
         //Button to quit game and go to main menu
         quitButton = new Sprite (((CAMERA_WIDTH/2)-316), ((CAMERA_HEIGHT/2)+294), this.quit_tex, this.getVertexBufferObjectManager())
@@ -370,7 +371,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 return true;
             };
         };
-        scene.registerTouchArea(quitButton);
 
         pauseButton = new Sprite(0, 0, this.pause_tex, this.getVertexBufferObjectManager())
         {
@@ -382,8 +382,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     scene.setIgnoreUpdate(true);
                     scene.attachChild(pauseRectangle);
                     scene.attachChild(resumeButton);
+                    scene.registerTouchArea(resumeButton);
                     scene.attachChild(restartButton);
+                    scene.registerTouchArea(restartButton);
                     scene.attachChild(quitButton);
+                    scene.registerTouchArea(quitButton);
                 }
                 return true;
             };
