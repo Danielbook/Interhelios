@@ -27,8 +27,10 @@ public class Player extends Sprite {
     private float currentSpeed = 0.0f;
 
     private float shootTimer;
+    private float missileTimer;
 
     private float shootInterval;
+    private float missileInterval;
 
     public static double maxShield = 10;
 
@@ -50,6 +52,8 @@ public class Player extends Sprite {
 
         this.targetPosition = new Vector2(pX, pY);
 
+        this.shootTimer = this.missileTimer = 0.0f;
+
         setPlayerAttributes(gunsLvl, engineLvl, shieldLvl);
     }
 
@@ -61,30 +65,35 @@ public class Player extends Sprite {
             case 1:
             {
                 shootInterval = 0.50f;
+                missileInterval = 25f;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 2:
             {
                 shootInterval = 0.40f;
+                missileInterval = 20f;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 3:
             {
                 shootInterval = 0.30f;
+                missileInterval = 15f;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 4:
             {
                 shootInterval = 0.20f;
+                missileInterval = 10f;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 5:
             {
                 shootInterval = 0.10f;
+                missileInterval = 5f;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
@@ -243,6 +252,7 @@ public class Player extends Sprite {
         //makeWithinWindow();
 
         this.shootTimer += dt;
+
         if (this.shouldFire())
         {
             shootTimer = 0.0f;
@@ -250,6 +260,23 @@ public class Player extends Sprite {
         }
 
         this.body.setCenterPosition(this.getCenterX(), this.getCenterY());
+
+        this.missileTimer += dt;
+
+        // Update the missileTimerText
+        if (missileTimer >= missileInterval) // Missile ready to be fired again
+        {
+            Game.shootBtn.setAlpha(1.0f);
+            Game.missileTimerText.setText("");
+        }
+        else // Some time remaining on the clock
+        {
+            int secondsLeftToMissileReady = (int)Math.ceil(missileInterval - missileTimer);
+            Game.missileTimerText.setText(String.valueOf(secondsLeftToMissileReady));
+
+            Game.shootBtn.setAlpha(0.2f);
+        }
+
     }
 
     public void setVelocityDirection(Vector2 vec)
@@ -283,9 +310,14 @@ public class Player extends Sprite {
 
     public void shootMissile()
     {
-        Vector2 shootDir = new Vector2(0, -1);
+        if (missileTimer >= missileInterval)
+        {
+            Vector2 shootDir = new Vector2(0, -1);
+            shotManagerReference.addMissile(getCenterX(), getCenterY()-getHeight()/2, shootDir, 30f, 30f, 5f, 25f, 75f, 75f);
 
-        shotManagerReference.addMissile(getCenterX(), getCenterY()-getHeight()/2, shootDir, 30f, 30f, 5f, 25f, 75f, 75f);
+            missileTimer = 0.0f;
+        }
+
     }
 
     public void addDamage(int damage)

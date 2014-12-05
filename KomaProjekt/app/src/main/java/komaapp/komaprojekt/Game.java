@@ -46,6 +46,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     private Sprite pauseButton, resumeButton, restartButton, quitButton;
 
+    public static Text missileTimerText;
+    public static Sprite shootBtn;
     private Font mFont;
     private Font cashFont;
 
@@ -102,7 +104,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };*/
 
-        final Sprite shootBtn = new Sprite(25, CAMERA_HEIGHT-200, loadITextureRegion("btn_rocket_small.png", 200,200), this.getVertexBufferObjectManager() )
+        shootBtn = new Sprite(24, CAMERA_HEIGHT-363, loadITextureRegion("btn_rocket.png", 363, 363), this.getVertexBufferObjectManager() )
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
             {
@@ -116,7 +118,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
 
+        Font daFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 512, 512, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 96, Color.WHITE.hashCode());
+        daFont.load();
+
+        missileTimerText = new Text(shootBtn.getX()+shootBtn.getWidth()/2 - 20f, shootBtn.getY()+shootBtn.getHeight()/2 - 20f, daFont, "", 2, this.getVertexBufferObjectManager());
+        missileTimerText.setColor(0f, 20f, 80f);
+
         hud.registerTouchArea(shootBtn);
+        hud.attachChild(missileTimerText);
         //hud.registerTouchArea(mainHud);
         //hud.attachChild(mainHud);
         hud.attachChild(shootBtn);
