@@ -2,7 +2,9 @@ package komaapp.komaprojekt.GameLogic;
 
 import android.util.Log;
 
+import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -99,21 +101,38 @@ public class EnemyManager {
         this.enemies.add(newEnemy);
         this.scene.attachChild(newEnemy);
 
-        Log.d("EnemyLog", "Enemy added: textureName=" + texName + " spawnX=" + spawnX + " spawnY=" + spawnY + " ID=" + newEnemy.getID() );
-    }
-
-    // Remove an enemy, returns true on success and false on failure
-    public void removeEnemy(BaseEnemy remEnemy)
-    {
-        remEnemy.destroy();
-
-        Log.d("EnemyLog", "Enemy removed: ID=" + remEnemy.getID() + " removeX=" + remEnemy.getX() + " removeY=" + remEnemy.getY() );
-
-        this.enemies.remove(remEnemy);
+        // Log.d("EnemyLog", "Enemy added: textureName=" + texName + " spawnX=" + spawnX + " spawnY=" + spawnY + " ID=" + newEnemy.getID() );
     }
 
     public void removeEnemies(ArrayList<BaseEnemy> enemiesToRemove)
     {
+        // Throw explosions
+        for (BaseEnemy enemy : enemiesToRemove)
+        {
+            float explosionX = enemy.getCenterX() - Explosion.getTextureWidth()/2;
+            float explosionY = enemy.getCenterY() - Explosion.getTextureHeight()/2;
+
+            final AnimatedSprite explosionAnimation = new AnimatedSprite(explosionX, explosionY, Explosion.getExplosionTex(), VBOmanager);
+            scene.attachChild(explosionAnimation);
+            explosionAnimation.setScaleCenter(explosionAnimation.getWidth()/2, explosionAnimation.getHeight()/2);
+            explosionAnimation.setScale((randGen.nextFloat()+2.3f)*1.5f);
+            explosionAnimation.animate(1000/60, false, new AnimatedSprite.IAnimationListener() {
+                @Override
+                public void onAnimationStarted(AnimatedSprite animatedSprite, int i) {}
+
+                @Override
+                public void onAnimationFrameChanged(AnimatedSprite animatedSprite, int i, int i2) {}
+
+                @Override
+                public void onAnimationLoopFinished(AnimatedSprite animatedSprite, int i, int i2) {}
+
+                @Override
+                public void onAnimationFinished(AnimatedSprite animatedSprite) {
+                    explosionAnimation.setVisible(false);
+                }
+            });
+        }
+
         this.enemies.removeAll(enemiesToRemove);
     }
 

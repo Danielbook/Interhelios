@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 
+import org.andengine.entity.IEntity;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
