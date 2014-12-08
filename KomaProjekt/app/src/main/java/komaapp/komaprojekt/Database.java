@@ -30,6 +30,9 @@ public class Database extends Activity
         String line;
         StringTokenizer tokens;
 
+        dbUpgrades.clear();
+        dbSettings.clear();
+
         //Read from the fucking assets folder
         InputStream settingStream = ctx.getResources().getAssets().open(settingFile);
         BufferedReader settingsReader = new BufferedReader(new InputStreamReader(settingStream));

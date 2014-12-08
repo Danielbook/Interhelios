@@ -461,7 +461,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         };
         scene.registerTouchArea(pauseButton);
         scene.attachChild(pauseButton);
-
         return scene;
     }
 

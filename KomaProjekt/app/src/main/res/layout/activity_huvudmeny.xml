@@ -74,7 +74,7 @@
             android:layout_gravity="center"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/textView5" />
+            android:layout_below="@+id/startMenu" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -97,24 +97,24 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
 
-        <ViewSwitcher
+        <ViewFlipper
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/viewSwitcher"
-            android:layout_above="@+id/tutSkip"
-            android:layout_alignParentTop="true">
+            android:id="@+id/viewFlipper"
+            android:layout_above="@+id/tutSkip">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/tutView1">
+                android:id="@+id/tutView1"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Welcome!"
-                    android:id="@+id/textView5"
+                    android:text="@string/welcome"
+                    android:id="@+id/startMenu"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
@@ -135,15 +135,16 @@
                     android:layout_alignParentEnd="true"
                     android:fillViewport="false"
                     android:padding="30dp"
-                    android:layout_below="@+id/textView5"
+                    android:layout_below="@+id/startMenu"
                     android:layout_alignParentBottom="true">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in egestas sem. Nulla varius mi ac ipsum fermentum, pharetra luctus quam ultrices. Duis malesuada egestas orci ac sollicitudin. Donec vitae orci convallis, interdum velit nec, tincidunt tellus. Curabitur mauris eros, consequat et aliquam ut, convallis nec eros. Maecenas facilisis sed justo id lacinia. Nullam vulputate elit eu nibh congue, blandit luctus elit maximus.  In non mauris vestibulum, rhoncus lectus id, semper eros. Etiam porttitor massa id auctor dictum. Donec a elit a tortor tristique dapibus sit amet eu ipsum. Duis euismod ante ut risus rutrum, sit amet dapibus dui rutrum. Quisque gravida ante sed orci dictum, eu aliquam nibh tempus. Duis maximus tortor sit amet ipsum facilisis vestibulum. In tempor ligula quis pellentesque blandit. Sed iaculis mattis ullamcorper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis vel nibh auctor, sodales lectus sed, ultricies sapien. Interdum et malesuada fames ac ante ipsum primis in faucibus. In iaculis est posuere nisi imperdiet, ut tempus tellus feugiat.  Integer quis dictum enim, nec fermentum dolor. Mauris sit amet nulla interdum, pharetra risus nec, aliquet est. Sed malesuada nibh nec lectus egestas, nec gravida neque iaculis. Duis condimentum enim porttitor ipsum cursus, semper mollis justo mollis. Nunc nec magna id lectus scelerisque fringilla. Aenean efficitur ipsum in orci vulputate consequat. In vitae nulla vitae metus elementum tempor id vitae mi. Sed vitae enim elit. Duis volutpat ligula eget enim lacinia commodo sed a leo. Nulla tortor erat, malesuada non interdum sollicitudin, placerat in sem. Nulla non mollis nibh.  Pellentesque sit amet purus at dui scelerisque posuere. Cras pulvinar massa in massa bibendum, sit amet pretium urna viverra. Maecenas sed mauris ut elit ultricies vestibulum eu eget elit. Nulla quis mi at dui fermentum placerat. Morbi et placerat erat, molestie commodo magna. Proin libero urna, tempus in diam quis, ultricies mattis nisl. Sed vitae vestibulum elit, ac consectetur orci. Vestibulum iaculis sollicitudin quam non tincidunt. Nulla in pretium turpis, placerat sollicitudin neque. Sed ullamcorper nibh id magna consequat euismod. Vestibulum eget leo orci. Proin aliquet, massa eget ullamcorper vestibulum, neque dui bibendum felis, a malesuada risus dui non arcu. In at mauris ultrices, tincidunt magna at, auctor velit. Maecenas imperdiet suscipit ante, quis pulvinar augue tristique eu. Maecenas nec nulla velit. Nulla laoreet rhoncus felis egestas dignissim.  Proin eget tempus nisl. In vel rutrum est, eu laoreet nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque vulputate eget odio in consectetur. Curabitur vestibulum varius dui, efficitur vestibulum est malesuada nec. Vestibulum tristique eu dolor nec mattis. Nullam placerat, dolor vitae porta auctor, erat lorem scelerisque diam, ac eleifend tellus augue vitae augue. Donec sed turpis vel orci mattis dictum in non mi."
+                        android:text="@string/introText"
                         android:id="@+id/textView3"
-                        android:textColor="#ff5499a8" />
+                        android:textColor="#ff82e8ff"
+                        android:textSize="20sp" />
                 </ScrollView>
             </RelativeLayout>
 
@@ -156,8 +157,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="View2"
-                    android:id="@+id/textView5"
+                    android:text="@string/mainMenu"
+                    android:id="@+id/startMenu"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
@@ -168,28 +169,139 @@
                     android:textColor="#6FCCDD"
                     android:textSize="20pt" />
 
-                <ScrollView
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@+id/startMenu">
+
+                    <ImageView
+                        android:layout_width="369dp"
+                        android:layout_height="550dp"
+                        android:id="@+id/imageView"
+                        android:background="@drawable/menu_start"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/tutView3" >
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/scrollView2"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/settings"
+                    android:id="@+id/textView6"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textAlignment="gravity"
+                    android:gravity="center_horizontal"
+                    android:textColor="#6FCCDD"
+                    android:textSize="20pt" />
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@+id/textView6"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true">
+
+                    <ImageView
+                        android:layout_width="369dp"
+                        android:layout_height="550dp"
+                        android:id="@+id/imageView9"
+                        android:layout_gravity="center"
+                        android:background="@drawable/menu_settings" />
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/tutView4" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/upgrades"
+                    android:id="@+id/textView6"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textAlignment="gravity"
+                    android:gravity="center_horizontal"
+                    android:textColor="#6FCCDD"
+                    android:textSize="20pt" />
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/textView6"
+                    android:layout_alignParentBottom="true">
+
+                    <ImageView
+                        android:layout_width="369dp"
+                        android:layout_height="550dp"
+                        android:id="@+id/imageView10"
+                        android:layout_gravity="center"
+                        android:background="@drawable/menu_upgrades1" />
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/tutView5" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/upgrades"
+                    android:id="@+id/textView6"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textAlignment="gravity"
+                    android:gravity="center_horizontal"
+                    android:textColor="#6FCCDD"
+                    android:textSize="20pt" />
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@+id/textView6"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:fillViewport="false"
-                    android:padding="30dp"
-                    android:layout_below="@+id/textView5"
                     android:layout_alignParentBottom="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in egestas sem. Nulla varius mi ac ipsum fermentum, pharetra luctus quam ultrices. Duis malesuada egestas orci ac sollicitudin. Donec vitae orci convallis, interdum velit nec, tincidunt tellus. Curabitur mauris eros, consequat et aliquam ut, convallis nec eros. Maecenas facilisis sed justo id lacinia. Nullam vulputate elit eu nibh congue, blandit luctus elit maximus.  In non mauris vestibulum, rhoncus lectus id, semper eros. Etiam porttitor massa id auctor dictum. Donec a elit a tortor tristique dapibus sit amet eu ipsum. Duis euismod ante ut risus rutrum, sit amet dapibus dui rutrum. Quisque gravida ante sed orci dictum, eu aliquam nibh tempus. Duis maximus tortor sit amet ipsum facilisis vestibulum. In tempor ligula quis pellentesque blandit. Sed iaculis mattis ullamcorper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis vel nibh auctor, sodales lectus sed, ultricies sapien. Interdum et malesuada fames ac ante ipsum primis in faucibus. In iaculis est posuere nisi imperdiet, ut tempus tellus feugiat.  Integer quis dictum enim, nec fermentum dolor. Mauris sit amet nulla interdum, pharetra risus nec, aliquet est. Sed malesuada nibh nec lectus egestas, nec gravida neque iaculis. Duis condimentum enim porttitor ipsum cursus, semper mollis justo mollis. Nunc nec magna id lectus scelerisque fringilla. Aenean efficitur ipsum in orci vulputate consequat. In vitae nulla vitae metus elementum tempor id vitae mi. Sed vitae enim elit. Duis volutpat ligula eget enim lacinia commodo sed a leo. Nulla tortor erat, malesuada non interdum sollicitudin, placerat in sem. Nulla non mollis nibh.  Pellentesque sit amet purus at dui scelerisque posuere. Cras pulvinar massa in massa bibendum, sit amet pretium urna viverra. Maecenas sed mauris ut elit ultricies vestibulum eu eget elit. Nulla quis mi at dui fermentum placerat. Morbi et placerat erat, molestie commodo magna. Proin libero urna, tempus in diam quis, ultricies mattis nisl. Sed vitae vestibulum elit, ac consectetur orci. Vestibulum iaculis sollicitudin quam non tincidunt. Nulla in pretium turpis, placerat sollicitudin neque. Sed ullamcorper nibh id magna consequat euismod. Vestibulum eget leo orci. Proin aliquet, massa eget ullamcorper vestibulum, neque dui bibendum felis, a malesuada risus dui non arcu. In at mauris ultrices, tincidunt magna at, auctor velit. Maecenas imperdiet suscipit ante, quis pulvinar augue tristique eu. Maecenas nec nulla velit. Nulla laoreet rhoncus felis egestas dignissim.  Proin eget tempus nisl. In vel rutrum est, eu laoreet nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque vulputate eget odio in consectetur. Curabitur vestibulum varius dui, efficitur vestibulum est malesuada nec. Vestibulum tristique eu dolor nec mattis. Nullam placerat, dolor vitae porta auctor, erat lorem scelerisque diam, ac eleifend tellus augue vitae augue. Donec sed turpis vel orci mattis dictum in non mi."
-                        android:id="@+id/textView4"
-                        android:textColor="#ff5499a8" />
-                </ScrollView>
+                    <ImageView
+                        android:layout_width="369dp"
+                        android:layout_height="550dp"
+                        android:id="@+id/imageView11"
+                        android:layout_gravity="center"
+                        android:background="@drawable/menu_upgrades2" />
+                </FrameLayout>
+
             </RelativeLayout>
-        </ViewSwitcher>
+
+        </ViewFlipper>
 
 
     </RelativeLayout>

@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.ViewSwitcher;
+import android.widget.ViewFlipper;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class Huvudmeny extends Activity
 
     //private Music music;
     private RelativeLayout tutorial;
-    private ViewSwitcher viewSwitcher;
+    private ViewFlipper viewFlipper;
     private Button tutSkip, tutNext, tutPrev;
 
     @Override
@@ -35,7 +35,7 @@ public class Huvudmeny extends Activity
 
         //// TUTORIAL OVERLAY
         tutorial = (RelativeLayout)findViewById(R.id.tutorial);
-        viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
 
         Log.d("TextLog", "App start\n");
 
@@ -128,34 +128,32 @@ public class Huvudmeny extends Activity
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.tutSkip) {
-                tutorial.setVisibility(View.INVISIBLE);
+                tutorial.setVisibility(View.GONE);
             }
 
-            if (v.getId() == R.id.tutNext) {
-                if (viewSwitcher.getDisplayedChild() == 0) {
-                    viewSwitcher.showNext();
+            if (v.getId() == R.id.tutNext)
+            {
+                    viewFlipper.showNext();
                     tutUpdateBtns();
-                }
             }
 
-            if (v.getId() == R.id.tutPrev) {
-                if (viewSwitcher.getDisplayedChild() == 1) {
-                    viewSwitcher.showPrevious();
+            if (v.getId() == R.id.tutPrev)
+            {
+                    viewFlipper.showPrevious();
                     tutUpdateBtns();
-                }
             }
         }
     };
 
     private void tutUpdateBtns() {
-        final int first = 0, last = 1;
-        if (viewSwitcher.getDisplayedChild() == first) {
-            tutPrev.setVisibility(View.INVISIBLE);
+        final int first = 0, last = 4;
+        if (viewFlipper.getDisplayedChild() == first) {
+            tutPrev.setVisibility(View.GONE);
         } else {
             tutPrev.setVisibility(View.VISIBLE);
         }
 
-        if (viewSwitcher.getDisplayedChild() == last) {
+        if (viewFlipper.getDisplayedChild() == last) {
             tutNext.setVisibility(View.GONE);
         } else {
             tutNext.setVisibility(View.VISIBLE);

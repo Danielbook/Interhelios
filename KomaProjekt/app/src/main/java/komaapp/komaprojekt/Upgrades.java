@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -22,6 +23,7 @@ public class Upgrades extends Activity
 {
     private Database database = new Database();
     ImageView gunsRadio, engineRadio, shieldRadio;
+    RelativeLayout resetView;
 
     //Updates the txt in the tables
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -68,6 +70,10 @@ public class Upgrades extends Activity
         Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
         Button engineBtn = (Button)findViewById(R.id.engineBtn);
         Button backBtn = (Button)findViewById(R.id.backBtn);
+        Button resetBtn = (Button)findViewById(R.id.resetBtn);
+
+        Button yesBtn = (Button)findViewById(R.id.yesBtn);
+        Button noBtn = (Button)findViewById(R.id.noBtn);
 
         //If there is not enough cash or reached max level, make the button red
         if(!database.enoughCash("guns") || database.getLvl("guns") >= 5){
@@ -96,6 +102,10 @@ public class Upgrades extends Activity
         shieldBtn.setOnClickListener(buttonListener);
         engineBtn.setOnClickListener(buttonListener);
         backBtn.setOnClickListener(buttonListener);
+        resetBtn.setOnClickListener(buttonListener);
+
+        yesBtn.setOnClickListener(buttonListener);
+        noBtn.setOnClickListener(buttonListener);
 
         ////RADIOBUTTONS
         switch(gunsLvl)
@@ -194,9 +204,11 @@ public class Upgrades extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrades);
 
-        Log.d("TextLog", "Upgrade start\n");
+        resetView = (RelativeLayout)findViewById(R.id.resetView);
 
-        //Log.d("TextLog", "Upgrades is saved here: " + getFilesDir());
+        resetView.setVisibility(View.GONE);
+
+        Log.d("TextLog", "Upgrade start\n");
 
         try { database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
         catch (FileNotFoundException e) { Log.d("TextLog", "Could not read file!"); }
@@ -265,6 +277,27 @@ public class Upgrades extends Activity
             if(v.getId() == R.id.backBtn)
             {
                 startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
+            }
+
+            if(v.getId() == R.id.resetBtn)
+            {
+                resetView.setVisibility(View.VISIBLE);
+            }
+
+            if(v.getId() == R.id.yesBtn)
+            {
+                try {
+                    database.newPlayer(ctx);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                updateTable();
+                resetView.setVisibility(View.GONE);
+            }
+
+            if(v.getId() == R.id.noBtn)
+            {
+                resetView.setVisibility(View.GONE);
             }
         }
     };
