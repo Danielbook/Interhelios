@@ -68,7 +68,6 @@ public class Upgrades extends Activity
         Button shieldBtn = (Button)findViewById(R.id.shieldBtn);
         Button engineBtn = (Button)findViewById(R.id.engineBtn);
         Button backBtn = (Button)findViewById(R.id.backBtn);
-        Button cashBtn = (Button)findViewById(R.id.cashBtn);
 
         //If there is not enough cash or reached max level, make the button red
         if(!database.enoughCash("guns") || database.getLvl("guns") >= 5){
@@ -97,7 +96,6 @@ public class Upgrades extends Activity
         shieldBtn.setOnClickListener(buttonListener);
         engineBtn.setOnClickListener(buttonListener);
         backBtn.setOnClickListener(buttonListener);
-        cashBtn.setOnClickListener(buttonListener);
 
         ////RADIOBUTTONS
         switch(gunsLvl)
@@ -186,7 +184,6 @@ public class Upgrades extends Activity
                 break;
             }
         }
-
     }
 
     @Override
@@ -263,17 +260,6 @@ public class Upgrades extends Activity
 
                     updateTable();
                 }
-            }
-
-            if(v.getId() == R.id.cashBtn)
-            {
-                database.addCash(500);
-
-                //Write/read to database
-                try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
-                try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
-
-                updateTable();
             }
 
             if(v.getId() == R.id.backBtn)

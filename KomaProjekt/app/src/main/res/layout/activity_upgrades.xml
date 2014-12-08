@@ -30,10 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/cash"
-            android:textColor="#ffffffff"
-            android:textSize="30sp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/text_cash" />
 
@@ -46,7 +43,7 @@
             android:layout_gravity="center"
             android:gravity="center_vertical|center_horizontal"
             android:text="cash"
-            android:fontFamily="Space Age" />
+            android:textSize="40sp" />
     </LinearLayout>
 
     <ScrollView
@@ -344,14 +341,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="91dp"
-                android:layout_height="79dp"
-                android:id="@+id/cashBtn"
-                android:background="@drawable/dollar"
-                android:layout_gravity="center_horizontal" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"

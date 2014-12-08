@@ -44,7 +44,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public static final int CAMERA_HEIGHT = 1920;
     private float backX = 0, backY1 = 0,backY2= -1920;
 
-    private Sprite pauseButton, resumeButton, restartButton, quitButton;
+    private Sprite pauseButton, resumeButton, restartButton, quitButton, gameOverText;
 
     public static Text missileTimerText;
     public static Sprite shootBtn;
@@ -54,10 +54,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     //TEXTURES
     private BitmapTextureAtlas texAtlas;
 
-    private ITextureRegion xWing_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars, pause_tex;
+    private ITextureRegion player_tex, background_tex_clouds1,background_tex_clouds2, background_tex_stars, pause_tex;
     private ITextureRegion repeatingBackgroundTex1, repeatingBackgroundTex2, repeatingBackgroundClouds;
-    private ITextureRegion resume_tex, restart_tex, quit_tex;
+    private ITextureRegion resume_tex, restart_tex, quit_tex, game_over_tex;
     private MovingBackground background_clouds1,background_clouds2, background_stars;
+
+    private HUD hud;
 
     private MovingBackground bg_earth_1, bg_earth_2, bg_clouds_1, bg_clouds_2;
    // private RelativeLayout pause;
@@ -97,7 +99,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     private void createHUD()
     {
-        HUD hud = new HUD();
+        hud = new HUD();
 
 /*        final Sprite mainHud = new Sprite(0, CAMERA_HEIGHT-132, loadITextureRegion("HUD.png", 1200, 132),this.getVertexBufferObjectManager() )
         {
@@ -174,9 +176,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         quit_tex = loadITextureRegion("btn_quit.png",632, 306 );
         pause_tex = loadITextureRegion("btn_pause.png", 146, 146);
 
+        game_over_tex = loadITextureRegion("text_game_over.png", 879, 102);
+
         background_tex_stars = loadITextureRegion("bkgrnd_stars.png", CAMERA_WIDTH, 3000);
 
-        xWing_tex = loadITextureRegion("xwing_sprite.png", 200, 217);
+        player_tex = loadITextureRegion("player_ship.png", 200, 200);
 
         createHUD();
 
@@ -234,7 +238,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(bg_clouds_1);
         scene.attachChild(bg_clouds_2);
 
-
         //ENEMY MANAGEMENT
         this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
         this.enemyManager = new EnemyManager( scene, this.getVertexBufferObjectManager(), this.enemyShotManager);
@@ -244,7 +247,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
 
         //Instantiate the player object
-        player = new Player(camera.getWidth()/2, 1000, xWing_tex, this.getVertexBufferObjectManager(), playerShotManager, gunsLvl, engineLvl, shieldLvl)
+        player = new Player(camera.getWidth()/2, 1000, player_tex, this.getVertexBufferObjectManager(), playerShotManager, gunsLvl, engineLvl, shieldLvl)
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X, float Y)
@@ -352,8 +355,20 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    scene.detachChild(pauseButton);
+                    scene.unregisterTouchArea(pauseButton);
 
-                    startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
+                    hud.detachChild(shootBtn);
+                    hud.unregisterTouchArea(shootBtn);
+                    hud.detachChild(missileTimerText);
+
+                    scene.setIgnoreUpdate(true);
+                    scene.attachChild(pauseRectangle);
+                    scene.attachChild(gameOverText);
+                    scene.attachChild(restartButton);
+                    scene.registerTouchArea(restartButton);
+                    scene.attachChild(quitButton);
+                    scene.registerTouchArea(quitButton);
                 }
               }
 
@@ -369,18 +384,29 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 {
                     scene.detachChild(resumeButton);
                     scene.unregisterTouchArea(resumeButton);
+
                     scene.detachChild(restartButton);
                     scene.unregisterTouchArea(restartButton);
+
                     scene.detachChild(quitButton);
                     scene.unregisterTouchArea(quitButton);
-                    scene.detachChild(pauseRectangle);
-                    scene.attachChild(pauseButton);
-                    scene.setIgnoreUpdate(false);
 
+                    scene.detachChild(pauseRectangle);
+
+                    hud.attachChild(shootBtn);
+                    hud.registerTouchArea(shootBtn);
+
+                    hud.attachChild(missileTimerText);
+                    scene.attachChild(pauseButton);
+                    scene.registerTouchArea(pauseButton);
+
+                    scene.setIgnoreUpdate(false);
                 }
                 return true;
             };
         };
+
+        gameOverText = new Sprite (((CAMERA_WIDTH/2)-439),((CAMERA_HEIGHT/2)-600), this.game_over_tex, this.getVertexBufferObjectManager()){ };
 
         //Button to restart the game, calls startActivity once again
         restartButton = new Sprite (((CAMERA_WIDTH/2)-316),((CAMERA_HEIGHT/2)-153), this.restart_tex, this.getVertexBufferObjectManager())
@@ -415,6 +441,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 if (touchEvent.isActionDown())
                 {
                     scene.detachChild(pauseButton);
+                    scene.unregisterTouchArea(pauseButton);
+
+                    hud.detachChild(shootBtn);
+                    hud.unregisterTouchArea(shootBtn);
+                    hud.detachChild(missileTimerText);
+
                     scene.setIgnoreUpdate(true);
                     scene.attachChild(pauseRectangle);
                     scene.attachChild(resumeButton);
@@ -448,5 +480,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             player.setTouchActive(false);
         }
         return false;
+    }
+
+    //Disable the back button
+    public void onBackPressed() {
     }
 }
