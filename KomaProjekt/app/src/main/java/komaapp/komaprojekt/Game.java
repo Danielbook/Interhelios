@@ -90,7 +90,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     //EXPLOSIONS
     private ITiledTextureRegion explosionTex;
-    private AnimatedSprite explosionSprite;
+    private boolean hasPlayedDeathExplosion = false;
 
     private ITextureRegion loadITextureRegion(String filename, int width, int height)
     {
@@ -368,8 +368,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 //DO SOMETHING IF PLAYER DIES
                 // TODO Make this not run several times
-                if(Player.shield <= 0)
+                if(Player.shield <= 0 && !hasPlayedDeathExplosion)
                 {
+                    hasPlayedDeathExplosion = true;
+
                     try {
                         database.writeFile(ctx);
                     } catch (IOException e) {
@@ -382,13 +384,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     hud.unregisterTouchArea(shootBtn);
                     hud.detachChild(missileTimerText);
 
-                    scene.setIgnoreUpdate(true);
-                    scene.attachChild(pauseRectangle);
-                    scene.attachChild(gameOverText);
-                    scene.attachChild(restartButton);
-                    scene.registerTouchArea(restartButton);
-                    scene.attachChild(quitButton);
-                    scene.registerTouchArea(quitButton);
                     final Text dieText = new Text(CAMERA_WIDTH/2, CAMERA_HEIGHT/2, mFont, "You have died.", getVertexBufferObjectManager());
                     scene.attachChild(dieText);
 
@@ -411,7 +406,13 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                         @Override
                         public void onAnimationFinished(AnimatedSprite animatedSprite) {
-                            startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
+                            scene.setIgnoreUpdate(true);
+                            scene.attachChild(pauseRectangle);
+                            scene.attachChild(gameOverText);
+                            scene.attachChild(restartButton);
+                            scene.registerTouchArea(restartButton);
+                            scene.attachChild(quitButton);
+                            scene.registerTouchArea(quitButton);
                         }
                     });
 

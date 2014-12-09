@@ -249,6 +249,8 @@ public class Player extends Sprite {
 
     public void update(float dt)
     {
+        if (shield <= 0) return;
+
         updatePosition(dt);
         //updateRotation();
         //makeWithinWindow();
