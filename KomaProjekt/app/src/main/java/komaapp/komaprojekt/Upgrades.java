@@ -29,7 +29,6 @@ public class Upgrades extends Activity
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void updateTable()
     {
-
         int gunsLvl = database.getLvl("guns");
         int engineLvl = database.getLvl("engine");
         int shieldLvl = database.getLvl("shield");

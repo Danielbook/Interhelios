@@ -43,7 +43,7 @@ public class Huvudmeny extends Activity
         try {
             database.readFile(ctx);
             Log.d("TextLog", "Databasefile read!");
-            tutorial.setVisibility(View.INVISIBLE);
+            tutorial.setVisibility(View.GONE);
         }
 
         //If the files couldnt be found, a new player is created and the tutorial is shown
@@ -100,21 +100,21 @@ public class Huvudmeny extends Activity
     private View.OnClickListener buttonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.upgradeBtn && tutorial.getVisibility() == View.INVISIBLE) {
+            if (v.getId() == R.id.upgradeBtn && tutorial.getVisibility() == View.GONE) {
                 startActivity(new Intent(getApplicationContext(), Upgrades.class));
             }
 
-            if (v.getId() == R.id.settingsBtn && tutorial.getVisibility() == View.INVISIBLE) {
+            if (v.getId() == R.id.settingsBtn && tutorial.getVisibility() == View.GONE) {
                 startActivity(new Intent(getApplicationContext(), Settings.class));
             }
 
-            if (v.getId() == R.id.startBtn && tutorial.getVisibility() == View.INVISIBLE) {
+            if (v.getId() == R.id.startBtn && tutorial.getVisibility() == View.GONE) {
                 startActivity(new Intent(getApplicationContext(), Game.class));
             }
 
             if (v.getId() == R.id.howToBtn) {
                 if (tutorial.getVisibility() == View.VISIBLE) {
-                    tutorial.setVisibility(View.INVISIBLE);
+                    tutorial.setVisibility(View.GONE);
                 }
                 else {
                     tutorial.setVisibility(View.VISIBLE);
