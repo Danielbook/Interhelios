@@ -17,6 +17,8 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.IAnimationData;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
@@ -26,6 +28,7 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.color.Color;
 
@@ -33,6 +36,7 @@ import java.io.IOException;
 
 import komaapp.komaprojekt.GameLogic.Collision.CollisionManager;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
+import komaapp.komaprojekt.GameLogic.Explosion;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
 import komaapp.komaprojekt.GameLogic.ShotManager;
@@ -62,7 +66,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private HUD hud;
 
     private MovingBackground bg_earth_1, bg_earth_2, bg_clouds_1, bg_clouds_2;
-   // private RelativeLayout pause;
 
     private Player player;
     private ShotManager playerShotManager;
@@ -84,6 +87,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     //Music and sounds
     //private Music music;
+
+    //EXPLOSIONS
+    private ITiledTextureRegion explosionTex;
+    private AnimatedSprite explosionSprite;
 
     private ITextureRegion loadITextureRegion(String filename, int width, int height)
     {
@@ -158,6 +165,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     @Override
     protected void onCreateResources()
     {
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+
         //FONTS
         this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
         this.mFont.load();
@@ -183,6 +192,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         player_tex = loadITextureRegion("player_ship.png", 200, 200);
 
         createHUD();
+
+        // EXPLOSIONS
+
+        BitmapTextureAtlas explosionTexAtlas = new BitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        explosionTex = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTexAtlas, this.getAssets(), "kp_explosion_sheet1.png", 0, 0, 8, 8);
+        explosionTexAtlas.load();
+
+        Explosion.setExplosionTex(explosionTex);
 
         //Music and sounds
         /*try{
@@ -261,6 +278,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         };
         scene.attachChild(player);
 
+
         //CASH TEXT
         final Text cashText = new Text(10, 10, cashFont, "Cash", 10, this.getVertexBufferObjectManager());
         cashText.setPosition(CAMERA_WIDTH - 200, 10);
@@ -272,6 +290,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         scene.attachChild(cashText);
         scene.attachChild(cashVal);
+
 
         //HEALTH
         final Text healthText = new Text(10, 10, cashFont, "Shield", 10, this.getVertexBufferObjectManager());
@@ -348,6 +367,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 }
 
                 //DO SOMETHING IF PLAYER DIES
+                // TODO Make this not run several times
                 if(Player.shield <= 0)
                 {
                     try {
@@ -369,6 +389,32 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     scene.registerTouchArea(restartButton);
                     scene.attachChild(quitButton);
                     scene.registerTouchArea(quitButton);
+                    final Text dieText = new Text(CAMERA_WIDTH/2, CAMERA_HEIGHT/2, mFont, "You have died.", getVertexBufferObjectManager());
+                    scene.attachChild(dieText);
+
+                    float explosionX = player.getCenterX() - Explosion.getTextureWidth()/2;
+                    float explosionY = player.getCenterY() - Explosion.getTextureHeight()/2;
+
+                    final AnimatedSprite explosionAnimation = new AnimatedSprite(explosionX, explosionY, Explosion.getExplosionTex(), getVertexBufferObjectManager());
+                    scene.attachChild(explosionAnimation);
+                    explosionAnimation.setScaleCenter(explosionAnimation.getWidth()/2, explosionAnimation.getHeight()/2);
+                    explosionAnimation.setScale(10f);
+                    explosionAnimation.animate(1000/60, false, new AnimatedSprite.IAnimationListener() {
+                        @Override
+                        public void onAnimationStarted(AnimatedSprite animatedSprite, int i) {}
+
+                        @Override
+                        public void onAnimationFrameChanged(AnimatedSprite animatedSprite, int i, int i2) {}
+
+                        @Override
+                        public void onAnimationLoopFinished(AnimatedSprite animatedSprite, int i, int i2) {}
+
+                        @Override
+                        public void onAnimationFinished(AnimatedSprite animatedSprite) {
+                            startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
+                        }
+                    });
+
                 }
               }
 
