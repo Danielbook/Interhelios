@@ -4,12 +4,11 @@ import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 
-import org.andengine.entity.IEntity;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import komaapp.komaprojekt.Game;
 import komaapp.komaprojekt.GameLogic.Collision.CircleBody;
 
 /**
@@ -69,12 +68,14 @@ public abstract class BaseEnemy extends Sprite {
         Log.d("EnemyLog", "Enemy with ID=" + this.getID() + " destroyed.");
         this.detachSelf();
         this.dispose();
+        //MainMenu.soundManager.enemyExplosion();
+        Game.enemy_explosion.play();
     }
 
     protected void addShotToShotManager(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float speed, final float pRed, final float pGreen, final float pBlue)
     {
         shotManagerReference.addShot(pX, pY, direction, pWidth, pHeight, speed, pRed, pGreen, pBlue);
-        Log.d("ShotLog", "enemy with ID=" + ID + " tried to shoot");
+        Game.enemy_laser.play();
     }
 
     public int getID() { return this.ID; } // Basic identifying integer, unique for each spawned enemy

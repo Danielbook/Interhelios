@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView2"
         android:id="@+id/linearLayout9"
-        android:layout_margin="20dp">
+        android:layout_margin="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,8 +35,8 @@
             android:background="@drawable/text_cash" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/cashTxt"
             android:textColor="#6FCCDC"
@@ -400,7 +400,7 @@
         android:layout_height="match_parent"
         android:background="#f0131517"
         android:id="@+id/resetView"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

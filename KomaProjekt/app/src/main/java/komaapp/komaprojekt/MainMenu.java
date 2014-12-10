@@ -16,11 +16,14 @@ import android.widget.ViewFlipper;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class Huvudmeny extends Activity
+public class MainMenu extends Activity
 {
     private Database database = new Database();
+    public static SoundManager soundManager = new SoundManager();
 
-    //private Music music;
+    private Context ctx;
+
+    //private Music music;r
     private RelativeLayout tutorial;
     private ViewFlipper viewFlipper;
     private Button tutSkip, tutNext, tutPrev;
@@ -28,7 +31,7 @@ public class Huvudmeny extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Context ctx = getBaseContext();
+        ctx = getBaseContext();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
@@ -46,7 +49,7 @@ public class Huvudmeny extends Activity
             tutorial.setVisibility(View.GONE);
         }
 
-        //If the files couldnt be found, a new player is created and the tutorial is shown
+        //If the files couldnt be found, a new sound is created and the tutorial is shown
         catch (FileNotFoundException e) {
             try {
                 database.newPlayer(ctx);
@@ -75,16 +78,6 @@ public class Huvudmeny extends Activity
         settingsBtn.setOnClickListener(buttonListener);
         howToBtn.setOnClickListener(buttonListener);
 
-        /*try{
-            music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/Presenterator.ogg");
-            music.setLooping(true);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }*/
-
-        //music.play();
-
         tutSkip = (Button) findViewById(R.id.tutSkip);
         tutNext = (Button) findViewById(R.id.tutNext);
         tutPrev = (Button) findViewById(R.id.tutPrev);
@@ -93,6 +86,11 @@ public class Huvudmeny extends Activity
         tutPrev.setOnClickListener(tutorialButtonListener);
         tutSkip.setOnClickListener(tutorialButtonListener);
 
+        if(!soundManager.isBackgroundMusicIsplaying())
+        {
+            soundManager.startBackgroundMusic(ctx);
+        }
+
         tutUpdateBtns();
     }
 
@@ -100,23 +98,36 @@ public class Huvudmeny extends Activity
     private View.OnClickListener buttonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.upgradeBtn && tutorial.getVisibility() == View.GONE) {
-                startActivity(new Intent(getApplicationContext(), Upgrades.class));
-            }
 
-            if (v.getId() == R.id.settingsBtn && tutorial.getVisibility() == View.GONE) {
-                startActivity(new Intent(getApplicationContext(), Settings.class));
-            }
-
-            if (v.getId() == R.id.startBtn && tutorial.getVisibility() == View.GONE) {
+            if (v.getId() == R.id.startBtn && tutorial.getVisibility() == View.GONE)
+            {
+                soundManager.startSound(ctx);
+                soundManager.pauseBackgroundMusic();
                 startActivity(new Intent(getApplicationContext(), Game.class));
             }
 
-            if (v.getId() == R.id.howToBtn) {
-                if (tutorial.getVisibility() == View.VISIBLE) {
+            if (v.getId() == R.id.upgradeBtn && tutorial.getVisibility() == View.GONE)
+            {
+                soundManager.buttonSound(ctx);
+                startActivity(new Intent(getApplicationContext(), Upgrades.class));
+            }
+
+            if (v.getId() == R.id.settingsBtn && tutorial.getVisibility() == View.GONE)
+            {
+                soundManager.buttonSound(ctx);
+                startActivity(new Intent(getApplicationContext(), Settings.class));
+            }
+
+            if (v.getId() == R.id.howToBtn)
+            {
+                soundManager.buttonSound(ctx);
+
+                if (tutorial.getVisibility() == View.VISIBLE)
+                {
                     tutorial.setVisibility(View.GONE);
                 }
-                else {
+                else
+                {
                     tutorial.setVisibility(View.VISIBLE);
                 }
             }
@@ -127,18 +138,22 @@ public class Huvudmeny extends Activity
     {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.tutSkip) {
+            if (v.getId() == R.id.tutSkip)
+            {
+                soundManager.buttonSound(ctx);
                 tutorial.setVisibility(View.GONE);
             }
 
             if (v.getId() == R.id.tutNext)
             {
+                    soundManager.buttonSound(ctx);
                     viewFlipper.showNext();
                     tutUpdateBtns();
             }
 
             if (v.getId() == R.id.tutPrev)
             {
+                    soundManager.buttonSound(ctx);
                     viewFlipper.showPrevious();
                     tutUpdateBtns();
             }
@@ -147,17 +162,31 @@ public class Huvudmeny extends Activity
 
     private void tutUpdateBtns() {
         final int first = 0, last = 4;
-        if (viewFlipper.getDisplayedChild() == first) {
+        if (viewFlipper.getDisplayedChild() == first)
+        {
             tutPrev.setVisibility(View.GONE);
-        } else {
+        }
+
+        else
+        {
             tutPrev.setVisibility(View.VISIBLE);
         }
 
-        if (viewFlipper.getDisplayedChild() == last) {
+        if (viewFlipper.getDisplayedChild() == last)
+        {
             tutNext.setVisibility(View.GONE);
-        } else {
+        }
+
+        else
+        {
             tutNext.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
+        soundManager.setBackgroundMusicIsplaying(false);
     }
 
     @Override

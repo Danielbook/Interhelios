@@ -310,6 +310,9 @@ public class Player extends Sprite {
         Vector2 shootDir = new Vector2(0, -1);
         shotManagerReference.addShot(getCenterX()-getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
         shotManagerReference.addShot(getCenterX()+getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
+
+        //MainMenu.soundManager.playerLaser();
+        Game.player_laser.play();
     }
 
     public void shootMissile()
@@ -333,6 +336,10 @@ public class Player extends Sprite {
             // TODO Player has died, make game quit here
             this.detachSelf();
             this.dispose();
+            //MainMenu.soundManager.playerExplosion();
+            Game.player_damage.play();
         }
+        //MainMenu.soundManager.playerDamage();
+        Game.player_damage.play();
     }
 }

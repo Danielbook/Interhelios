@@ -1,8 +1,5 @@
 package komaapp.komaprojekt.GameLogic;
 
-import android.util.Log;
-
-import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -71,6 +68,7 @@ public class EnemyManager {
                 enemiesToRemove.add(enemy);
                 // dispose the memory of enemy
                 enemy.destroy();
+
             }
         }
         enemies.removeAll(enemiesToRemove); // Remove all enemies to far down from the arrayList
@@ -118,7 +116,7 @@ public class EnemyManager {
             explosionAnimation.setScale((randGen.nextFloat()+2.3f)*1.5f);
             explosionAnimation.animate(1000/60, false, new AnimatedSprite.IAnimationListener() {
                 @Override
-                public void onAnimationStarted(AnimatedSprite animatedSprite, int i) {}
+                public void onAnimationStarted(AnimatedSprite animatedSprite, int i){}
 
                 @Override
                 public void onAnimationFrameChanged(AnimatedSprite animatedSprite, int i, int i2) {}
@@ -129,10 +127,10 @@ public class EnemyManager {
                 @Override
                 public void onAnimationFinished(AnimatedSprite animatedSprite) {
                     explosionAnimation.setVisible(false);
+
                 }
             });
         }
-
         this.enemies.removeAll(enemiesToRemove);
     }
 
