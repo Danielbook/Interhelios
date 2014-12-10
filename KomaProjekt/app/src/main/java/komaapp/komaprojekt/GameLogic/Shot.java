@@ -2,24 +2,25 @@ package komaapp.komaprojekt.GameLogic;
 
 import com.badlogic.gdx.math.Vector2;
 
-import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * Created by benjamin on 14-11-26.
  */
-public class Shot extends Rectangle {
+public class Shot extends Sprite {
 
     protected float speed;
     protected Vector2 normDir;
 
     public int damage;
 
-    public Shot(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float speed, VertexBufferObjectManager VBOmanager, final float pRed, final float pGreen, final float pBlue) {
-        super(pX, pY, pWidth, pHeight, VBOmanager);
+    public Shot(float pX, float pY, Vector2 direction, float speed, VertexBufferObjectManager VBOmanager, ITextureRegion shotTex) {
+        super(pX, pY, shotTex, VBOmanager);
 
         normDir = direction.nor();
-        this.setColor(pRed, pGreen, pBlue);
+
         this.speed = speed;
 
         this.damage = 5;

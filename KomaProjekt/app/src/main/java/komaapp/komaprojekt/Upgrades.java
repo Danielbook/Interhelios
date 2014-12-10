@@ -25,6 +25,8 @@ public class Upgrades extends Activity
     ImageView gunsRadio, engineRadio, shieldRadio;
     RelativeLayout resetView;
 
+    private Context ctx;
+
     //Updates the txt in the tables
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void updateTable()
@@ -38,7 +40,7 @@ public class Upgrades extends Activity
         cashTxt.setText("" + database.getCash());
 
         //Sets the price of all the upgrades
-        //If the price is -1, the player is either at max level, or not
+        //If the price is -1, the sound is either at max level, or not
         //enough money to buy upgrade, sets text accordingly
         TextView gunsPrice = (TextView)findViewById(R.id.gunsPrice);
         if(database.getPrice("guns") != -1) {
@@ -198,7 +200,7 @@ public class Upgrades extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Context ctx = getBaseContext();
+        ctx = getBaseContext();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrades);
@@ -230,13 +232,14 @@ public class Upgrades extends Activity
         @Override
         public void onClick(View v)
         {
-            Context ctx = getApplicationContext();
 
             if(v.getId() == R.id.gunsBtn)
             {
                 Log.d("TextLog", "Guns");
                 if( database.buyUpgrade("Guns") )
                 {
+                    MainMenu.soundManager.buttonSound();
+
                     //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
@@ -247,10 +250,10 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.shieldBtn)
             {
-                Log.d("TextLog", "Shield");
-
                 if(database.buyUpgrade("Shield"))
                 {
+                    MainMenu.soundManager.buttonSound();
+
                     //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
@@ -261,7 +264,7 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.engineBtn)
             {
-                Log.d("TextLog", "Engine");
+                MainMenu.soundManager.buttonSound();
 
                 if( database.buyUpgrade("Engine") )
                 {
@@ -275,17 +278,24 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.backBtn)
             {
-                startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
+                MainMenu.soundManager.buttonSound();
+
+                startActivity(new Intent (getApplicationContext(), MainMenu.class));
             }
 
             if(v.getId() == R.id.resetBtn)
             {
+                MainMenu.soundManager.buttonSound();
+
                 resetView.setVisibility(View.VISIBLE);
             }
 
             if(v.getId() == R.id.yesBtn)
             {
-                try {
+                MainMenu.soundManager.buttonSound();
+
+                try
+                {
                     database.newPlayer(ctx);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -296,6 +306,7 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.noBtn)
             {
+                MainMenu.soundManager.buttonSound();
                 resetView.setVisibility(View.GONE);
             }
         }
@@ -307,6 +318,12 @@ public class Upgrades extends Activity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.huvudmeny, menu);
         return true;
+    }
+
+    protected void onResume()
+    {
+        super.onResume();
+
     }
 
     @Override

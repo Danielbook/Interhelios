@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -77,7 +79,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Player player;
     private ShotManager playerShotManager;
 
-    private Context ctx;
+    public static Context ctx;
 
     //ENEMIES
     private EnemyManager enemyManager;
@@ -89,11 +91,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private int gunsLvl;
     private int shieldLvl;
 
-    private int sound;
-    private int music;
-
-    //Music and sounds
-    //private Music music;
+    //SOUNDS
+    public static Sound player_explosion, player_damage, player_laser, enemy_explosion, enemy_laser;
 
     //EXPLOSIONS
     private ITiledTextureRegion explosionTex;
@@ -183,6 +182,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+        engineOptions.getAudioOptions().setNeedsSound(true);
+        engineOptions.getAudioOptions().getSoundOptions().setMaxSimultaneousStreams(5000);
+
         LimitedFPSEngine engine = new LimitedFPSEngine(engineOptions, 60);
         //engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
         return engine.getEngineOptions();
@@ -220,8 +222,29 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         rocketBtnTexAtlas.load();
 
         loadBackgrounds();
-    }
 
+        try
+        {
+            player_explosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_explosion.ogg");
+            player_explosion.setVolume((float)database.getSoundVolume()/10);
+
+            player_damage = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_damage.ogg");
+            player_damage.setVolume((float)database.getSoundVolume()/10);
+
+            player_laser = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_laser.ogg");
+            player_laser.setVolume((float)database.getSoundVolume()/10);
+
+            enemy_explosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/enemy_explosion.ogg");
+            enemy_explosion.setVolume((float)database.getSoundVolume()/10);
+
+            enemy_laser = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/enemy_laser.ogg");
+            enemy_laser.setVolume((float)database.getSoundVolume()/10);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     protected void onCreateResources()
     {
@@ -273,12 +296,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
 
         //ENEMY MANAGEMENT
-        this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
+        this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() , loadITextureRegion("laser_enemy.png",20,65));
         this.enemyManager = new EnemyManager( scene, this.getVertexBufferObjectManager(), this.enemyShotManager);
-        enemyManager.addEnemyTexture(loadITextureRegion("tie_sprite_small.png", 200, 257), "tie_fighter");
+        enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy1.png", 200, 200), "Enemy1");
+        enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy2.png", 200, 200), "Enemy2");
+
+
 
         //SHOT MANAGEMENT
-        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
+        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager(), loadITextureRegion("laser_player.png",20,65));
 
         //Instantiate the player object
         player = new Player(camera.getWidth()/2, 1000, player_tex, this.getVertexBufferObjectManager(), playerShotManager, gunsLvl, engineLvl, shieldLvl)
@@ -425,8 +451,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
 
             @Override
-            public void reset() {
-            }
+            public void reset() {}
         });
 
         resumeButton = new Sprite (((CAMERA_WIDTH/2)-316), ((CAMERA_HEIGHT/2)-600), this.resume_tex, this.getVertexBufferObjectManager())
@@ -435,6 +460,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
+                    MainMenu.soundManager.buttonSound();
+
                     scene.detachChild(resumeButton);
                     scene.unregisterTouchArea(resumeButton);
 
@@ -455,7 +482,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     scene.setIgnoreUpdate(false);
                 }
                 return true;
-            };
+            }
         };
 
         gameOverText = new Sprite (((CAMERA_WIDTH/2)-439),((CAMERA_HEIGHT/2)-600), this.game_over_tex, this.getVertexBufferObjectManager()){ };
@@ -467,10 +494,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
+                    MainMenu.soundManager.buttonSound();
                     startActivity(new Intent(getApplicationContext(), Game.class));
                 }
                 return true;
-            };
+            }
         };
 
         //Button to quit game and go to main menu
@@ -480,10 +508,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    startActivity(new Intent(getApplicationContext(), Huvudmeny.class));
+                    MainMenu.soundManager.buttonSound();
+                    MainMenu.soundManager.setBackgroundMusicIsplaying(false);
+                    startActivity(new Intent(getApplicationContext(), MainMenu.class));
                 }
                 return true;
-            };
+            }
         };
 
         pauseButton = new Sprite(0, 0, this.pause_tex, this.getVertexBufferObjectManager())
@@ -492,6 +522,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
+                    MainMenu.soundManager.buttonSound();
+
                     scene.detachChild(pauseButton);
                     scene.unregisterTouchArea(pauseButton);
 
@@ -508,7 +540,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     scene.registerTouchArea(quitButton);
                 }
                 return true;
-            };
+            }
         };
         scene.registerTouchArea(pauseButton);
         scene.attachChild(pauseButton);
@@ -590,7 +622,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             player.setTargetPosition(new Vector2(touchEvent.getX(), touchEvent.getY()));
             player.setTouchActive(true);
 
-            //player.setCenterPosition(touchEvent.getX(),touchEvent.getY());
+            //sound.setCenterPosition(touchEvent.getX(),touchEvent.getY());
         } else if (touchEvent.isActionUp() || touchEvent.isActionOutside())
         {
             player.setTouchActive(false);

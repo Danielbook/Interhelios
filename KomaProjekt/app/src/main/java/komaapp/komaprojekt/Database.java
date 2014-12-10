@@ -25,7 +25,7 @@ public class Database extends Activity
 
     //Called when the text files are no where to be found on that fucking
     //piece of shit android device...
-    //Creates a "new" player from the shitty files in the assets folder
+    //Creates a "new" sound from the shitty files in the assets folder
     public void newPlayer(Context ctx) throws IOException {
         String line;
         StringTokenizer tokens;
@@ -131,11 +131,11 @@ public class Database extends Activity
     }
 
     //Returns the volume of the setting
-    public int getVolume(String setting)
+    public int getSoundVolume()
     {
         for (int i = 0; i < dbSettings.size(); i++)
         {
-            if (dbSettings.elementAt(i).getSetting().equalsIgnoreCase(setting))
+            if (dbSettings.elementAt(i).getSetting().equalsIgnoreCase("sound"))
             {
                 return dbSettings.elementAt(i).getVal();
             }
@@ -143,12 +143,38 @@ public class Database extends Activity
         return 0;
     }
 
-    //Function to change the volume
-    public void setVolume(String setting, int newVolume)
+    //Returns the volume of the setting
+    public int getMusicVolume()
     {
         for (int i = 0; i < dbSettings.size(); i++)
         {
-            if (dbSettings.elementAt(i).getSetting().equalsIgnoreCase(setting))
+            if (dbSettings.elementAt(i).getSetting().equalsIgnoreCase("music"))
+            {
+                return dbSettings.elementAt(i).getVal();
+            }
+        }
+        return 0;
+    }
+
+
+    //Function to change the volume
+    public void setSoundVolume(int newVolume)
+    {
+        for (int i = 0; i < dbSettings.size(); i++)
+        {
+            if (dbSettings.elementAt(i).getSetting().equalsIgnoreCase("sound"))
+            {
+                dbSettings.elementAt(i).setVal(newVolume);
+            }
+        }
+    }
+
+    //Function to change the volume
+    public void setMusicVolume(int newVolume)
+    {
+        for (int i = 0; i < dbSettings.size(); i++)
+        {
+            if (dbSettings.elementAt(i).getSetting().equalsIgnoreCase("music"))
             {
                 dbSettings.elementAt(i).setVal(newVolume);
             }
@@ -213,7 +239,7 @@ public class Database extends Activity
         }
     }
 
-    //Used when player want to get more cash
+    //Used when sound want to get more cash
     public void addCash(int cash){
         int currentCash = getCash();
         currentCash += cash;
@@ -250,7 +276,7 @@ public class Database extends Activity
         dbUpgrades.elementAt(i).setPrice(currentPrice*2);
     }
 
-    //Called when player chose to buy an upgrade
+    //Called when sound chose to buy an upgrade
     public boolean buyUpgrade(String upgrade){
         if (enoughCash(upgrade)) {
             for (int i = 0; i < dbUpgrades.size(); i++){

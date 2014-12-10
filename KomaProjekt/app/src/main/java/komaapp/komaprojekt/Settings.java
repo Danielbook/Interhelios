@@ -23,10 +23,12 @@ public class Settings extends Activity {
     private SeekBar musicSeekBar;
     private SeekBar soundSeekBar;
 
+    private Context ctx;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Context ctx = getBaseContext();
+        ctx = getBaseContext();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -38,7 +40,6 @@ public class Settings extends Activity {
         try { database.readFile(ctx); Log.d("TextLog", "Databasefile read!"); }
         catch (IOException e) { e.printStackTrace(); }
 
-
         //Initializing all variables
         musicSeekBar = (SeekBar)findViewById(R.id.musicBar);
         soundSeekBar = (SeekBar)findViewById(R.id.soundBar);
@@ -46,8 +47,8 @@ public class Settings extends Activity {
         Button backBtn = (Button)findViewById(R.id.backBtn);
         backBtn.setOnClickListener(buttonListener);
 
-        musicSeekBar.setProgress(database.getVolume("music"));
-        soundSeekBar.setProgress(database.getVolume("sound"));
+        musicSeekBar.setProgress(database.getMusicVolume());
+        soundSeekBar.setProgress(database.getSoundVolume());
 
         musicSeekBar.setMax(10);
         soundSeekBar.setMax(10);
@@ -62,23 +63,40 @@ public class Settings extends Activity {
         public void onClick(View v)
         {
             if(v.getId() == R.id.backBtn){
-                startActivity(new Intent (getApplicationContext(), Huvudmeny.class));
+                MainMenu.soundManager.buttonSound();
+                startActivity(new Intent (getApplicationContext(), MainMenu.class));
             }
         }
     };
 
     //the seekbar listener - must have all 3 functions that are inside
-    public OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener() {
+    public OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener()
+    {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
         {
             if(seekBar == musicSeekBar)
             {
-                database.setVolume("music", progress);
+                database.setMusicVolume(progress);
+                try
+                {
+                    database.writeFile(ctx);
+
+                } catch (IOException e) { e.printStackTrace(); }
+
+                MainMenu.soundManager.changeBackgroundVolume();
             }
+
             else if(seekBar == soundSeekBar)
             {
-                database.setVolume("sound", progress);
+                database.setSoundVolume(progress);
+                try
+                {
+                    database.writeFile(ctx);
+
+                } catch (IOException e) { e.printStackTrace(); }
+
+
             }
 
             Log.d("TextLog", "Progress: " + progress );
@@ -90,10 +108,9 @@ public class Settings extends Activity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar)
         {
-            Context ctx = getApplicationContext();
-            try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
 
-            Log.d("TextLog","Music: " + database.getVolume("music") + "\nSound: " + database.getVolume("sound"));
+
+            Log.d("TextLog","Music: " + database.getMusicVolume() + "\nSound: " + database.getSoundVolume());
         }
     };
 
@@ -115,6 +132,12 @@ public class Settings extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onResume()
+    {
+        super.onResume();
+
     }
 
     public void onBackPressed() {

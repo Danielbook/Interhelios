@@ -5,6 +5,7 @@ import android.util.Log;
 import com.badlogic.gdx.math.Vector2;
 
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
@@ -20,12 +21,13 @@ public class ShotManager {
     // Reference to the active scene, for attaching enemies to the scene
     private Scene scene;
     private VertexBufferObjectManager VBOmanager;
+    private ITextureRegion shotTex;
 
-    public ShotManager(Scene scene, VertexBufferObjectManager VBOmanager)
+    public ShotManager(Scene scene, VertexBufferObjectManager VBOmanager, ITextureRegion shotTex)
     {
         this.scene = scene;
         this.VBOmanager = VBOmanager;
-
+        this.shotTex = shotTex;
         this.shotList = new ArrayList<Shot>(MAX_SHOTS);
     }
 
@@ -47,15 +49,21 @@ public class ShotManager {
             }
         }
     }
-
+/*
     public void addShot(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float speed, final float pRed, final float pGreen, final float pBlue)
     {
         addShot(new Shot(pX, pY, direction, pWidth, pHeight, speed, VBOmanager, pRed, pGreen, pBlue) );
     }
-
-    public void addMissile(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float initialSpeed, final float pRed, final float pGreen, final float pBlue)
+*/
+    public void addShot(float pX, float pY, Vector2 direction, float speed)
     {
-        addShot(new Missile(pX, pY, direction, pWidth, pHeight, initialSpeed, VBOmanager, pRed, pGreen, pBlue));
+        addShot(new Shot(pX, pY, direction, speed, VBOmanager, shotTex));
+    }
+
+
+    public void addMissile(float pX, float pY, Vector2 direction, float initialSpeed)
+    {
+        addShot(new Missile(pX, pY, direction, initialSpeed, VBOmanager, shotTex));
     }
 
     public void addShot(Shot shot)

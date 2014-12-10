@@ -106,7 +106,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/tutView1"
+                android:id="@+id/welcome"
                 android:visibility="gone">
 
                 <TextView
@@ -151,7 +151,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/tutView2">
+                android:id="@+id/startmenu">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -187,7 +187,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/tutView3" >
+                android:id="@+id/settings" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/tutView4" >
+                android:id="@+id/upgrades1" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -263,7 +263,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/tutView5" >
+                android:id="@+id/upgrades2" >
 
                 <TextView
                     android:layout_width="wrap_content"
