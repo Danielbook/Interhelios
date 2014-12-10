@@ -2,6 +2,7 @@ package komaapp.komaprojekt.GameLogic;
 
 import com.badlogic.gdx.math.Vector2;
 
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
@@ -11,8 +12,8 @@ public class Missile extends Shot {
 
     private float acceleration = 30f;
 
-    public Missile(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float initialSpeed, VertexBufferObjectManager VBOmanager, float pRed, float pGreen, float pBlue) {
-        super(pX, pY, direction, pWidth, pHeight, initialSpeed, VBOmanager, pRed, pGreen, pBlue);
+    public Missile(float pX, float pY, Vector2 direction, float initialSpeed, VertexBufferObjectManager VBOmanager, ITextureRegion missileTex) {
+        super(pX, pY, direction, initialSpeed, VBOmanager, missileTex);
 
         this.speed = initialSpeed;
         this.damage = 1000;

@@ -282,13 +282,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
 
         //ENEMY MANAGEMENT
-        this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
+        this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() , loadITextureRegion("laser_enemy.png",20,65));
         this.enemyManager = new EnemyManager( scene, this.getVertexBufferObjectManager(), this.enemyShotManager);
         enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy1.png", 200, 200), "Enemy1");
         enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy2.png", 200, 200), "Enemy2");
 
+
+
         //SHOT MANAGEMENT
-        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
+        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager(), loadITextureRegion("laser_player.png",20,65));
 
         //Instantiate the player object
         player = new Player(camera.getWidth()/2, 1000, player_tex, this.getVertexBufferObjectManager(), playerShotManager, gunsLvl, engineLvl, shieldLvl)

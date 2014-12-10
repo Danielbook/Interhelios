@@ -288,8 +288,8 @@ public class Player extends Sprite {
         //Vector2 shootDir = new Vector2( (float)(Math.sin(Math.toRadians(getRotation()))), -(float)(Math.cos(Math.toRadians(getRotation()))));
 
         Vector2 shootDir = new Vector2(0, -1);
-        shotManagerReference.addShot(getCenterX()-getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
-        shotManagerReference.addShot(getCenterX()+getWidth()/2, getCenterY(), shootDir, 15f, 60f, 30f, 100f, 0, 0);
+        shotManagerReference.addShot(getCenterX()-getWidth()/2, getCenterY(), shootDir, 60f);
+        shotManagerReference.addShot(getCenterX()+getWidth()/2, getCenterY(), shootDir, 60f);
 
         //MainMenu.soundManager.playerLaser();
         Game.player_laser.play();
@@ -297,9 +297,8 @@ public class Player extends Sprite {
 
     public void shootMissile()
     {
-
         Vector2 shootDir = new Vector2(0, -1);
-        shotManagerReference.addMissile(getCenterX(), getCenterY()-getHeight()/2, shootDir, 30f, 30f, 5f, 25f, 75f, 75f);
+        shotManagerReference.addMissile(getCenterX(), getCenterY()-getHeight()/2, shootDir, 30f);
 
         Game.shootBtn.animate(missileReloadTime*1000 / 60, false);
     }
