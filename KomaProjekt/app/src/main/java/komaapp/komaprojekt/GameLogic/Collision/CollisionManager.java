@@ -38,12 +38,11 @@ public class CollisionManager {
                 // PLAYER HAS HIT AN ENEMY, SHIIIIIET
                 if (!player.isDisposed())
                 {
-                    player.detachSelf();
-                    player.dispose();
+                    //TODO make game quit here
+                    Player.shield = 0;
                 }
 
-                //TODO make game quit here
-                Player.shield = 0;
+
             }
         }
         enemies.removeAll(enemiesToRemove); // Remove all enemies colliding with the player

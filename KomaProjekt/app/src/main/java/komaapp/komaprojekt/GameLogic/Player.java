@@ -38,6 +38,8 @@ public class Player extends Sprite {
 
     private boolean gameHasStarted;
 
+    private HealthBar hpBar;
+
 
     ///// INTERFACE
 
@@ -195,25 +197,6 @@ public class Player extends Sprite {
         setPosition(X - getWidth() / 2, Y - getHeight() / 2);
     }
 
-    private void makeWithinWindow()
-    {
-        float newX = 0.0f;
-        float newY = 0.0f;
-
-        //Check X-axis
-        if (getCenterX() - getWidth() / 2 < 0.0f) newX = 0.0f + getWidth() / 2;
-        else if (getCenterX() + getWidth() / 2 > Game.CAMERA_WIDTH)
-            newX = (float) Game.CAMERA_WIDTH - getWidth() / 2;
-
-        //Check Y-axis
-        if (getCenterY() - getHeight() / 2 < 0.0f) newY = 0.0f + getHeight() / 2;
-        else if (getCenterY() + getHeight() / 2 > Game.CAMERA_HEIGHT)
-            newY = (float) Game.CAMERA_HEIGHT - getHeight() / 2;
-
-        if (newX != 0.0f && newY != 0.0f) setCenterPosition(newX, newY);
-
-    }
-
     private void updatePosition(float dt)
     {
         velocity_dir = (getCenterPosition().sub(targetPosition).nor()).mul(-1);
@@ -232,12 +215,6 @@ public class Player extends Sprite {
 
             setCenterPosition(getCenterPosition().add(velocity_dir.mul(currentSpeed * dt)));
         }
-    }
-
-    private void updateRotation()
-    {
-        float newAngle = (velocity_dir.x) * currentSpeed * 0.001f;
-        setRotation(newAngle);
     }
 
     protected boolean shouldFire() {
@@ -305,13 +282,14 @@ public class Player extends Sprite {
     {
         shield -= damage;
 
-        if (shield <= 0)
-        {
-            // TODO Player has died, make game quit here
-            this.detachSelf();
-            this.dispose();
-        }
+        hpBar.setAlpha(1.0f);
     }
 
     public void setGameHasStarted(boolean gameHasStarted) { this.gameHasStarted = gameHasStarted; }
+
+    public void setHealthBar(HealthBar hpBar)
+    {
+        this.hpBar = hpBar;
+        attachChild(hpBar);
+    }
 }

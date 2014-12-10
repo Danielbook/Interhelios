@@ -35,11 +35,17 @@ import java.io.IOException;
 import komaapp.komaprojekt.GameLogic.Collision.CollisionManager;
 import komaapp.komaprojekt.GameLogic.EnemyManager;
 import komaapp.komaprojekt.GameLogic.Explosion;
+import komaapp.komaprojekt.GameLogic.HealthBar;
 import komaapp.komaprojekt.GameLogic.MovingBackground;
 import komaapp.komaprojekt.GameLogic.Player;
 import komaapp.komaprojekt.GameLogic.ShotManager;
 
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
+
+    //PRE-GAME LOADING SCREEN
+    private BitmapTextureAtlas splashTextureAtlas;
+    private ITextureRegion splashTextureRegion;
+    private Sprite splash;
 
     private Camera camera;
     public static final int CAMERA_WIDTH = 1200;
@@ -61,6 +67,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private ITextureRegion player_tex, pause_tex;
     private ITextureRegion resume_tex, restart_tex, quit_tex, game_over_tex;
 
+    private HealthBar playerHealth;
 
     // BACKGROUNDS
     private MovingBackground bg1, bg2;
@@ -181,8 +188,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         return engine.getEngineOptions();
     }
 
-    @Override
-    protected void onCreateResources()
+    private void loadGameResources()
     {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
@@ -217,7 +223,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     }
 
     @Override
-    protected Scene onCreateScene()
+    protected void onCreateResources()
+    {
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+        splashTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 480, 60, TextureOptions.DEFAULT);
+        splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, this,"splash.png", 0, 0);
+        splashTextureAtlas.load();
+    }
+
+    private Scene createGameScene()
     {
         //Create pause background rectangle
         final Rectangle pauseRectangle = new Rectangle (0, 0 , CAMERA_WIDTH, CAMERA_HEIGHT, this.getVertexBufferObjectManager());
@@ -242,17 +256,17 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         shieldLvl = database.getLvl("shield");
 
         //BACKGROUNDS
-        bg1.setBackgroundSpeed(10f);
-        bg2.setBackgroundSpeed(10f);
+        bg1.setBackgroundSpeed(15f);
+        bg2.setBackgroundSpeed(15f);
         scene.attachChild(bg1);
         scene.attachChild(bg2);
 
-        fg_level1_sun.setBackgroundSpeed(15f);
+        fg_level1_sun.setBackgroundSpeed(22f);
         scene.attachChild(fg_level1_sun);
 
-        fg_level2_1.setBackgroundSpeed(22f); fg_level2_1.setLayersInLevel(3);
-        fg_level2_2.setBackgroundSpeed(22f); fg_level2_2.setLayersInLevel(3);
-        fg_level2_3.setBackgroundSpeed(22f); fg_level2_3.setLayersInLevel(3);
+        fg_level2_1.setBackgroundSpeed(30f); fg_level2_1.setLayersInLevel(3);
+        fg_level2_2.setBackgroundSpeed(30f); fg_level2_2.setLayersInLevel(3);
+        fg_level2_3.setBackgroundSpeed(30f); fg_level2_3.setLayersInLevel(3);
         scene.attachChild(fg_level2_1);
         scene.attachChild(fg_level2_2);
         scene.attachChild(fg_level2_3);
@@ -281,6 +295,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         };
         scene.attachChild(player);
 
+        //HEALTH BAR
+        float healthBarWidth = 200f;
+
+        playerHealth = new HealthBar( (player.getWidth()-healthBarWidth)/2, -player.getHeight()*0.8f, healthBarWidth, 40f, getVertexBufferObjectManager(), (float) Player.getShield());
+        player.setHealthBar(playerHealth);
+
         //CASH TEXT
         final Text cashText = new Text(10, 10, cashFont, "Cash", 10, this.getVertexBufferObjectManager());
         cashText.setPosition(CAMERA_WIDTH - 200, 10);
@@ -292,20 +312,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         scene.attachChild(cashText);
         scene.attachChild(cashVal);
-
-
-        //HEALTH
-        final Text healthText = new Text(10, 10, cashFont, "Shield", 10, this.getVertexBufferObjectManager());
-        healthText.setPosition(CAMERA_WIDTH - 400, 10);
-        healthText.setColor(0.435f, 0.8f, 0.867f);
-
-        final Text healthVal = new Text(10, 10, cashFont, 100*(Player.shield / Player.maxShield) +" %", 100, this.getVertexBufferObjectManager());
-        healthVal.setPosition(CAMERA_WIDTH - 400, 70);
-        healthVal.setColor(0.0f, 1.0f, 0.0f); //GREEN
-
-        scene.attachChild(healthText);
-        scene.attachChild(healthVal);
-
 
         //MISSILE BUTTON
         shootBtn = new AnimatedSprite(24, CAMERA_HEIGHT-216, rocketBtnTex, getVertexBufferObjectManager())
@@ -362,21 +368,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 // 3. Check for collision between enemies and player shots
                 CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
 
-                if (Player.shield > 0) {
-                    if (Player.shield != playerShieldBeforeHit) {
-                        healthVal.setText((int) (100 * (Player.shield / Player.maxShield)) + " %");
-
-                        if (100 * (Player.shield / Player.maxShield) > 75) {
-                            healthVal.setColor(0.0f, 1.0f, 0.0f); //GREEN
-                        } else if (100 * (Player.shield / Player.maxShield) > 50) {
-                            healthVal.setColor(0.6f, 0.8f, 0.0f); //DARKER GREEN
-                        } else if (100 * (Player.shield / Player.maxShield) > 25) {
-                            healthVal.setColor(1.0f, 0.6f, 0.0f); //ORANGE
-                        } else {
-                            healthVal.setColor(1.0f, 0.0f, 0.0f); //RED
-                        }
-                    }
-                }
+                playerHealth.update(v);
 
                 //DO SOMETHING IF PLAYER DIES
                 // TODO Make this not run several times
@@ -394,17 +386,18 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     scene.detachChild(shootBtn);
                     scene.unregisterTouchArea(shootBtn);
 
-                    final Text dieText = new Text(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, mFont, "You have died.", getVertexBufferObjectManager());
-                    scene.attachChild(dieText);
+                    float explosionCenterX = player.getCenterX();
+                    float explosionCenterY = player.getCenterY();
 
-                    float explosionX = player.getCenterX() - Explosion.getTextureWidth() / 2;
-                    float explosionY = player.getCenterY() - Explosion.getTextureHeight() / 2;
+                    player.detachSelf();
+                    player.dispose();
 
-                    final AnimatedSprite explosionAnimation = new AnimatedSprite(explosionX, explosionY, Explosion.getExplosionTex(), getVertexBufferObjectManager());
-                    scene.attachChild(explosionAnimation);
-                    explosionAnimation.setScaleCenter(explosionAnimation.getWidth() / 2, explosionAnimation.getHeight() / 2);
-                    explosionAnimation.setScale(10f);
-                    explosionAnimation.animate(1000 / 60, false, new AnimatedSprite.IAnimationListener() {
+                    final AnimatedSprite explAnim = new AnimatedSprite(explosionCenterX, explosionCenterY, Explosion.getExplosionTex(), getVertexBufferObjectManager());
+                    explAnim.setScaleCenter(explAnim.getScaleCenterX()+explAnim.getWidthScaled()/2, explAnim.getScaleCenterY()+explAnim.getHeightScaled()/2);
+                    explAnim.setScale(10f);
+                    scene.attachChild(explAnim);
+                    explAnim.setPosition(explAnim.getX()+500, explAnim.getY()+200);
+                    explAnim.animate(1000 / 60, false, new AnimatedSprite.IAnimationListener() {
                         @Override
                         public void onAnimationStarted(AnimatedSprite animatedSprite, int i) {
                         }
@@ -428,7 +421,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                             scene.registerTouchArea(quitButton);
                         }
                     });
-
                 }
             }
 
@@ -522,7 +514,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         scene.attachChild(pauseButton);
 
         // PRE-START OVERLAY
-        final Text preStartText = new Text(CAMERA_WIDTH/2, CAMERA_HEIGHT/2, mFont, "PLACEHOLDER TOUCH ANYWHERE TO START", getVertexBufferObjectManager());
+        final Sprite preStartText = new Sprite(0, 0, loadITextureRegion("touchToStart.png", 800, 120), getVertexBufferObjectManager());
+        preStartText.setPosition( (CAMERA_WIDTH-preStartText.getWidth())/2, CAMERA_HEIGHT/4 );
         preStartRect = new Rectangle(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, getVertexBufferObjectManager())
         {
             public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
@@ -538,6 +531,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                     scene.registerTouchArea(shootBtn);
 
+                    playerHealth.setAlpha(1.0f);
+
+                    preStartText.dispose();
+                    preStartRect.dispose();
+
+                    player.setTargetPosition(X, Y);
                 }
                 return true;
             }
@@ -552,6 +551,34 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         scene.setVisible(true);
         return scene;
+    }
+
+    @Override
+    protected Scene onCreateScene()
+    {
+        Scene splashScene = new Scene();
+        splash = new Sprite(0, 0, splashTextureRegion, mEngine.getVertexBufferObjectManager());
+        splash.setPosition((CAMERA_WIDTH - splash.getWidth()) * 0.5f, (CAMERA_HEIGHT - splash.getHeight()) * 0.5f);
+
+        splashScene.attachChild(splash);
+
+        splashScene.registerUpdateHandler(new IUpdateHandler()
+        {
+            @Override
+            public void onUpdate(float v)
+            {
+                loadGameResources();
+                Scene mainScene = createGameScene();
+                splash.detachSelf();
+                splash.dispose();
+                mEngine.setScene(mainScene);
+            }
+
+            @Override
+            public void reset() {}
+        });
+
+        return splashScene;
     }
 
     @Override
