@@ -284,7 +284,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //ENEMY MANAGEMENT
         this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
         this.enemyManager = new EnemyManager( scene, this.getVertexBufferObjectManager(), this.enemyShotManager);
-        enemyManager.addEnemyTexture(loadITextureRegion("tie_sprite_small.png", 200, 257), "tie_fighter");
+        enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy1.png", 200, 200), "Enemy1");
+        enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy2.png", 200, 200), "Enemy2");
 
         //SHOT MANAGEMENT
         this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() );
@@ -464,7 +465,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 if (touchEvent.isActionDown())
                 {
                     MainMenu.soundManager.buttonSound(ctx);
-                    
+
                     scene.detachChild(resumeButton);
                     scene.unregisterTouchArea(resumeButton);
 

@@ -90,7 +90,19 @@ public class EnemyManager {
                 float spawnY = -150f;
                 float speed = 150 + (randGen.nextFloat()-0.5f)*100;
 
-                addEnemy("tie_fighter", spawnX, spawnY, speed);
+                // Usually this can be a field rather than a method variable
+                Random rand = new Random();
+
+                // nextInt is normally exclusive of the top value,
+                // so add 1 to make it inclusive
+                int enemyToSpawn = rand.nextInt((2 - 1) + 1) + 1;
+
+                if(enemyToSpawn == 1) {
+                    addEnemy("Enemy1", spawnX, spawnY, speed);
+                }
+                else{
+                    addEnemy("Enemy2", spawnX, spawnY, speed);
+                }
 
                 enemyCounter++;
             }
