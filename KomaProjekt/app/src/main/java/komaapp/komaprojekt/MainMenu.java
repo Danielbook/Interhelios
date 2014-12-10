@@ -19,7 +19,7 @@ import java.io.IOException;
 public class MainMenu extends Activity
 {
     private Database database = new Database();
-    public static SoundManager soundManager = new SoundManager();
+    public static SoundManager soundManager;
 
     private Context ctx;
 
@@ -32,6 +32,7 @@ public class MainMenu extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         ctx = getBaseContext();
+        soundManager = new SoundManager(ctx);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huvudmeny);
@@ -88,7 +89,7 @@ public class MainMenu extends Activity
 
         if(!soundManager.isBackgroundMusicIsplaying())
         {
-            soundManager.startBackgroundMusic(ctx);
+            soundManager.startBackgroundMusic();
         }
 
         tutUpdateBtns();
@@ -101,26 +102,26 @@ public class MainMenu extends Activity
 
             if (v.getId() == R.id.startBtn && tutorial.getVisibility() == View.GONE)
             {
-                soundManager.startSound(ctx);
+                soundManager.startSound();
                 soundManager.pauseBackgroundMusic();
                 startActivity(new Intent(getApplicationContext(), Game.class));
             }
 
             if (v.getId() == R.id.upgradeBtn && tutorial.getVisibility() == View.GONE)
             {
-                soundManager.buttonSound(ctx);
+                soundManager.buttonSound();
                 startActivity(new Intent(getApplicationContext(), Upgrades.class));
             }
 
             if (v.getId() == R.id.settingsBtn && tutorial.getVisibility() == View.GONE)
             {
-                soundManager.buttonSound(ctx);
+                soundManager.buttonSound();
                 startActivity(new Intent(getApplicationContext(), Settings.class));
             }
 
             if (v.getId() == R.id.howToBtn)
             {
-                soundManager.buttonSound(ctx);
+                soundManager.buttonSound();
 
                 if (tutorial.getVisibility() == View.VISIBLE)
                 {
@@ -140,20 +141,20 @@ public class MainMenu extends Activity
         public void onClick(View v) {
             if (v.getId() == R.id.tutSkip)
             {
-                soundManager.buttonSound(ctx);
+                soundManager.buttonSound();
                 tutorial.setVisibility(View.GONE);
             }
 
             if (v.getId() == R.id.tutNext)
             {
-                    soundManager.buttonSound(ctx);
+                    soundManager.buttonSound();
                     viewFlipper.showNext();
                     tutUpdateBtns();
             }
 
             if (v.getId() == R.id.tutPrev)
             {
-                    soundManager.buttonSound(ctx);
+                    soundManager.buttonSound();
                     viewFlipper.showPrevious();
                     tutUpdateBtns();
             }
@@ -181,12 +182,6 @@ public class MainMenu extends Activity
         {
             tutNext.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void onDestroy()
-    {
-        super.onDestroy();
-        soundManager.setBackgroundMusicIsplaying(false);
     }
 
     @Override

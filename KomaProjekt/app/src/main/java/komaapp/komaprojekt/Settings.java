@@ -63,7 +63,7 @@ public class Settings extends Activity {
         public void onClick(View v)
         {
             if(v.getId() == R.id.backBtn){
-                MainMenu.soundManager.buttonSound(ctx);
+                MainMenu.soundManager.buttonSound();
                 startActivity(new Intent (getApplicationContext(), MainMenu.class));
             }
         }

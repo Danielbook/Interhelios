@@ -1,7 +1,6 @@
 package komaapp.komaprojekt;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
@@ -9,57 +8,47 @@ import org.andengine.audio.music.MusicManager;
 
 import java.io.IOException;
 
-/**
- * Created by Daniel on 14-12-10.
- */
-public class SoundManager
-{
-    private Music menuMusic, playerSounds, enemySounds, sound;
+public class SoundManager {
+    private Music menuMusic, buttonSound;
     private Database database = new Database();
     private boolean backgroundMusicIsplaying = false;
 
-    ////MENU
-    public void buttonSound(Context ctx)
-    {
-        try {
-            sound = MusicFactory.createMusicFromAsset(new MusicManager(), ctx, "mfx/button_sound.ogg");
-            sound.setVolume( (float)database.getSoundVolume()/10);
-            sound.play();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void startSound(Context ctx)
-    {
-        try {
-            sound = MusicFactory.createMusicFromAsset(new MusicManager(), ctx, "mfx/start_sound.ogg");
-            sound.setVolume( (float)database.getSoundVolume()/10 );
-
-            sound.play();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void startBackgroundMusic(Context ctx)
+    public SoundManager(Context ctx)
     {
         try
         {
+            buttonSound = MusicFactory.createMusicFromAsset(new MusicManager(), ctx, "mfx/button_sound.ogg");
+            buttonSound = MusicFactory.createMusicFromAsset(new MusicManager(), ctx, "mfx/button_sound.ogg");
             menuMusic = MusicFactory.createMusicFromAsset(new MusicManager(), ctx, "mfx/menu_music.ogg");
-            menuMusic.setLooping(true);
-            menuMusic.setVolume((float) database.getMusicVolume() / 10);
-            menuMusic.play();
-            backgroundMusicIsplaying = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    ////MENU
+    public void buttonSound()
+    {
+        buttonSound.setVolume( (float)database.getSoundVolume()/10);
+        buttonSound.play();
+    }
+
+    public void startSound()
+    {
+        buttonSound.setVolume( (float)database.getSoundVolume()/10 );
+        buttonSound.play();
+    }
+
+    public void startBackgroundMusic()
+    {
+        menuMusic.setLooping(true);
+        menuMusic.setVolume((float) database.getMusicVolume() / 10);
+        menuMusic.play();
+        backgroundMusicIsplaying = true;
     }
 
     public void changeBackgroundVolume()
     {
         menuMusic.setVolume( (float)database.getMusicVolume()/10 );
-        Log.d("TextLog", "Bkgrnd Volume: " + menuMusic.getVolume());
     }
 
     public boolean isBackgroundMusicIsplaying()
@@ -72,5 +61,6 @@ public class SoundManager
         this.backgroundMusicIsplaying = backgroundMusicIsplaying;
     }
 
-    public void pauseBackgroundMusic() { menuMusic.stop(); }
+    public void pauseBackgroundMusic() { menuMusic.pause(); }
+
 }

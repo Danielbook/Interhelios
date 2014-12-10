@@ -238,7 +238,7 @@ public class Upgrades extends Activity
                 Log.d("TextLog", "Guns");
                 if( database.buyUpgrade("Guns") )
                 {
-                    MainMenu.soundManager.buttonSound(ctx);
+                    MainMenu.soundManager.buttonSound();
 
                     //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
@@ -252,7 +252,7 @@ public class Upgrades extends Activity
             {
                 if(database.buyUpgrade("Shield"))
                 {
-                    MainMenu.soundManager.buttonSound(ctx);
+                    MainMenu.soundManager.buttonSound();
 
                     //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
@@ -264,7 +264,7 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.engineBtn)
             {
-                MainMenu.soundManager.buttonSound(ctx);
+                MainMenu.soundManager.buttonSound();
 
                 if( database.buyUpgrade("Engine") )
                 {
@@ -278,21 +278,21 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.backBtn)
             {
-                MainMenu.soundManager.buttonSound(ctx);
+                MainMenu.soundManager.buttonSound();
 
                 startActivity(new Intent (getApplicationContext(), MainMenu.class));
             }
 
             if(v.getId() == R.id.resetBtn)
             {
-                MainMenu.soundManager.buttonSound(ctx);
+                MainMenu.soundManager.buttonSound();
 
                 resetView.setVisibility(View.VISIBLE);
             }
 
             if(v.getId() == R.id.yesBtn)
             {
-                MainMenu.soundManager.buttonSound(ctx);
+                MainMenu.soundManager.buttonSound();
 
                 try
                 {
@@ -306,7 +306,7 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.noBtn)
             {
-                MainMenu.soundManager.buttonSound(ctx);
+                MainMenu.soundManager.buttonSound();
                 resetView.setVisibility(View.GONE);
             }
         }

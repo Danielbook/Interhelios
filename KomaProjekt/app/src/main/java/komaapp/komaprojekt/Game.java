@@ -464,7 +464,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound(ctx);
+                    MainMenu.soundManager.buttonSound();
 
                     scene.detachChild(resumeButton);
                     scene.unregisterTouchArea(resumeButton);
@@ -498,7 +498,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound(ctx);
+                    MainMenu.soundManager.buttonSound();
                     startActivity(new Intent(getApplicationContext(), Game.class));
                 }
                 return true;
@@ -512,7 +512,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound(ctx);
+                    MainMenu.soundManager.buttonSound();
                     MainMenu.soundManager.setBackgroundMusicIsplaying(false);
                     startActivity(new Intent(getApplicationContext(), MainMenu.class));
                 }
@@ -526,7 +526,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound(ctx);
+                    MainMenu.soundManager.buttonSound();
 
                     scene.detachChild(pauseButton);
                     scene.unregisterTouchArea(pauseButton);
