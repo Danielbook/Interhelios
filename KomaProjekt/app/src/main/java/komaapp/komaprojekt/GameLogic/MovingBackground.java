@@ -12,6 +12,7 @@ import komaapp.komaprojekt.Game;
 public class MovingBackground extends Sprite
 {
     private float backgroundSpeed = 50f;
+    private float layersInLevel = 2;
 
     public MovingBackground (float bX, float bY, ITextureRegion bTextureRegion, VertexBufferObjectManager bVertexBufferObjectManager)
     {
@@ -23,7 +24,7 @@ public class MovingBackground extends Sprite
         this.setY(this.getY() + backgroundSpeed*v);
         if( this.getY() > Game.CAMERA_HEIGHT )
         {
-            this.setY(-1920);
+            this.setY( -( Game.CAMERA_HEIGHT*(layersInLevel-1) ) );
         }
     }
 
@@ -31,4 +32,5 @@ public class MovingBackground extends Sprite
     {
         this.backgroundSpeed = newSpeed;
     }
+    public void setLayersInLevel(int layers) { layersInLevel = layers; }
 }
