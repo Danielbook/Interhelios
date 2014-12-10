@@ -17,6 +17,7 @@ import komaapp.komaprojekt.Game;
  * Handler class for all enemies
  */
 public class EnemyManager {
+    private float internalTimer;
 
     // Enemy texture library
     Hashtable<String, ITextureRegion> enemyTextures;
@@ -30,6 +31,7 @@ public class EnemyManager {
     private ShotManager shotManager;
 
     // List of currently active enemies
+    private boolean shouldSpawnEnemies;
     private ArrayList<BaseEnemy> enemies;
 
     // Timer stuffsies
@@ -50,6 +52,10 @@ public class EnemyManager {
 
         spawnInterval = 2.5f;
         enemyCounter = 0;
+
+        shouldSpawnEnemies = false;
+
+        internalTimer = 0.0f;
     }
 
     public void update(float currentTime, float dt)
@@ -73,16 +79,21 @@ public class EnemyManager {
         }
         enemies.removeAll(enemiesToRemove); // Remove all enemies to far down from the arrayList
 
-        //Try to spawn enemy
-        if (currentTime >= spawnInterval*enemyCounter)
+        if (shouldSpawnEnemies)
         {
-            float spawnX = randGen.nextFloat() * Game.CAMERA_WIDTH;
-            float spawnY = -150f;
-            float speed = 150 + (randGen.nextFloat()-0.5f)*100;
+            internalTimer += dt;
 
-            addEnemy("tie_fighter", spawnX, spawnY, speed);
+            //Try to spawn enemy
+            if (internalTimer >= spawnInterval*enemyCounter)
+            {
+                float spawnX = randGen.nextFloat() * Game.CAMERA_WIDTH;
+                float spawnY = -150f;
+                float speed = 150 + (randGen.nextFloat()-0.5f)*100;
 
-            enemyCounter++;
+                addEnemy("tie_fighter", spawnX, spawnY, speed);
+
+                enemyCounter++;
+            }
         }
     }
 
@@ -150,4 +161,6 @@ public class EnemyManager {
     {
         return enemies;
     }
+
+    public void setShouldSpawnEnemies(boolean shouldSpawnEnemies) { this.shouldSpawnEnemies = shouldSpawnEnemies; }
 }

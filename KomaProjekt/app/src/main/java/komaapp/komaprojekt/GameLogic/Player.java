@@ -27,16 +27,16 @@ public class Player extends Sprite {
     private float currentSpeed = 0.0f;
 
     private float shootTimer;
-    private float missileTimer;
 
     private float shootInterval;
-    private float missileInterval;
-
+    private int missileReloadTime;
     public static double maxShield = 10;
 
     public static double shield = 10;
 
     private int damage = 0;
+
+    private boolean gameHasStarted;
 
 
     ///// INTERFACE
@@ -49,14 +49,11 @@ public class Player extends Sprite {
         this.body = new CircleBody(CircleBody.calcRadiusFromWidthAndHeight(pTextureRegion.getWidth(), pTextureRegion.getHeight()), this.getCenterX(), this.getCenterY());
 
         this.shotManagerReference = playerShotManager;
-
         this.targetPosition = new Vector2(pX, pY);
-
         this.shootTimer = 0.0f;
-
         setPlayerAttributes(gunsLvl, engineLvl, shieldLvl);
 
-        this.missileTimer = this.missileInterval;
+        gameHasStarted = false;
     }
 
     public void setPlayerAttributes(int gunsLvl, int engineLvl, int shieldLvl)
@@ -67,35 +64,35 @@ public class Player extends Sprite {
             case 1:
             {
                 shootInterval = 0.50f;
-                missileInterval = 25f;
+                missileReloadTime = 5;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 2:
             {
                 shootInterval = 0.40f;
-                missileInterval = 20f;
+                missileReloadTime = 4;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 3:
             {
                 shootInterval = 0.30f;
-                missileInterval = 15f;
+                missileReloadTime = 3;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 4:
             {
                 shootInterval = 0.20f;
-                missileInterval = 10f;
+                missileReloadTime = 2;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 5:
             {
                 shootInterval = 0.10f;
-                missileInterval = 5f;
+                missileReloadTime = 1;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
@@ -244,7 +241,7 @@ public class Player extends Sprite {
     }
 
     protected boolean shouldFire() {
-        return (shootTimer > shootInterval);
+        return (shootTimer > shootInterval && gameHasStarted);
     }
 
     public void update(float dt)
@@ -264,23 +261,6 @@ public class Player extends Sprite {
         }
 
         this.body.setCenterPosition(this.getCenterX(), this.getCenterY());
-
-        this.missileTimer += dt;
-
-        // Update the missileTimerText
-        if (missileTimer >= missileInterval) // Missile ready to be fired again
-        {
-            Game.shootBtn.setAlpha(1.0f);
-            Game.missileTimerText.setText("");
-        }
-        else // Some time remaining on the clock
-        {
-            int secondsLeftToMissileReady = (int)Math.ceil(missileInterval - missileTimer);
-            Game.missileTimerText.setText(String.valueOf(secondsLeftToMissileReady));
-
-            Game.shootBtn.setAlpha(0.2f);
-        }
-
     }
 
     public void setVelocityDirection(Vector2 vec)
@@ -317,14 +297,11 @@ public class Player extends Sprite {
 
     public void shootMissile()
     {
-        if (missileTimer >= missileInterval)
-        {
-            Vector2 shootDir = new Vector2(0, -1);
-            shotManagerReference.addMissile(getCenterX(), getCenterY()-getHeight()/2, shootDir, 30f, 30f, 5f, 25f, 75f, 75f);
 
-            missileTimer = 0.0f;
-        }
+        Vector2 shootDir = new Vector2(0, -1);
+        shotManagerReference.addMissile(getCenterX(), getCenterY()-getHeight()/2, shootDir, 30f, 30f, 5f, 25f, 75f, 75f);
 
+        Game.shootBtn.animate(missileReloadTime*1000 / 60, false);
     }
 
     public void addDamage(int damage)
@@ -342,4 +319,6 @@ public class Player extends Sprite {
         //MainMenu.soundManager.playerDamage();
         Game.player_damage.play();
     }
+
+    public void setGameHasStarted(boolean gameHasStarted) { this.gameHasStarted = gameHasStarted; }
 }
