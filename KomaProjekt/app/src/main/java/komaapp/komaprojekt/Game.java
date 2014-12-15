@@ -296,15 +296,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
 
         //ENEMY MANAGEMENT
-        this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() , loadITextureRegion("laser_enemy.png",20,65));
+        this.enemyShotManager = new ShotManager( scene, this.getVertexBufferObjectManager() , loadITextureRegion("laser_enemy.png",20,65), loadITextureRegion("missile_sprite.png", 36, 128));
         this.enemyManager = new EnemyManager( scene, this.getVertexBufferObjectManager(), this.enemyShotManager);
         enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy1.png", 200, 200), "Enemy1");
         enemyManager.addEnemyTexture(loadITextureRegion("Enemy/Enemy2.png", 200, 200), "Enemy2");
-
+        enemyManager.addEnemyTexture(loadITextureRegion("boss_sprite_large.png", 320, 454), "bossTex");
 
 
         //SHOT MANAGEMENT
-        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager(), loadITextureRegion("laser_player.png",20,65));
+        this.playerShotManager = new ShotManager( scene, this.getVertexBufferObjectManager(), loadITextureRegion("laser_player.png",20,65), loadITextureRegion("missile_sprite.png", 36, 128));
 
         //Instantiate the player object
         player = new Player(camera.getWidth()/2, 1000, player_tex, this.getVertexBufferObjectManager(), playerShotManager, gunsLvl, engineLvl, shieldLvl)
@@ -324,7 +324,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //HEALTH BAR
         float healthBarWidth = 200f;
 
-        playerHealth = new HealthBar( (player.getWidth()-healthBarWidth)/2, -player.getHeight()*0.8f, healthBarWidth, 40f, getVertexBufferObjectManager(), (float) Player.getShield());
+        playerHealth = new HealthBar( (player.getWidth()-healthBarWidth)/2, -player.getHeight()*0.8f, healthBarWidth, 40f, getVertexBufferObjectManager(), (float) Player.getHealth());
         player.setHealthBar(playerHealth);
 
         //CASH TEXT
@@ -383,8 +383,13 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
                 cashVal.setText("" + database.getCash());
 
-                /* COLLISION DETECTION */
+                /*** COLLISION DETECTION ***/
 
+                if (enemyManager.getBossBattleHasStarted())
+                {
+                    CollisionManager.collidePlayerWithBoss(player, enemyManager);
+                    CollisionManager.collideBossWithShots(playerShotManager, enemyManager);
+                }
                 // 1. Check for collisions between player and enemies
                 CollisionManager.collidePlayerWithEnemies(player, enemyManager);
 
@@ -395,6 +400,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 CollisionManager.collideEnemiesWithShots(enemyManager, playerShotManager);
 
                 playerHealth.update(v);
+                if (enemyManager.getBossBattleHasStarted()) enemyManager.getBoss().getHealthBar().update(v);
 
                 //DO SOMETHING IF PLAYER DIES
                 // TODO Make this not run several times

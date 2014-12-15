@@ -257,7 +257,7 @@ public class Player extends Sprite {
         this.touchActive = touchActive;
     }
 
-    public static double getShield(){ return shield; }
+    public static double getHealth(){ return shield; }
 
     public void shoot()
     {
@@ -296,5 +296,7 @@ public class Player extends Sprite {
     {
         this.hpBar = hpBar;
         attachChild(hpBar);
+
+        hpBar.parentType  = "player";
     }
 }

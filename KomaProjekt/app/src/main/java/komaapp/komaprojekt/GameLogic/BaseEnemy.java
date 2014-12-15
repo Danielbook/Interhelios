@@ -72,7 +72,7 @@ public abstract class BaseEnemy extends Sprite {
         Game.enemy_explosion.play();
     }
 
-    protected void addShotToShotManager(float pX, float pY, Vector2 direction, float pWidth, float pHeight, float speed, final float pRed, final float pGreen, final float pBlue)
+    protected void addShotToShotManager(float pX, float pY, Vector2 direction, float speed)
     {
         shotManagerReference.addShot(pX, pY, direction, speed);
         Game.enemy_laser.play();

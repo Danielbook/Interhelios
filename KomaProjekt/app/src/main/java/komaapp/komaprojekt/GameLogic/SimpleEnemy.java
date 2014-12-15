@@ -27,6 +27,6 @@ public class SimpleEnemy extends BaseEnemy {
     void fire() {
         //Log.d("EnemyLog", "Shot fired by ID=" + this.getID());
 
-        this.addShotToShotManager(getCenterX(), getCenterY(), new Vector2(0f, 1f), 15f, 60f, 10f, 100f, 0, 0);
+        this.addShotToShotManager(getCenterX(), getCenterY(), new Vector2(0f, 1f), 20f);
     }
 }

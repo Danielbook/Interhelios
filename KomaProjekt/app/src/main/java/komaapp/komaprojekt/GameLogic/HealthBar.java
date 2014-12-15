@@ -1,13 +1,7 @@
 package komaapp.komaprojekt.GameLogic;
 
-import org.andengine.engine.camera.Camera;
-import org.andengine.entity.primitive.Line;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.color.Color;
-
-import komaapp.komaprojekt.GameLogic.Player;
 
 /**
  * Created by benjamin on 14-12-10.
@@ -18,6 +12,8 @@ public class HealthBar extends Rectangle {
 
     private float mMaxHealth;
     private float mCurrentHealth;
+
+    public String parentType; //FUUULKOD med type
 
     public HealthBar(float pX, float pY, float pWidth, float pHeight, VertexBufferObjectManager pVertexBufferObjectManager, float maxHealth) {
         super(pX, pY, pWidth, pHeight, pVertexBufferObjectManager);
@@ -34,7 +30,9 @@ public class HealthBar extends Rectangle {
 
     public void update(float dt)
     {
-        mCurrentHealth = (float) Player.getShield();
+        if (parentType == "boss") mCurrentHealth = ((Boss)getParent()).getHealth();
+        else if (parentType == "player") mCurrentHealth = (float)((Player)getParent()).getHealth();
+
         setWidth(mWidth * mCurrentHealth/mMaxHealth);
 
         if (mCurrentHealth > mMaxHealth*0.75f)

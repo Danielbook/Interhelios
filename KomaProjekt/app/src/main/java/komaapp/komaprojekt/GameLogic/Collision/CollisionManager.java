@@ -110,4 +110,48 @@ public class CollisionManager {
         }
         enemyShotManager.removeShots(shotsToRemove);
     }
+
+    public static void collidePlayerWithBoss(Player player, EnemyManager enemyManager) {
+        CircleBody playerBody = player.getCircleBody();
+        BaseEnemy boss = enemyManager.getBoss();
+
+        CircleBody bossBody = boss.getCircleBody();
+
+        if (circleBodiesCollide(playerBody, bossBody))
+        {
+            if (!player.isDisposed())
+            {
+                Player.shield = 0;
+            }
+        }
+    }
+
+    public static void collideBossWithShots(ShotManager playerShotManager, EnemyManager enemyManager) {
+        ArrayList<Shot> shotsToRemove = new ArrayList<Shot>();
+
+        CircleBody bossBody = enemyManager.getBoss().getCircleBody();
+
+        for (Shot shot : playerShotManager.getShots())
+        {
+            if (circleBodiesCollide(new CircleBody(CircleBody.calcRadiusFromWidthAndHeight(shot.getWidth(), shot.getHeight()), shot.getCenterX(), shot.getCenterY()), bossBody))
+            {
+                // Affect enemy
+                try
+                {
+                    if (enemyManager.getBoss().addDamage(shot.damage)) {
+                        Game.database.addCash(100);
+                    }
+                }
+                catch (AlreadyDisposedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                // Current shot hit the enemy, DEAL WITH IT BELOW
+                shotsToRemove.add(shot);
+            }
+        }
+
+        playerShotManager.removeShots(shotsToRemove);
+    }
 }

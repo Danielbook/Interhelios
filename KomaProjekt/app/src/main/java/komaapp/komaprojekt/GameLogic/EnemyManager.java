@@ -1,5 +1,7 @@
 package komaapp.komaprojekt.GameLogic;
 
+import android.util.Log;
+
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -41,6 +43,14 @@ public class EnemyManager {
     //Hard-coded shoot frequency
     public static final float shootInterval = 0.75f;
 
+    //BOSS SHIT
+    private boolean bossBattleHasStarted = false;
+    public boolean getBossBattleHasStarted() { return bossBattleHasStarted; }
+    private float bossTimer = 25f;
+    private Boss boss;
+    public Boss getBoss() { return boss; }
+    public static final float bossShootInterval = 0.2f;
+
     public EnemyManager(Scene scene, VertexBufferObjectManager VBOmanager, ShotManager shotManager)
     {
         this.scene = scene;
@@ -60,6 +70,25 @@ public class EnemyManager {
 
     public void update(float currentTime, float dt)
     {
+        // CHECK IF BOSS BATTLE SHOULD COMMENCE
+        if (internalTimer >= bossTimer && !bossBattleHasStarted)
+        {
+            shouldSpawnEnemies = false;
+            boss = new Boss(0, 0, enemyTextures.get("bossTex"), VBOmanager, shotManager, enemyCounter, 10f);
+
+            scene.attachChild(boss);
+
+            Log.d("BossLog", "Boss spawned!");
+
+            bossBattleHasStarted = true;
+
+            HealthBar bossHealthBar = new HealthBar(boss.getCenterX(), boss.getCenterY()+boss.getHeight()/2+10f, boss.getWidth(), 15f, VBOmanager, boss.getHealth());
+            boss.setHealthBar(bossHealthBar);
+        }
+
+        if (bossBattleHasStarted) boss.update(dt);
+
+
         ArrayList<BaseEnemy> enemiesToRemove = new ArrayList<BaseEnemy>();
 
         //Update each enemy

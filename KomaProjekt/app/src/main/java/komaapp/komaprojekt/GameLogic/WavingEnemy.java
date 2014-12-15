@@ -43,6 +43,6 @@ public class WavingEnemy extends BaseEnemy {
 
         Vector2 dir = new Vector2(0, 1);
 
-        this.addShotToShotManager(getCenterX(), getCenterY(), dir, 15f, 60f, 15f, 0, 0, 100f);
+        this.addShotToShotManager(getCenterX(), getCenterY(), dir, 30f);
     }
 }

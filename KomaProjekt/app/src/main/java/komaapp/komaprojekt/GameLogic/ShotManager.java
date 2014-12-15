@@ -21,14 +21,15 @@ public class ShotManager {
     // Reference to the active scene, for attaching enemies to the scene
     private Scene scene;
     private VertexBufferObjectManager VBOmanager;
-    private ITextureRegion shotTex;
+    private ITextureRegion shotTex, missileTex;
 
-    public ShotManager(Scene scene, VertexBufferObjectManager VBOmanager, ITextureRegion shotTex)
+    public ShotManager(Scene scene, VertexBufferObjectManager VBOmanager, ITextureRegion shotTex, ITextureRegion missileTex)
     {
         this.scene = scene;
         this.VBOmanager = VBOmanager;
         this.shotTex = shotTex;
         this.shotList = new ArrayList<Shot>(MAX_SHOTS);
+        this.missileTex = missileTex;
     }
 
     public void update(float dt)
@@ -63,7 +64,7 @@ public class ShotManager {
 
     public void addMissile(float pX, float pY, Vector2 direction, float initialSpeed)
     {
-        addShot(new Missile(pX, pY, direction, initialSpeed, VBOmanager, shotTex));
+        addShot(new Missile(pX, pY, direction, initialSpeed, VBOmanager, missileTex));
     }
 
     public void addShot(Shot shot)
