@@ -23,7 +23,7 @@ public class MainMenu extends Activity
 
     private Context ctx;
 
-    //private Music music;r
+    //private Music music;
     private RelativeLayout tutorial;
     private ViewFlipper viewFlipper;
     private Button tutSkip, tutNext, tutPrev;
@@ -164,16 +164,19 @@ public class MainMenu extends Activity
         if (viewFlipper.getDisplayedChild() == first)
         {
             tutPrev.setVisibility(View.GONE);
+            tutSkip.setBackgroundResource(R.drawable.btn_skip_xml);
         }
 
         else
         {
             tutPrev.setVisibility(View.VISIBLE);
+            tutSkip.setBackgroundResource(R.drawable.btn_skip_xml);
         }
 
         if (viewFlipper.getDisplayedChild() == last)
         {
             tutNext.setVisibility(View.GONE);
+            tutSkip.setBackgroundResource(R.drawable.btn_close_xml);
         }
 
         else
@@ -208,34 +211,4 @@ public class MainMenu extends Activity
 
     public void onBackPressed() {
     }
-    /*
-    //Takes care of the button clicks
-    public View.OnClickListener buttonListener = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            if(v.getId() == R.id.upgradeBtn)
-            {
-                startActivity(new Intent (getApplicationContext(), Upgrades.class));
-            }
-
-            else if (v.getId() == R.id.settingsBtn)
-            {
-                startActivity(new Intent (getApplicationContext(), Settings.class));
-            }
-
-            else if (v.getId() == R.id.startBtn)
-            {
-              //  startActivity( new Intent (getApplicationContext(), Launcher.class));
-                startActivity(new Intent (getApplicationContext(), Game.class));
-            }
-
-            else if(v.getId() == R.id.howToBtn)
-            {
-                Log.d("TextLog", "Inte implementerad än");
-            }
-        }
-    };
-    */
 }
