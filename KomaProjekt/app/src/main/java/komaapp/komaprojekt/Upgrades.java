@@ -232,14 +232,13 @@ public class Upgrades extends Activity
         @Override
         public void onClick(View v)
         {
-
             if(v.getId() == R.id.gunsBtn)
             {
+                RunOnStart.soundHandler.buttonSound(); //Play button sound
+
                 Log.d("TextLog", "Guns");
                 if( database.buyUpgrade("Guns") )
                 {
-                    MainMenu.soundManager.buttonSound();
-
                     //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
@@ -250,10 +249,10 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.shieldBtn)
             {
+                RunOnStart.soundHandler.buttonSound(); //Play button sound
+
                 if(database.buyUpgrade("Shield"))
                 {
-                    MainMenu.soundManager.buttonSound();
-
                     //Write/read to database
                     try { database.writeFile(ctx); } catch (IOException e) { e.printStackTrace(); }
                     try { database.readFile(ctx); } catch (IOException e) { e.printStackTrace(); }
@@ -264,7 +263,7 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.engineBtn)
             {
-                MainMenu.soundManager.buttonSound();
+                RunOnStart.soundHandler.buttonSound(); //Play button sound
 
                 if( database.buyUpgrade("Engine") )
                 {
@@ -278,21 +277,21 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.backBtn)
             {
-                MainMenu.soundManager.buttonSound();
+                RunOnStart.soundHandler.buttonSound(); //Play button sound
 
                 startActivity(new Intent (getApplicationContext(), MainMenu.class));
             }
 
             if(v.getId() == R.id.resetBtn)
             {
-                MainMenu.soundManager.buttonSound();
+                RunOnStart.soundHandler.buttonSound(); //Play button sound
 
                 resetView.setVisibility(View.VISIBLE);
             }
 
             if(v.getId() == R.id.yesBtn)
             {
-                MainMenu.soundManager.buttonSound();
+                RunOnStart.soundHandler.buttonSound(); //Play button sound
 
                 try
                 {
@@ -306,7 +305,8 @@ public class Upgrades extends Activity
 
             if(v.getId() == R.id.noBtn)
             {
-                MainMenu.soundManager.buttonSound();
+                RunOnStart.soundHandler.buttonSound(); //Play button sound
+
                 resetView.setVisibility(View.GONE);
             }
         }

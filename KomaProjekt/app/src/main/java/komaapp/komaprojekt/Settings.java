@@ -50,8 +50,8 @@ public class Settings extends Activity {
         musicSeekBar.setProgress(database.getMusicVolume());
         soundSeekBar.setProgress(database.getSoundVolume());
 
-        musicSeekBar.setMax(10);
-        soundSeekBar.setMax(10);
+        musicSeekBar.setMax(100);
+        soundSeekBar.setMax(100);
 
         musicSeekBar.setOnSeekBarChangeListener(seekBarListener);
         soundSeekBar.setOnSeekBarChangeListener(seekBarListener);
@@ -63,7 +63,7 @@ public class Settings extends Activity {
         public void onClick(View v)
         {
             if(v.getId() == R.id.backBtn){
-                MainMenu.soundManager.buttonSound();
+                RunOnStart.soundHandler.buttonSound();
                 startActivity(new Intent (getApplicationContext(), MainMenu.class));
             }
         }
@@ -84,7 +84,7 @@ public class Settings extends Activity {
 
                 } catch (IOException e) { e.printStackTrace(); }
 
-                MainMenu.soundManager.changeBackgroundVolume();
+                RunOnStart.soundHandler.changeBackgroundVolume();
             }
 
             else if(seekBar == soundSeekBar)
@@ -108,8 +108,9 @@ public class Settings extends Activity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar)
         {
-
-
+            if(seekBar == soundSeekBar){
+                RunOnStart.soundHandler.buttonSound();
+            }
             Log.d("TextLog","Music: " + database.getMusicVolume() + "\nSound: " + database.getSoundVolume());
         }
     };

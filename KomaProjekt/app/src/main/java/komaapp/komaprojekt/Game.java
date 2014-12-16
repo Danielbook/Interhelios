@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.LimitedFPSEngine;
@@ -93,6 +95,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     //SOUNDS
     public static Sound player_explosion, player_damage, player_laser, enemy_explosion, enemy_laser;
+    public static Music gameMusic;
 
     //EXPLOSIONS
     private ITiledTextureRegion explosionTex;
@@ -182,11 +185,13 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+
+        //ENABLE SOUND ENGINE
         engineOptions.getAudioOptions().setNeedsSound(true);
+        engineOptions.getAudioOptions().setNeedsMusic(true);
         engineOptions.getAudioOptions().getSoundOptions().setMaxSimultaneousStreams(5000);
 
         LimitedFPSEngine engine = new LimitedFPSEngine(engineOptions, 60);
-        //engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
         return engine.getEngineOptions();
     }
 
@@ -222,28 +227,33 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         rocketBtnTexAtlas.load();
 
         loadBackgrounds();
+    }
 
+    private void loadSounds()
+    {
         try
         {
             player_explosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_explosion.ogg");
-            player_explosion.setVolume((float)database.getSoundVolume()/10);
+            player_explosion.setVolume((float)database.getSoundVolume()/100);
 
             player_damage = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_damage.ogg");
-            player_damage.setVolume((float)database.getSoundVolume()/10);
+            player_damage.setVolume((float)database.getSoundVolume()/100);
 
             player_laser = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_laser.ogg");
-            player_laser.setVolume((float)database.getSoundVolume()/10);
+            player_laser.setVolume((float)database.getSoundVolume()/100);
 
             enemy_explosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/enemy_explosion.ogg");
-            enemy_explosion.setVolume((float)database.getSoundVolume()/10);
+            enemy_explosion.setVolume((float)database.getSoundVolume()/100);
 
             enemy_laser = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/enemy_laser.ogg");
-            enemy_laser.setVolume((float)database.getSoundVolume()/10);
+            enemy_laser.setVolume((float)database.getSoundVolume()/100);
+
+            gameMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.ogg");
+            gameMusic.setVolume((float)database.getMusicVolume()/100);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
     @Override
     protected void onCreateResources()
@@ -252,6 +262,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         splashTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 480, 60, TextureOptions.DEFAULT);
         splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, this,"splash.png", 0, 0);
         splashTextureAtlas.load();
+        loadSounds();
     }
 
     private Scene createGameScene()
@@ -466,7 +477,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound();
+                    RunOnStart.soundHandler.buttonSound();
 
                     scene.detachChild(resumeButton);
                     scene.unregisterTouchArea(resumeButton);
@@ -500,7 +511,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound();
+                    RunOnStart.soundHandler.buttonSound();
                     startActivity(new Intent(getApplicationContext(), Game.class));
                 }
                 return true;
@@ -514,8 +525,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound();
-                    MainMenu.soundManager.setBackgroundMusicIsplaying(false);
+                    RunOnStart.soundHandler.buttonSound();
+                    gameMusic.stop();
                     startActivity(new Intent(getApplicationContext(), MainMenu.class));
                 }
                 return true;
@@ -528,7 +539,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             {
                 if (touchEvent.isActionDown())
                 {
-                    MainMenu.soundManager.buttonSound();
+                    RunOnStart.soundHandler.buttonSound();
 
                     scene.detachChild(pauseButton);
                     scene.unregisterTouchArea(pauseButton);
@@ -599,6 +610,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         splash.setPosition((CAMERA_WIDTH - splash.getWidth()) * 0.5f, (CAMERA_HEIGHT - splash.getHeight()) * 0.5f);
 
         splashScene.attachChild(splash);
+
+        gameMusic.play();
 
         splashScene.registerUpdateHandler(new IUpdateHandler()
         {

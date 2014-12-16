@@ -6,7 +6,8 @@
         android:allowBackup="true"
         android:icon="@drawable/gudappen"
         android:label="GUDAPPEN"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name=".RunOnStart">
         <activity
             android:name=".MainMenu"
             android:label="@string/app_name" >
