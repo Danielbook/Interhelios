@@ -38,7 +38,6 @@ public class CollisionManager {
                 // PLAYER HAS HIT AN ENEMY, SHIIIIIET
                 if (!player.isDisposed())
                 {
-                    //TODO make game quit here
                     Player.shield = 0;
                 }
 

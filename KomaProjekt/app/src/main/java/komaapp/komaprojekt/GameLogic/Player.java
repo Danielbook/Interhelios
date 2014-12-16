@@ -65,35 +65,35 @@ public class Player extends Sprite {
         {
             case 1:
             {
-                shootInterval = 0.50f;
+                shootInterval = 0.60f;
                 missileReloadTime = 5;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 2:
             {
-                shootInterval = 0.40f;
+                shootInterval = 0.50f;
                 missileReloadTime = 4;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 3:
             {
-                shootInterval = 0.30f;
+                shootInterval = 0.40f;
                 missileReloadTime = 3;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 4:
             {
-                shootInterval = 0.20f;
+                shootInterval = 0.30f;
                 missileReloadTime = 2;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
             }
             case 5:
             {
-                shootInterval = 0.10f;
+                shootInterval = 0.20f;
                 missileReloadTime = 1;
                 Log.d("TextLog","Guns: " + shootInterval);
                 break;
@@ -129,7 +129,7 @@ public class Player extends Sprite {
             }
             case 5:
             {
-                maxSpeed = 2000.0f;
+                maxSpeed = 1800.0f;
                 Log.d("TextLog","Speed: " + maxSpeed);
                 break;
             }
@@ -286,7 +286,6 @@ public class Player extends Sprite {
 
         hpBar.setAlpha(1.0f);
 
-        //MainMenu.soundManager.playerDamage();
         Game.player_damage.play();
     }
 

@@ -94,7 +94,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private int shieldLvl;
 
     //SOUNDS
-    public static Sound player_explosion, player_damage, player_laser, enemy_explosion, enemy_laser;
+    public static Sound player_explosion, player_damage, player_laser, player_missile;
+    public static Sound enemy_explosion, enemy_laser;
+    public static Sound boss_explosion;
     public static Music gameMusic;
 
     //EXPLOSIONS
@@ -233,6 +235,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     {
         try
         {
+            ////PLAYER
             player_explosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_explosion.ogg");
             player_explosion.setVolume((float)database.getSoundVolume()/100);
 
@@ -242,12 +245,21 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             player_laser = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_laser.ogg");
             player_laser.setVolume((float)database.getSoundVolume()/100);
 
+            player_missile = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/player_missile.ogg");
+            player_missile.setVolume((float)database.getSoundVolume()/100);
+
+            ////ENEMY
             enemy_explosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/enemy_explosion.ogg");
             enemy_explosion.setVolume((float)database.getSoundVolume()/100);
 
             enemy_laser = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/enemy_laser.ogg");
             enemy_laser.setVolume((float)database.getSoundVolume()/100);
 
+            ////BOSS
+            boss_explosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "mfx/boss_explosion.ogg");
+            boss_explosion.setVolume((float)database.getSoundVolume()/100);
+
+            ////MUSIC
             gameMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.ogg");
             gameMusic.setVolume((float)database.getMusicVolume()/100);
 
@@ -360,6 +372,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     //SHOOT
                     Log.d("ShotLog", "Player tried to shoot!");
                     player.shootMissile();
+                    player_missile.play();
                 }
                 return true;
             }

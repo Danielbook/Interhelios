@@ -16,7 +16,7 @@ public class Missile extends Shot {
         super(pX, pY, direction, initialSpeed, VBOmanager, missileTex);
 
         this.speed = initialSpeed;
-        this.damage = 1000;
+        this.damage = 100;
     }
 
     @Override

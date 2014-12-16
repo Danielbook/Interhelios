@@ -75,6 +75,7 @@ public class Boss extends BaseEnemy {
                 addShotToShotManager(getCenterX(), getCenterY(), shootDir, volleySpeed);
 
                 timeSinceLastVolleyShot = 0.0f;
+
             }
 
             else timeSinceLastVolleyShot += dt;
@@ -91,6 +92,8 @@ public class Boss extends BaseEnemy {
         else if (timeSinceLastFullVolley > fullVolleyInterval && !isCurrentlyFiringVolley)
         {
             // START FIRING VOLLEY
+            Game.enemy_laser.play();
+
             isCurrentlyFiringVolley = true;
             timeSinceLastFullVolley = 0.0f;
             timeSinceLastVolleyShot = volleyShotInterval;
@@ -139,6 +142,8 @@ public class Boss extends BaseEnemy {
 
         if (health <= 0)
         {
+            Game.boss_explosion.play();
+            Game.database.addCash(2000);
             this.destroy();
             return true;
         }

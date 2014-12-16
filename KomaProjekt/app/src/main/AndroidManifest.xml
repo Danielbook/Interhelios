@@ -4,8 +4,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/gudappen"
-        android:label="GUDAPPEN"
+        android:icon="@drawable/app_logo_black"
+        android:label="interHelios"
         android:theme="@style/AppTheme"
         android:name=".RunOnStart">
         <activity
@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".Upgrades"
-            android:label="@string/app_name" >
+            android:label="@string/Upgrades" >
             <intent-filter>
                 <action android:name="in.wptrafficanalyzer.Upgrades" />
 

@@ -73,6 +73,8 @@ public class EnemyManager {
         // CHECK IF BOSS BATTLE SHOULD COMMENCE
         if (internalTimer >= bossTimer && !bossBattleHasStarted)
         {
+            bossTimer = 0;
+
             shouldSpawnEnemies = false;
             boss = new Boss(0, 0, enemyTextures.get("bossTex"), VBOmanager, shotManager, enemyCounter, 10f);
 
@@ -87,7 +89,6 @@ public class EnemyManager {
         }
 
         if (bossBattleHasStarted) boss.update(dt);
-
 
         ArrayList<BaseEnemy> enemiesToRemove = new ArrayList<BaseEnemy>();
 
