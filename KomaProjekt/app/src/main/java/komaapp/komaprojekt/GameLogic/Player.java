@@ -11,10 +11,6 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import komaapp.komaprojekt.Game;
 import komaapp.komaprojekt.GameLogic.Collision.CircleBody;
 
-/**
- * Created by benjamin on 14-11-12.
- */
-
 public class Player extends Sprite {
 
     private ShotManager shotManagerReference;
@@ -209,7 +205,6 @@ public class Player extends Sprite {
         }
         else
         {
-
             currentSpeed = maxSpeed + dst;
             if (currentSpeed * dt > dst) currentSpeed = dst / dt;
 

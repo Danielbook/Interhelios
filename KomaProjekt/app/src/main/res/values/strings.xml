@@ -26,5 +26,6 @@
     <string name="mainMenu">Main menu</string>
     <string name="settings">Settings</string>
     <string name="upgrades">Upgrades</string>
+    <string name="reset">Are you sure you want to reset?</string>
 
 </resources>

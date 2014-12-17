@@ -6,12 +6,9 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-/**
- * Created by benjamin on 14-11-26.
- */
 public class Shot extends Sprite {
-
     protected float speed;
+
     protected Vector2 normDir;
 
     public int damage;

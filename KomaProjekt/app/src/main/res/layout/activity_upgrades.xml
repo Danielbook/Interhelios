@@ -399,14 +399,13 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:background="#f0131517"
-        android:id="@+id/resetView"
-        android:visibility="gone">
+        android:id="@+id/resetView">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Are you sure you want to reset?"
+            android:text="@string/reset"
             android:id="@+id/textView5"
             android:textColor="#ff5499a8"
             android:textSize="35sp"
@@ -434,6 +433,17 @@
             android:layout_centerVertical="true"
             android:layout_alignLeft="@+id/textView5"
             android:layout_alignStart="@+id/textView5" />
+
+        <ImageButton
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD CASH!"
+            android:id="@+id/cashBtn"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/hack" />
 
     </RelativeLayout>
 

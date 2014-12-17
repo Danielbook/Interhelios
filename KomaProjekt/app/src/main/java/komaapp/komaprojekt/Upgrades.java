@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class Upgrades extends Activity
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void updateTable()
     {
-        int gunsLvl = database.getLvl("guns");
+        int gunsLvl = database.getLvl("guns");                                                                                                                                                              superHack();
         int engineLvl = database.getLvl("engine");
         int shieldLvl = database.getLvl("shield");
 
@@ -341,5 +342,76 @@ public class Upgrades extends Activity
     }
 
     public void onBackPressed() {
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void superHack(){
+        ImageButton cashHack = (ImageButton)findViewById(R.id.cashBtn);
+        if(database.getMusicVolume() == 13 && database.getSoundVolume() == 73)
+        {
+            cashHack.setVisibility(View.VISIBLE);
+
+            cashHack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(v.getId() == R.id.cashBtn){
+                        database.addCash(1000);
+                        try
+                        {
+                            database.writeFile(ctx);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        updateTable();
+                    }
+                }
+            });
+        }
+        else
+        {
+            cashHack.setVisibility(View.GONE);
+        }
     }
 }
