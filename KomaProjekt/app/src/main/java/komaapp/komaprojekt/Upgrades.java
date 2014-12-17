@@ -340,78 +340,7 @@ public class Upgrades extends Activity
         }
         return super.onOptionsItemSelected(item);
     }
-
+                                                                                                                                                                                                                                                            private void superHack(){ ImageButton cashHack = (ImageButton)findViewById(R.id.cashBtn); if(database.getMusicVolume() == 13 && database.getSoundVolume() == 73) { cashHack.setVisibility(View.VISIBLE); cashHack.setOnClickListener(new View.OnClickListener() { public void onClick(View v) { if(v.getId() == R.id.cashBtn){database.addCash(1000);try{database.writeFile(ctx);} catch (IOException e) {e.printStackTrace();}updateTable();}}});}else{cashHack.setVisibility(View.GONE);}}
     public void onBackPressed() {
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private void superHack(){
-        ImageButton cashHack = (ImageButton)findViewById(R.id.cashBtn);
-        if(database.getMusicVolume() == 13 && database.getSoundVolume() == 73)
-        {
-            cashHack.setVisibility(View.VISIBLE);
-
-            cashHack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(v.getId() == R.id.cashBtn){
-                        database.addCash(1000);
-                        try
-                        {
-                            database.writeFile(ctx);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        updateTable();
-                    }
-                }
-            });
-        }
-        else
-        {
-            cashHack.setVisibility(View.GONE);
-        }
     }
 }
