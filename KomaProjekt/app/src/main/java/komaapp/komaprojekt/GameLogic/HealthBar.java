@@ -30,8 +30,8 @@ public class HealthBar extends Rectangle {
 
     public void update(float dt)
     {
-        if (parentType.equals("boss")) mCurrentHealth = ((Boss)getParent()).getHealth();
-        else if (parentType.equals("player")) mCurrentHealth = (float)((Player)getParent()).getHealth();
+        if (parentType == "boss") mCurrentHealth = ((Boss)getParent()).getHealth();
+        else if (parentType == "player") mCurrentHealth = (float)((Player)getParent()).getHealth();
 
         setWidth(mWidth * mCurrentHealth/mMaxHealth);
 
