@@ -88,6 +88,17 @@ public class EnemyManager {
             boss.setHealthBar(bossHealthBar);
         }
 
+        if(bossBattleHasStarted)
+        {
+            if(boss.getHealth() <= 0){
+                Log.d("BossLog", "Boss killed!");
+                bossTimer = internalTimer + 25f;
+                bossBattleHasStarted = false;
+                shouldSpawnEnemies = true;
+            }
+            Log.d("BossLog", "Boss health: " + boss.getHealth());
+        }
+
         if (bossBattleHasStarted) boss.update(dt);
 
         ArrayList<BaseEnemy> enemiesToRemove = new ArrayList<BaseEnemy>();

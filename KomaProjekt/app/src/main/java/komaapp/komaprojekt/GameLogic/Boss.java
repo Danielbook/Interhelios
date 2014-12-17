@@ -143,7 +143,6 @@ public class Boss extends BaseEnemy {
         if (health <= 0)
         {
             Game.boss_explosion.play();
-            Game.database.addCash(2000);
             this.destroy();
             return true;
         }

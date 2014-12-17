@@ -138,7 +138,7 @@ public class CollisionManager {
                 try
                 {
                     if (enemyManager.getBoss().addDamage(shot.damage)) {
-                        Game.database.addCash(100);
+                        Game.database.addCash(2500);
                     }
                 }
                 catch (AlreadyDisposedException e)
